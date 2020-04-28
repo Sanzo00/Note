@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+       <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<title>C++ 构造函数 &#9642; dactl</title>
+<!--
+<meta name="description" content="Howdy! This is an example blog post that shows several types of HTML content supported in this theme.
+">
+-->
+<meta name="description" content="Howdy! This is an example blog post that shows several types of HTML content supported in this theme.">
+<meta name="keywords" content="C++">
+<link rel="canonical" href="http://0.0.0.0:4000/posts/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0">
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="C++ 构造函数" />
+<meta name="twitter:description" content="Howdy! This is an example blog post that shows several types of HTML content supported in this theme.
+" />
+<meta name="twitter:image" content="http://0.0.0.0:4000" />
+<meta name="author" content="">
+<link rel="author" href="">
+<meta property="og:locale" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 构造函数">
+<meta property="og:description" content="Howdy! This is an example blog post that shows several types of HTML content supported in this theme.
+">
+<meta property="og:url" content="http://0.0.0.0:4000/posts/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0">
+<meta property="og:site_name" content="dactl">
+<link rel="stylesheet" href="/assets/vendor/normalize-css/normalize.css">
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:400,400italic,700,700italic">
+<style>
+    html {
+      font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    }
+</style>
+<link rel="stylesheet" href="/assets/css/bf.css">
+   <body>
+       <div class="wrapper" id="blep">
+          <header>
+   <div class="menu">
+     <div class="logo">
+        <a href="/">dactl</a>
+        <object type="image/svg+xml" data="/assets/img/dactl.svg" class="logosvg">Your browser does not support svg images</object>
+     </div>
+       <ul>
+           <li><a href="/about">about</a>
+           <li><a href="/archive">archive</a>
+       </ul>
+   </div>
+   <div class="social">
+     <ul>
+       <li>
+            <a href="https://youtube.com/youtube-user-name" target="_blank" class="smaller">
+              <span class="icon-youtube"></span>
+            </a>
+       <li>
+            <a href="https://stackoverflow.com/stackoverflow-user-name" target="_blank" class="smaller">
+              <span class="icon-stackoverflow"></span>
+            </a>
+       <li>
+            <a href="https://twitter.com/twitter-user-name" target="_blank" class="smaller">
+              <span class="icon-twitter"></span>
+            </a>
+       <li>
+            <a href="https://github.com/github-user-name" target="_blank" class="smaller">
+              <span class="icon-github"></span>
+            </a>
+       <li>
+            <a href="mailto:your@email.com" target="_blank">
+              <span class="icon-mail_outline"></span>
+            </a>
+       <li>
+            <a href="/feed.xml" target="_blank">
+                <span class="icon-rss_feed"></span>
+            </a>
+       <li>
+            <a href="#" onclick="switchTheme()" title="Switch theme?">
+              <span class="icon-invert_colors" id="theme-switcher"></span>
+            </a>
+     </ul>
+   </div>
+</header>
+<article class="post">
+<style>
+  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0 {
+    margin-bottom: 2em;
+  }
+  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0::before {
+    background-image: url('https://source.unsplash.com/collection/145103/');
+    background-size: cover;
+    -webkit-filter: grayscale(1) brightness(0.5) contrast(0.5);
+    content:'';
+    position:absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: -2;
+  }
+  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0::after {
+    content:'';
+    position:absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(100,255,0,0.8);
+    /*mix-blend-mode: darken;
+    mix-blend-mode: color-burn;
+    mix-blend-mode: hard-light;*/
+    mix-blend-mode: overlay;
+    z-index: -1;
+  }
+  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container,
+  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container::before,
+  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container::after {
+    height: 25rem;
+  }
+  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-bleed-container,
+  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-bleed-container::before,
+  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-bleed-container::after {
+    height: 35rem;
+  }
+    @media (max-width: 48rem) {
+        .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container,
+        .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container::before,
+        .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container::after{
+            height: 20rem;
+            margin-bottom: 3rem;
+        }
+    }
+</style>
+ <div class="post-title-container
+  %E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0 %E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-bleed-container bleed-hero-container
+    ">
+    <!--Post hero image source-->
+   <div class="heading-container hero-heading hero-heading-post">
+     <h1>
+          C++ 构造函数
+     </h1>
+     <div class="post-meta">
+        <span>23/04/2020</span>
+        <span>
+              <a href="/tag/C++">#C++</a>
+        </span>
+     </div>
+   </div>
+ </div>
+   <h1 id="c-构造函数">C++ 构造函数</h1>
+<p>编译器默认给类提供三个函数：
+<ul>
+ <li>默认构造函数
+ <li>拷贝构造函数
+ <li>析构函数
+</ul>
+<p>用户定义有参构构造函数，C++不再提供默认无参构造。
+<p>用户定义拷贝构造函数，C++不再提供其他构造函数。
+<p>
+<h2 id="默认构造函数">默认构造函数</h2>
+<p>构造函数用于对成员变量的初始化，<strong>默认构造函数是在调用时不需要传入实参的构造函数</strong>。
+<div class="language-c highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10</pre><td class="code"><pre><span class="n">class</span> <span class="n">A</span><span class="p">{</span>
+<span class="n">public</span><span class="o">:</span>  
+    <span class="n">A</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"默认构造函数"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="n">A</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 形参有默认值
+</span>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"默认构造函数"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></table>
+</div>
+</div>
+<p>无参数的默认构造函数和带缺省的默认构造函数不能同时存在，否则编译器产生二义性。
+<h2 id="拷贝构造">拷贝构造</h2>
+<div class="language-c highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre><td class="code"><pre><span class="n">class</span> <span class="n">A</span><span class="p">{</span>
+<span class="n">public</span><span class="o">:</span>
+	<span class="n">A</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// 默认构造函数
+</span>		<span class="n">arr</span> <span class="o">=</span> <span class="n">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+		<span class="n">len</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"默认构造函数调用: "</span> <span class="o">&lt;&lt;</span> <span class="n">this</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="n">A</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 拷贝构造函数
+</span>		<span class="n">arr</span> <span class="o">=</span> <span class="n">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">t</span><span class="p">.</span><span class="n">len</span><span class="p">];</span>
+		<span class="n">len</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">len</span><span class="p">;</span>
+		<span class="n">memcpy</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">t</span><span class="p">.</span><span class="n">arr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">*</span> <span class="n">len</span><span class="p">);</span>
+		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"拷贝构造调用: "</span> <span class="o">&lt;&lt;</span> <span class="n">this</span> <span class="o">&lt;&lt;</span> <span class="s">" copy "</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">t</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="o">~</span><span class="n">A</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="n">delete</span><span class="p">[]</span> <span class="n">arr</span><span class="p">;</span>
+		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"析构函数调用: "</span> <span class="o">&lt;&lt;</span> <span class="n">this</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="kt">void</span> <span class="n">show</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span><span class="p">;</span>
+		<span class="p">}</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="n">private</span><span class="o">:</span> 
+	<span class="kt">int</span> <span class="o">*</span><span class="n">arr</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></table>
+</div>
+</div>
+<h3 id="什么时候拷贝构造">什么时候拷贝构造？</h3>
+<ul>
+ <li>
+   <p>对象作为函数的参数
+   <div class="language-c highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6</pre><td class="code"><pre><span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="n">A</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">a</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+<span class="p">}</span>
+  
+<span class="n">A</span> <span class="n">b</span><span class="p">;</span>
+<span class="n">func</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</pre></table>
+</div>
+   </div>
+   <p>将对象b作为参数传递时生成临时变量，调用拷贝构造函数将b的值赋给临时变量，函数执行结束，析构临时变量。
+ <li>
+   <p>对象作为函数的返回值
+ <li>
+   <p>通过其他对象来初始化
+   <div class="language-c highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2</pre><td class="code"><pre><span class="n">A</span> <span class="n">a</span><span class="p">;</span>
+<span class="n">A</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</pre></table>
+</div>
+   </div>
+</ul>
+<p>自定义拷贝函数可以解决浅拷贝的问题，对于堆上的数据，默认拷贝构造函数只是简单的赋值，没有创建新的空间。
+<h3 id="如何防止拷贝发生">如何防止拷贝发生？</h3>
+<p>将拷贝构造设置为私有，或者不定义拷贝构造。
+<h2 id="重载赋值操作符">重载赋值操作符</h2>
+<div class="language-c highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41</pre><td class="code"><pre><span class="n">class</span> <span class="n">A</span><span class="p">{</span>
+<span class="n">public</span><span class="o">:</span>
+	<span class="n">A</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// 默认构造函数
+</span>		<span class="n">arr</span> <span class="o">=</span> <span class="n">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+		<span class="n">len</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"默认构造函数调用: "</span> <span class="o">&lt;&lt;</span> <span class="n">this</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="n">A</span><span class="o">&amp;</span> <span class="n">operator</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">len</span> <span class="o">=</span> <span class="n">obj</span><span class="p">.</span><span class="n">len</span><span class="p">;</span>
+		<span class="n">arr</span> <span class="o">=</span> <span class="n">new</span> <span class="kt">int</span> <span class="p">[</span><span class="n">len</span><span class="p">];</span>
+		<span class="n">memcpy</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">obj</span><span class="p">.</span><span class="n">arr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">*</span><span class="n">len</span><span class="p">);</span>
+		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"赋值运算符重载: "</span> <span class="o">&lt;&lt;</span> <span class="n">this</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">obj</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+		<span class="k">return</span> <span class="o">*</span><span class="n">this</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="o">~</span><span class="n">A</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="n">delete</span><span class="p">[]</span> <span class="n">arr</span><span class="p">;</span>
+		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"析构函数调用: "</span> <span class="o">&lt;&lt;</span> <span class="n">this</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="kt">void</span> <span class="n">show</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span><span class="p">;</span>
+		<span class="p">}</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="n">private</span><span class="o">:</span> 
+	<span class="kt">int</span> <span class="o">*</span><span class="n">arr</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="n">A</span> <span class="n">a</span><span class="p">;</span>
+	<span class="n">A</span> <span class="n">b</span><span class="p">;</span>
+	<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></table>
+</div>
+</div>
+<p>赋值运算出现在对已有的对象重新赋值。
+</article>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'dactl';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<aside class="related">
+<h2>Related posts</h2>
+<ul class="related-posts">
+</aside>
+           <footer>
+    <span>this should contain a proper description
+</span>
+    <span>written by Your Name</span>
+</footer>
+       </div>
+<script type="text/javascript" src="/assets/js/theme.js"></script>
+<script type="text/javascript" src="/assets/js/barefoot.js"></script>
+    
