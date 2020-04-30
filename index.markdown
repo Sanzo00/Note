@@ -4,5 +4,3 @@
 
 layout: home
 ---
-
-hello world! adf  asf 
