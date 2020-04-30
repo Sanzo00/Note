@@ -1,178 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
-   <head>
-       <meta charset="utf-8">
-<meta http-equiv="x-ua-compatible" content="ie=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-<title>dactl </title>
-<!---->
-<meta name="description" content="this should contain a proper description
-">
-<link rel="canonical" href="http://0.0.0.0:4000/">
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Blog" />
-<meta name="twitter:description" content="this should contain a proper description
-" />
-<meta name="twitter:image" content="http://0.0.0.0:4000" />
-<meta name="author" content="">
-<link rel="author" href="">
-<meta property="og:locale" content="">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Blog">
-<meta property="og:description" content="this should contain a proper description
-">
-<meta property="og:url" content="http://0.0.0.0:4000/">
-<meta property="og:site_name" content="dactl">
-<link rel="stylesheet" href="/assets/vendor/normalize-css/normalize.css">
-<link rel="stylesheet" href="/assets/css/main.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:400,400italic,700,700italic">
-<style>
-    html {
-      font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-    }
-</style>
-<link rel="stylesheet" href="/assets/css/bf.css">
-   <body>
-       <div class="wrapper" id="blep">
-          <header>
-   <div class="menu">
-     <div class="logo">
-        <a href="/">dactl</a>
-        <object type="image/svg+xml" data="/assets/img/dactl.svg" class="logosvg">Your browser does not support svg images</object>
-     </div>
-       <ul>
-           <li><a href="/about">about</a>
-           <li><a href="/archive">archive</a>
-       </ul>
-   </div>
-   <div class="social">
-     <ul>
-       <li>
-            <a href="https://youtube.com/youtube-user-name" target="_blank" class="smaller">
-              <span class="icon-youtube"></span>
-            </a>
-       <li>
-            <a href="https://stackoverflow.com/stackoverflow-user-name" target="_blank" class="smaller">
-              <span class="icon-stackoverflow"></span>
-            </a>
-       <li>
-            <a href="https://twitter.com/twitter-user-name" target="_blank" class="smaller">
-              <span class="icon-twitter"></span>
-            </a>
-       <li>
-            <a href="https://github.com/github-user-name" target="_blank" class="smaller">
-              <span class="icon-github"></span>
-            </a>
-       <li>
-            <a href="mailto:your@email.com" target="_blank">
-              <span class="icon-mail_outline"></span>
-            </a>
-       <li>
-            <a href="/feed.xml" target="_blank">
-                <span class="icon-rss_feed"></span>
-            </a>
-       <li>
-            <a href="#" onclick="switchTheme()" title="Switch theme?">
-              <span class="icon-invert_colors" id="theme-switcher"></span>
-            </a>
-     </ul>
-   </div>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Sanzo</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Sanzo" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/" />
+<meta property="og:url" content="http://0.0.0.0:4000/" />
+<meta property="og:site_name" content="Sanzo" />
+<script type="application/ld+json">
+{"name":"Sanzo","@type":"WebSite","url":"http://0.0.0.0:4000/","headline":"Sanzo","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/feed.xml" title="Sanzo" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Sanzo</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
 </header>
-<article class="blog">
-<style>
-  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0 {
-    margin-bottom: 2em;
-  }
-  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0::before {
-    background-image: url('https://source.unsplash.com/collection/145103/');
-    background-size: cover;
-    -webkit-filter: grayscale(1) brightness(0.5) contrast(0.5);
-    content:'';
-    position:absolute;
-    width: 100%;
-    left: 0;
-    top: 0;
-    z-index: -2;
-  }
-  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0::after {
-    content:'';
-    position:absolute;
-    width: 100%;
-    left: 0;
-    top: 0;
-    background-color: rgba(100,255,0,0.8);
-    /*mix-blend-mode: darken;
-    mix-blend-mode: color-burn;
-    mix-blend-mode: hard-light;*/
-    mix-blend-mode: overlay;
-    z-index: -1;
-  }
-  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container,
-  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container::before,
-  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container::after {
-    height: 25rem;
-  }
-  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-bleed-container,
-  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-bleed-container::before,
-  .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-bleed-container::after {
-    height: 35rem;
-  }
-    @media (max-width: 48rem) {
-        .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container,
-        .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container::before,
-        .%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container::after{
-            height: 20rem;
-            margin-bottom: 3rem;
-        }
-    }
-</style>
- <div class="
-    post-title-container
-        %E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0 %E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0-container hero-hov
-  ">
-   <div class="heading-container hero-heading hero-heading-blog">
-     <h1>
-          <a href="/posts/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0" title="C++ 构造函数">C++ 构造函数</a>
-     </h1>
-     <div class="
-        post-meta
-      ">
-        <span>23/04/2020</span>
-        <span>
-              <a href="/tag/C++">#C++</a>
-        </span>
-     </div>
-   </div>
- </div>
-     <h1 id="c-构造函数">C++ 构造函数</h1>
-<p>编译器默认给类提供三个函数：
-<ul>
- <li>默认构造函数
- <li>拷贝构造函数
- <li>析构函数
-</ul>
-<p>用户定义有参构构造函数，C++不再提供默认无参构造。
-<p>用户定义拷贝构造函数，C++不再提供其他构造函数。
-       <div class="readmore">
-          <a href="/posts/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0" role="button">Read more</a>
-       <div>
-</article>
-<nav class="pagination" role="navigation">
-<hr/>
- <ul>
-   <li class="pagination-item-prev" >
-      <span>&laquo; Previous</span>
-   <li class="pagination-item-next" >
-      <span>Next &raquo;</span>
- </ul>
-<hr/>
-</nav>
-           <footer>
-    <span>this should contain a proper description
-</span>
-    <span>written by Your Name</span>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="home"><p>hello world! adf  asf</p>
+<h2 class="post-list-heading">Posts</h2>
+    <ul class="post-list"><li><span class="post-meta">Apr 30, 2020</span>
+        <h3>
+          <a class="post-link" href="/jekyll/update/2020/04/30/welcome-to-jekyll.html">
+            Welcome to Jekyll!
+          </a>
+        </h3></li><li><span class="post-meta">Apr 23, 2020</span>
+        <h3>
+          <a class="post-link" href="/c++/2020/04/23/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E8%B5%8B%E5%80%BC%E6%9E%84%E9%80%A0.html">
+            拷贝构造和赋值构造
+          </a>
+        </h3></li></ul>
+
+    <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Sanzo</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Sanzo</li><li><a class="u-email" href="mailto:arrangeman@163.com">arrangeman@163.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/sanzona"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">sanzona</span></a></li><li><a href="https://www.twitter.com/sanzo"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">sanzo</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
 </footer>
-       </div>
-<script type="text/javascript" src="/assets/js/theme.js"></script>
-<script type="text/javascript" src="/assets/js/barefoot.js"></script>
-    
+</body>
+
+</html>
