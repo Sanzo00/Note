@@ -8,7 +8,7 @@ window.$docsify = {
 
 
   alias: { // 嵌套的侧边栏
-    'post/_sidebar.md': '/_sidebar.md',
-    '.*/_navbar.md': '/_navbar.md'
+    './post/_sidebar.md': './_sidebar.md',
+    '.*/_navbar.md': './_navbar.md'
   },
 }
