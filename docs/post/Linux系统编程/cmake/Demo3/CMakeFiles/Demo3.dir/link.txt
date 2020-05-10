@@ -1,0 +1,1 @@
+/usr/bin/cc   -rdynamic CMakeFiles/Demo3.dir/test/main.c.o  -o Demo3 src/libpow.a 

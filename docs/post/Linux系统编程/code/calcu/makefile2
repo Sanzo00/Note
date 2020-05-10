@@ -1,0 +1,11 @@
+obj = main.o sum.o sub.o
+target = app
+
+# makefile系统变量
+CC = gcc
+
+$(target):$(obj)
+	$(CC) $(obj) -o $(target)
+	
+%.o: %.c
+	$(CC) -c $< -o $@

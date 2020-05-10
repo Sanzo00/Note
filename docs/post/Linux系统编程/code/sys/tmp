@@ -1,0 +1,17 @@
+total 116K
+drwxr-xr-x 2 na na 4.0K 12月 14 16:08 .
+drwxr-xr-x 6 na na 4.0K 12月 13 19:12 ..
+-rwxr-xr-x 1 na na 8.4K 12月 14 16:08 copy_exec
+-rw-r--r-- 1 na na  385 12月 14 16:08 copy_exec.c
+-rwxr-xr-x 1 na na 8.2K 12月 13 23:06 environ
+-rw-r--r-- 1 na na  165 12月 13 22:57 environ.c
+-rwxr-xr-x 1 na na 8.4K 12月 14 15:58 exec
+-rw-r--r-- 1 na na  464 12月 14 15:58 exec.c
+-rwxr-xr-x 1 na na 8.4K 12月 14 15:57 execlp
+-rwxr-xr-x 1 na na  12K 12月 14 15:18 fork
+-rw-r--r-- 1 na na  440 12月 14 14:02 fork.c
+-rwxr-xr-x 1 na na  12K 12月 14 15:19 mul_fork
+-rw-r--r-- 1 na na  488 12月 14 14:18 mul_fork.c
+-rwxr-xr-x 1 na na 8.4K 12月 14 13:40 setenv
+-rw-r--r-- 1 na na  744 12月 14 13:40 setenv.c
+-rw-r--r-- 1 na na    0 12月 14 16:08 tmp

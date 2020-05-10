@@ -1,0 +1,6 @@
+/root/Note/Linux/cmake/Demo3/CMakeFiles/rebuild_cache.dir
+/root/Note/Linux/cmake/Demo3/CMakeFiles/Demo3.dir
+/root/Note/Linux/cmake/Demo3/CMakeFiles/edit_cache.dir
+/root/Note/Linux/cmake/Demo3/src/CMakeFiles/rebuild_cache.dir
+/root/Note/Linux/cmake/Demo3/src/CMakeFiles/pow.dir
+/root/Note/Linux/cmake/Demo3/src/CMakeFiles/edit_cache.dir

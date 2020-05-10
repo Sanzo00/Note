@@ -1,0 +1,1 @@
+/usr/bin/cc   -rdynamic CMakeFiles/Demo1.dir/src/add.c.o CMakeFiles/Demo1.dir/src/main.c.o  -o Demo1 

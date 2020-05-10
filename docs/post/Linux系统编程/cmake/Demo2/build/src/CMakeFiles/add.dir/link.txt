@@ -1,0 +1,2 @@
+/usr/bin/ar qc libadd.a  CMakeFiles/add.dir/add.c.o
+/usr/bin/ranlib libadd.a

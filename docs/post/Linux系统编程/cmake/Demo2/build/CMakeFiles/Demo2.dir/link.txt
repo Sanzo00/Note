@@ -1,0 +1,1 @@
+/usr/bin/cc   -rdynamic CMakeFiles/Demo2.dir/test/main.c.o  -o Demo2 src/libadd.a 

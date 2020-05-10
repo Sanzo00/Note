@@ -1,0 +1,27 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+int main(int argc, char *argv[]) {
+    int fd = open("tmpfile", O_CREAT | O_RDWR, 0644);
+    if (fd == -1) {
+        perror("open");
+        exit(1);
+    }
+    // 删除临时文件
+    int ret = unlink("tmpfile");
+    
+    // 写文件
+    write(fd, "hello\n", 6);
+    lseek(fd, 0, SEEK_SET);
+    char buf[1024] = {0};
+    // 读文件
+    int len = read(fd, buf, sizeof(buf));
+    // 输出到屏幕
+    write(1, buf, len);
+
+    close(fd);
+    return 0;
+}

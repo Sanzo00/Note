@@ -1,0 +1,6 @@
+/root/Note/Linux/cmake/Demo2/build/CMakeFiles/rebuild_cache.dir
+/root/Note/Linux/cmake/Demo2/build/CMakeFiles/Demo2.dir
+/root/Note/Linux/cmake/Demo2/build/CMakeFiles/edit_cache.dir
+/root/Note/Linux/cmake/Demo2/build/src/CMakeFiles/rebuild_cache.dir
+/root/Note/Linux/cmake/Demo2/build/src/CMakeFiles/add.dir
+/root/Note/Linux/cmake/Demo2/build/src/CMakeFiles/edit_cache.dir

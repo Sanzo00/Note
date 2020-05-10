@@ -1,0 +1,11 @@
+app: main.o sum.o sub.o
+	gcc main.o sum.o sub.o -o app
+
+main.o: main.c
+	gcc -c main.c
+
+sum.o: sum.c
+	gcc -c sum.c
+
+sub.o: sub.c
+	gcc -c sub.c
