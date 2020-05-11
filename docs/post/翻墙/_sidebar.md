@@ -1,6 +1,7 @@
 * [返回](/README.md)
 * [V2ray](/post/翻墙/V2ray)
 * [SSR](/post/翻墙/SSR)
+* [Trojan](/post/翻墙/Trojan)
 * [BBR](/post/翻墙/BBR)
 * [KCP + BBR](/post/翻墙/KCP+BBR)
 * [锐速](/post/翻墙/锐速)
