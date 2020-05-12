@@ -38,4 +38,9 @@ bash <(curl -s -L https://github.com/V2RaySSR/Trojan/raw/master/Trojan.sh)
 安装成功之后，添加配置即可。
 
 ![](img/Igniter.png)
-<!-- <img src="./img/Igniter.jpg" width = 30% height = 30% /> -->
+
+## 苹果端
+
+添加节点，类型选择`Trojan`，填入对用的服务器、端口和密码即可。
+
+![](img/trojan_ipad.png)
