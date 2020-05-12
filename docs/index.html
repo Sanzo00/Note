@@ -7,13 +7,51 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
+
 </head>
 <body>
   <div id="app"></div>
-  <script src="./js/docsify.js">配置文件</script>
-  <script src="./js/prism-c.js"></script> 
 
-  <script src="//unpkg.zhimg.com/prismjs/components/prism-c.js"></script> 
-  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <!-- 配置文件 -->
+  <script src="./js/docsify.js"></script>
+
+  <!-- 一键拷贝 -->
+  <script src="//unpkg.zhimg.com/docsify-copy-code"></script>
+
+  <!-- emoji -->
+  <script src="//unpkg.com/docsify/lib/plugins/emoji.js"></script>
+
+  <!-- 搜索 -->
+  <script src="//unpkg.zhimg.com/docsify/lib/plugins/search.js"></script>
+  <script src="//unpkg.zhimg.com/docsify@4.10.2/lib/docsify.min.js"></script>
+
+  <!-- 字数统计 -->
+  <script src="//unpkg.zhimg.com/docsify-count/dist/countable.js"></script>
+
+  <!-- 黑色主题 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
+
+  <!-- 代码高亮 -->
+  <script src="//unpkg.zhimg.com/prismjs/components/prism-c.js"></script>
+  <script src="//unpkg.zhimg.com/prismjs/components/prism-bash.js"></script>
+  <script src="//unpkg.zhimg.com/prismjs/components/prism-cpp.js"></script>
+
+  <!-- gittalk -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+  <script>
+      const gitalk = new Gitalk({
+        clientID: 'd142f8d9f5e1dd7ff2cc',
+        clientSecret: 'f8754fabb05bb9a4464570c5dacd61d474508f30',
+        repo: 'Note',
+        owner: 'Sanzona',
+        admin: ['Sanzona'],
+        // facebook-like distraction free mode
+        distractionFreeMode: false
+      })
+</script>
+
 </body>
 </html>
