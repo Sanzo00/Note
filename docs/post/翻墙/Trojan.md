@@ -11,6 +11,8 @@ bash <(curl -s -L https://github.com/V2RaySSR/Trojan/raw/master/Trojan.sh)
 
 ### 方法一
 
+[SwitchyOmega安装地址](https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif)
+
 如果浏览器中安装有SwitchyOmega插件，可以添加`socks5`代理服务器，地址是`127.0.0.1:1080`
 
 ![](img/SwitchyOmega_proxy.png)
