@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/>
-  <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+  <!-- <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css"> -->
 </head>
 <body>
   <div id="app"></div>
@@ -47,51 +47,10 @@
   <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
 
   <!-- gittalk -->
-  <!-- <script src="./js/md5.min.js"></script> -->
-  <!-- var gitalk = new Gitalk({
-    clientID: 'xxxxxxxxxxx',
-    clientSecret: 'xxxxxxxxxxxxxxxxxxx',
-    repo: 'xxxx.github.io',
-    owner: 'xxxx',
-    admin: ['xxxx'],
-    id: md5(location.href)
-  }) -->
-  <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script> -->
-
-  <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
-
-  <script>
-      // const gitalk = new Gitalk({
-      //   clientID: 'd142f8d9f5e1dd7ff2cc',
-      //   clientSecret: 'f8754fabb05bb9a4464570c5dacd61d474508f30',
-      //   repo: 'Note',
-      //   owner: 'Sanzona',
-      //   admin: ['Sanzona'],
-      //   // facebook-like distraction free mode
-      //   distractionFreeMode: false,
-      //   // id: md5(location.href),
-      // })
-
-      var gitalk = new Gitalk({
-        clientID: 'd142f8d9f5e1dd7ff2cc',
-        clientSecret: 'f8754fabb05bb9a4464570c5dacd61d474508f30',
-        repo: 'Note',
-        owner: 'Sanzona',
-        admin: ['Sanzona'],
-        title: location.hash.match(/#(.*?)([?]|$)/)[1],
-        id: location.hash.match(/#(.*?)([?]|$)/)[1],
-      })
-      // 监听URL中hash的变化，如果发现换了一个MD文件，那么刷新页面，解决整个网站使用一个gitalk评论issues的问题。
-      window.onhashchange = function(event){
-        if(event.newURL.split('?')[0] !== event.oldURL .split('?')[0]) {
-          location.reload()
-        }
-      }
-      // 由于docsify/lib/plugins/gitalk.min.js文件中已经有下面代码了，所以不需要在写一次了
-      // gitalk.render('gitalk-container')
-</script>
+  <script src="./js/md5.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="./js/gitalk.js"></script>
 
 
 </body>
