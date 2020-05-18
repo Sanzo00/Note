@@ -5,13 +5,12 @@ window.$docsify = {
   loadNavbar: false, // 导航栏
   loadSidebar: true, // 侧边栏
   subMaxLevel: 5, // 目录级别
-
+  // auto2top: true, //  切换页面自动顶部
 
   alias: { // 嵌套的侧边栏
     './post/_sidebar.md': './_sidebar.md',
     '.*/_navbar.md': './_navbar.md'
   },
-
 
   // 完整配置参数
   search: {
@@ -22,7 +21,6 @@ window.$docsify = {
     // 搜索标题的最大层级, 1 - 6
     depth: 4,
   },
-
 
   // 黑夜模式
   darkMode: {
