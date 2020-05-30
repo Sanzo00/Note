@@ -1496,18 +1496,20 @@ void ft(T1 x, t2 y) {
 
 - C++在哪里查找函数？
   
+
 如果文件中的函数原型指出函数是静态的，编译器只在该文件中查找函数定义，否则编译器将在所有程序文件中查找。如果找到两个定义，编译器发错错误信息，因为每个外部函数只能有一个函数定义。如果程序文件中没有找到，编译器将在库中搜索。有些编译器和链接器需要显式指出搜索哪些库。
-  
+
 - 语言链接性
   
+
 C语言中一个名称对应一个函数，编译器可能将一个函数int func()翻译为_func的形式，称为C语言的链接性。在C++中函数存在重载，一个名称可能对应多个函数，对于int func()编译器可能翻译为\_func\_i的形式，称为C++的语言链接。可以使用函数原型来指明要使用的约定。
-  
+
   ```cpp
   extern "C" void func(int);	// C语言链接
   extern void func(int);		// C++语言链接
   extern "C++" void func(int);	// C++语言链接
   ```
-  
+
 - 通常编译器使用三块独立的内存：分别用于静态变量，自动变量，动态存储。
   
 - 程序结束时，有new分配的内存通常被释放，但也不是总是这样，在不健壮的操作系统中，在某些情况下，请求大型内存块将导致该代码块在程序结束不会被自动释放，最佳做法时使用delete手动释放。
@@ -1581,3 +1583,2258 @@ using mef::flame;
 
 
 
+
+
+## 第10章 对象和类
+
+面向对象是一种特殊的设计程序的概念性方法，C++通过一些特性改进了C语言，使引用这种方法更加容易。
+
+- 抽象
+- 封装和数据隐藏
+- 多态
+- 继承
+- 代码的可重用性
+
+
+
+### 过程性编程和面向对象编程
+
+过程性编程注重编程的步骤，如何使用函数去实现对应的功能。
+
+面向对象编程注重把相关的功能，包括函数和数据封装成一个对象，然后设计这个对象的接口函数。它强调封装、继承、多态，提高代码的复用和编程效率。
+
+
+
+### 实现类的成员函数
+
+- 定义成员函数时，要使用作用域解析运算符（::）来表示函数所属的类
+- 类方法可以访问私有成员（private）
+
+
+
+定义在类声明中的函数都将自动成为内联函数，当然也可以在定义的时候加上inline限定符来显式指定。
+
+```cpp
+class Test{
+public:
+    void add(int x) { n += x; } // 默认内联，在声明出定义
+private:  
+    int n;
+};
+```
+
+```cpp
+class Test{
+public:
+    void add(int x);
+private:  
+    int n;
+};
+
+inline void Test::add(int x) { n += x; } 
+```
+
+内联的特殊规则要求每个使用它的文件中都要对其进行定义，确保内联定义对多文件程序中的所有文件都是可用的，最简单的方法是将内联定义放在定义类的头文件中。
+
+根据改写规则（rewrite rule），在类声明中定义的方法等同于用原型替换方法定义，然后在类声明的最后将定义改写为内联函数（上述第二个实现方法）。
+
+
+
+### 方法使用的是哪个对象？
+
+所创建的每个对象都有自己的存储空间，用于存储内部的变量名和类成员，但是同一个类的所有对象共享一个类方法，每个方法只存在一份。调用成员函数时，它将使用被用来调用他的对象的数据成员。
+
+
+
+### 客户、服务器模型
+
+OOP程序员常按照客户、服务器模型来进行程序设计。客户是使用类的程序，类声明和类方法构成了服务器，它是程序可以使用的资源。客户只能通过共有的接口来使用服务器，客户唯一的责任是了解接口，服务端的责任是确保接口的可靠并准确执行。服务端设计人员只能修改类的实现细节，不能修改接口。这样程序独立运行双方不会影响。
+
+
+
+### 构造函数的使用
+
+```cpp
+Stock food = Stock("ice", 10, 20); // 显式构造
+Stock food("ice", 10, 20); // 隐式构造
+```
+
+当程序没有定义任何的构造函数时，编译器才会提供默认构造函数。为类定义构造函数后，程序员必须为他提供默认构造函数，否则默认构造函数不存在，可能会出现错误。
+
+设计类时，通常应提供对所有类成员做隐式初始化的默认构造函数。
+
+定义默认构造函数可以：
+
+```cpp
+Stock(const string& co = "Error", int n = 0, double pt =1.0); // 所有参数提供默认值
+Stock(); // 不提供参数
+```
+
+```cpp
+Stock first; 				// 隐式调用默认构造
+Stock first = Stock(); 		// 显式调用默认构造
+Stock *first = new Stock(); // 隐式调用默认构造
+
+Stock first("Concrete");	// 调用有参构造
+Stock second();				// 声明函数
+Stock third;				// 调用默认构造
+```
+
+
+
+### 析构函数
+
+析构函数的调用时机：
+
+- 静态存储的类对象，析构函数在程序结素后自动被调用。
+- 自动存储的类对象，析构函数在完成代码时自动被调用。
+- 通过new在堆上创建类对象，使用delete来释放内存时，自动被调用。
+- 临时对象，在结束对象的时候时自动调用析构函数。
+
+
+
+### const成员函数
+
+```cpp
+const Stock a;
+a.show(); // 编译错误
+```
+
+常量对象只能调用常函数。show()代码不能保证调用的对象不被修改。所以show()要定义为常函数。
+
+```cpp
+void Stock::show() const;
+```
+
+只要类方法不修改调用对象，就应该声明为const。
+
+
+
+### this指针
+
+每个成员函数（包括构造函数和析构函数）都有一个this指针。this指针指向调用对象。如果方法需要引用整个调用对象，可以使用*this。如果函数括号后面使用const限定符将this限定为const，这样就不能使用this来修改对象的值。
+
+
+
+### 对象数组
+
+```cpp
+Stock mystuff[10];		// 使用默认构造函数初始化
+
+Stock stocks[10] = {	// 前三个显式调用构造函数，剩下7个调用默认构造函数
+    Stock("hello", 1, 1);
+    Stock();
+    Stock("world", 2, 2);
+};					
+```
+
+初始化对象数组，搜先使用默认构造函数创建数组元素，然后花括号中的构造函数将创建临时对象，然后将临时对象内容复制到相应元素中。因此要创建对象数组，这个类必须有默认构造函数。
+
+
+
+最初的UNIX实现使用C++前端cfront将C++程序转化为C程序，处理方法就是把C++的作用域转化为函数参数，调用的时候传入对象地址。
+
+```cpp
+void Stock::show() const{
+    cout << n << endl;
+}
+
+top.show();
+```
+
+```cpp
+void show(const Stock* this) {
+    cout << this->n << endl;
+}
+
+show(&top);
+```
+
+
+
+### 作用域为类的常量
+
+```cpp
+class Bakery{
+private:
+	const int Moths = 12;	// Fails
+	double costs[Months];
+};
+```
+
+这样是错误的，声明类知识描述对象的形式，没有创建对象，因此创建对象前，没有用于存储的空间。可以使用其他方式实现这个效果。
+
+- 在类中声明枚举
+
+    这种方式声明枚举并不会创建数据成员，所有对象中不包含枚举，Months知识一个符号名称，在作用域为整个类代码，编译器使用12来替换它。
+
+	ios_base::fixed等标识符就是来自这里，fixed是ios_base类中定义的典型的枚举量。
+    
+    ```cpp
+    class Bakery{
+    private:
+        enum {Months = 12};
+        double costs[Months];
+    };
+    ```
+    
+- static关键字
+	
+	这样会创建一个Months的常量，该常量和其他静态变量存储在一起，而不是存储在对象中，只有一个Months常量，被所有Bakery对象共享。
+	
+	C++98中只能使用static声明整数或枚举的静态常量，不能存储double常量，C++11消除了这种限制。
+	
+    ```cpp
+  class Bakery{
+      private:
+      static const int Months = 12;
+      double costs[Months];
+  };
+    ```
+
+    
+
+### 作用域内枚举
+
+传统的枚举存在一些问题，其中之一是两个枚举定义中的变量可能发生冲突。这样是无法通过编译的，egg和t_shirt处于相同的作用域，这样就发生了冲突。
+
+```cpp
+enum egg {Small, Medium, Large, Jumbo};
+enum t_shirt {Small, Medium, Large, Xlarge};
+```
+
+
+
+C++11提供一种新的枚举方式，将枚举量的作用域设为类，这样可以解决冲突。
+
+在枚举名前加上class或struct可以，在使用的时候需要加上作用域。
+
+```cpp
+enum egg {Small, Medium, Large, Jumbo};
+enum class t_shirt {Small, Medium, Large, Xlarge};
+
+int a = Small; // 0
+int b = (int)t_shirt::Small; // 1
+```
+
+
+
+C++11提高了作用域内枚举的类型安全，在一些情况下常规枚举自动转化为整型，例如在赋值给int变量或用于比较表达式时，但作用域内枚举不能隐式的转换为整型，需要显式转化（int）。
+
+
+
+枚举使用某种底层整型类型标识，在C++98中如何选择却决于实现，因此包含枚举的结构可能随系统而异，因此枚举的结构长度可能随系统而异。C++11消除了这种依赖，默认情况下，C++11作用域内的底层类型为int，另外也支持指定底层数据类型。
+
+```cpp
+enum class pizza :short  {Small, Medium, Large, Xlarge};
+```
+
+
+
+### 复习题
+
+1. 什么是类？
+
+   类是用户定义的数据类型，类声明指定了数据将如何存储，同时指定了用来访问和操纵这些数据的方法。
+
+2. 类如何实现抽象、封装和数据隐藏？
+
+   抽象：类标识人们可以使用类方法的公共接口对类对象执行的操作。
+
+   数据隐藏：类的数据成员可以是私有的，这意味着只能通过成员函数来访问这些数据。
+
+   封装：实现具体细节，如数据表示和方法的代码都是隐藏的。
+
+3. 对象和类的关系是什么？
+
+   类定义了一种类型，包括如何使用它，对象是一个变量或其他数据对象，并根据类定义被创建和使用。类和对象的关系与标准类型和变量之间的关系相同。
+
+4. 默认构造函数的作用？
+
+   默认构造函数没有参数或所有的参数都有默认值，拥有默认构造函数，可以声明对象而不初始化它，即使已经定义初始化构造函数，还可以声明对象数组。
+
+5. this和*this
+
+   this指针是类方法可以使用的指针，指向用于调用方法的对象，this是对象地址，*this是对象本身。
+
+
+
+
+
+## 第11章 使用类
+
+### 运算符重载
+
+C++允许对已经存在的运算符进行重新定义，实现一些特定的需求。
+
+```cpp
+district2 = sid + sara;
+district2 = sid.operator+(sara);
+```
+
+编译器发现，操作数是已经重载的对象，然后用重载运算符函数替换上述运算符，函数隐式使用了sid（因为它调用了方法），显式 的使用了sara对象（因为它被作为参数传递）。
+
+
+
+不能重载的运算符：
+
+- sizeof（sizeof运算符）
+- .（成员运算符）
+- ::（作用域运算符）
+- ?:（条件运算符）
+- typeid：（RTTI运算符）
+- const_cast、dynamic_cast、reinterpret_cast、static_cast（强制类型转换运算符）
+
+
+
+大多数运算符都可以通过成员函数和非成员函数进行重载，但是下面的运算符只能通过成员函数进行重载：
+
+- =：赋值运算符
+- ()：函数调用运算符
+- []：下标运算符
+- ->：通过指针访问类成员的运算符
+
+
+
+### 友元
+
+对于运算符重载中的不同类型之间的运算，限制了使用方式。
+
+```cpp
+class T{
+  T operator * (double a) const;  
+};
+T T::operator * (double a) const{
+    T tmp;
+    tmp.n = n * a;
+    return tmp;
+}
+
+A = B * 2.5; // 正确
+A = 2.5 * b; // 错误
+```
+
+上述重载*运算符，使用了两种不同的类型，在调用的时候限制了使用方式，对象必须放在左边，左侧的操作数应该是调用对象。这样就限制了运算符使用的方式，其中一种解决方案是，使用非成员函数，通过显式调用传参来达到这种效果。
+
+运算符左面的操作数对应运算符函数的第一个参数，运算符表达式右边的操作数对应运算符函数的第二个参数。
+
+```cpp
+Time operator * (double m, const Time &t);
+```
+
+这样就有一个问题，非成员函数无法访问类的私有成员，友元函数的出现解决了这个问题。
+
+
+
+将函数原型放到类声明中，并在原型声明前加上关键字friend：
+
+```cpp
+// 创建友元函数
+friend Time operator * (double m, const Time &t);
+
+// 定义
+Time Time::operator * (double m, const Time &t) {
+    ...
+}
+```
+
+虽然operator*()函数是在类中声明的，但它不是成员函数，因此不能使用成员运算符来调用。虽然不是成员函数但是和成员函数的访问权限相同。
+
+友元函数的定义不需要使用Time::限定符，不要在定义中使用关键字friend。
+
+```cpp
+A = 2.5 * B;
+
+// 转化为
+A = operator * (2.5, B);
+```
+
+
+
+友元不能说违反了OOP数据隐藏的原则，虽然友元机制允许非成员函数访问私有成员，但是只有类声明可以决定哪一个函数是友元，因此类声明仍然控制了哪些函数可以访问私有数据。类方法和友元只是表达类接口的两种不同机制。
+
+
+
+对<<的重载一般采用非成员函数的重载，如果使用成员函数，调用对象就应该出现在左边`trip << cout`，这样和平常使用的习惯不同，所以一般采用非成员函数的重载。
+
+```cpp
+class T{
+friend ostream& operator << (ostream &out, const T &t);
+private:
+  int minus;
+  int hours;
+public:
+  T(): minus(0), hours(0) {}
+  T(int minus_, int hours_): minus(minus_), hours(hours_) {}
+};
+
+ostream& operator << (ostream &out, const T &t) {
+  out << t.minus << " " << t.hours;
+  return out;
+}
+
+cout << trip;
+opertor<<(cout, trip);
+```
+
+返回一个ostream的引用对象，这样可以连着使用`cout << x << y;`。
+
+
+
+### 类的自动转换和强制类型转换
+
+C++中接受一个参数的构造函数为将类型与该参数值进行转换。
+
+```cpp
+class T{
+private:
+  int x;
+public:
+  T(): x(0) {}
+  T(int x_): x(x_) {}
+};
+
+T a = 10;
+```
+
+隐式转换：程序使用构造函数T(int)来创建一个临时对象，然后赋值给a。
+
+只有接受一个参数的构造函数才能作为转换函数。
+
+可以使用explicit来避免这种隐式转换。
+
+```cpp
+class T{
+private:
+  int x;
+public:
+  T(): x(0) {}
+  explicit T(int x_): x(x_) {}
+};
+
+T a = 10;		// 错误
+T a = (T)10;	// 强制转换
+T a = T(10);	// 显式转换
+```
+
+
+
+C++也支持相反的转换，例如将类转化为普通数据类型。构造函数只用于从某种类型到类类型的转化，要进行相反的转换，必须使用特殊的运算符函数：转换函数。
+
+转换函数是用户自己定义的强制类型转换。
+
+`operator typeName();`
+
+- 转换函数必须是类方法。
+- 转换函数不能指定返回类型。
+- 转换函数不能有参数。
+
+```cpp
+class T{
+private:
+  int x;
+public:
+  T(): x(0) {}
+  T(int x_): x(x_) {}
+
+  operator int() const;
+};
+
+T::operator int() const{
+  return x;
+}
+```
+
+
+
+使用转换函数，也可能出现错误。例如不小心下方的代码：
+
+```cpp
+int arr[20];
+
+Stock temp(14, 4);
+
+int Temp = 1;
+cout << arr[temp] << endl;
+```
+
+不小心将对象作为数组的索引，恰好类中定义了转换函数，这样隐式转换可能出先问题。
+
+原则上最好shi用显式转换，避免隐式转换，在C++98中，关键字explicit不能用于转换函数，在C++11中已经消除这样的限制。
+
+```cpp
+class Stock{
+  explicit operator int() const;  
+};
+
+Stock::operator int() const {
+    return int(pounds+0.5);
+}
+```
+
+另外也可以定义一个非转换函数替换转换函数，仅在显式调用时才会执行。
+
+```cpp
+int Stock::Stock_to_int() { return int(pounds + 0.5); }
+```
+
+应该谨慎使用隐式转换函数，最好选择仅在显示调用时才会执行的函数。
+
+
+
+实现加法的选择
+
+- 使用友元函数
+
+  通过隐式转换为对象，定义的函数少，需要程序员完成的工作少。但是每次都需要调用构造函数，增加对内存和时间的消耗。
+
+  ```cpp
+  operator+(const Stock &, const Stock &);
+  
+  Stock a;
+  double b;
+  Stock c = a + b;
+  Stock c = b + a;	
+  ```
+
+- 重载加法运算符
+
+  显式的匹配类型的函数，需要定义的函数多，但是运行速度快。
+
+  ```cpp
+  Stock operator + (double x);
+  friend Stock operator + (double x, Stock & s);
+  
+  Stock a;
+  double b;
+  Stock c = a + b;	// 匹配第一个重载
+  Stock c = b + a;	// 匹配第二个重载
+  ```
+
+
+
+### 复习题
+
+1. 友元函数和成员函数的区别？
+
+   成员函数是类定义的一部分，通过特定的对象来调用。成员函数可以隐式访问调用对象的成员，无需使用成员运算符。
+
+   友元函数不是类的组成部分，因此被称为直接函数调用，友元函数不能隐式访问类成员，而必须将成员运算符用于作为参数传递的对象。
+
+
+
+## 第12章 类和动态内存分配
+
+
+
+不要再类声明中初始化静态成员变量，因为类声明描述了如何分配内存，并不分配内存。静态成员可以在类声明之外使用单独语句进行初始化，因为静态成员是单独存在的，不是对象的组成部分，初始化语句指出了类型，并使用作用域运算符，不用包含static关键字。初始化是再方法文件中，而不是在类声明文件中进行的，这是因为类声明位于头文件中，程序可能将头文件包含在其他文件中，如果在头文件中进行初始化，将出现多个初始化语句的副本。
+
+```cpp
+// StringBad.h
+class StringBad{
+  static int num_strings;  
+  ...
+};
+
+// StringBad.cpp
+int StringBad::num_strings = 0;
+```
+
+如果静态成员是整型或枚举型const，则可以在类中声明。
+
+
+
+使用new[]分配的内存，使用delete[]来释放。
+
+```cpp
+char *str = new char[len+1];
+
+delete[] str;
+```
+
+
+
+### 特殊的成员函数
+
+C++自动以下成员函数：
+
+- 默认构造函数，如果没有定义构造函数。
+
+  C++默认提供一个空的构造函数，如果定了构造函数，C++不会定义默认构造函数。
+
+  ```cpp
+  Klunk::klunk() {}	// implicit default constructor
+  klunk::klunk() {	// explicit default constructor
+      klunk_ct = 0;
+      ...
+  }
+  ```
+
+  默认构造函数可以有参数，前提是所有参数都有默认值。但是只能有一个默认构造函数，否则编译就有二义性。
+
+  ```cpp
+  Klunk(int n = 0) { klunk_ct = n; }
+  ```
+
+- 默认析构函数，如果没有定义。
+
+  
+
+- 拷贝构造函数，如果没有定义。
+
+  拷贝构造函数用于将一个对象拷贝到新创建的对象中，用于初始化。新建一个对象并将其初始化为同类现有对象时，拷贝构造被调用。
+
+  ```cpp
+  StringBad (const StringBad &);
+  // 以下四种调用拷贝构造的方式
+  StringBad ditto(motto);
+  StringBad ditto = motto;
+  StringBad ditto = StringBad(motto);
+  StringBad *pditto = new StringBad(motto);
+  ```
+
+  中间两种声明可能会使用拷贝构造函数直接创建ditto，亦可能使用拷贝构造生成一个临时对象，然后赋值给ditto。最后一种声明使用motto初始化一个匿名对象，将新对象的指针赋给pditto指针。
+
+  当函数按值传递对象或函数返回对象时，都会使用拷贝构造函数，生成一个临时对象。
+
+  默认的拷贝构造函数逐个复制非静态成员，成员的拷贝是浅拷贝，只是简单的赋值。
+
+- 赋值运算符，如果没有有定义。
+
+  C++允许类对象赋值，通过自动为类重载赋值运算符实现的。
+
+  ```cpp
+  StringBad& StringBad::operator = (const StringBad &);
+  ```
+
+  当将已有对象赋值给另一个对象时，使用重载的赋值运算符。
+
+  ```cpp
+  StringBad metoo = knot;
+  ```
+
+  metoo是一个新创建的对象，被初始化为knot，因此使用拷贝构造函数。实现时也可能分为两步：先是通过拷贝构造创建临时对象，然后通过赋值将临时对象的值复制到新的对象中。
+
+  与拷贝构造函数相同，赋值运算符隐式实现也是队成员进行逐个复制，这样也会出现对象指向同一个内存的情况，在析构的时候就会去删除已经删除的内存。
+
+  - 由于目标对象可能引用了之前分配的数据，所以函数应使用delete[]释放这些数据
+
+  - 函数应该避免将对象赋给自己，否则赋值前，释放内存可能删除对象的内容。
+  - 函数返回一个指向对象的引用，这样可以连续赋值。
+
+  ```cpp
+  StringBad& StringBad::operator=(const StringBad &st){
+      if (this == &st) return *this;
+      delete[] str;	// 释放之前的内存
+      len = st.len;
+      str = new char[len+1];
+      std::strcpy(str, st.str);
+      return *this;
+  }
+  ```
+
+  ```cpp
+  String name;
+  char s[10] = "hello";
+  name = "hello";
+  ```
+
+  对于上方的语句，首先使用构造函数创建一个临时变量，然后使用赋值运算符进行赋值。
+
+  可以重新定义赋值运算符，使得可以直接使用常规字符串进行赋值操作。
+
+  ```cpp
+  String& String::operator = (const char *s) {
+      delete[] str;
+      len = std::strlen(s);
+      str = new char[len+1];
+  	std::strcpy(str, s);
+      return *this;
+  }
+  ```
+
+  
+
+- 地址运算符，如果没有定义。
+
+- 移动构造函数、移动赋值运算符（C++11）
+
+```cpp
+// 改进的String类
+int length() const { return len; }
+friend bool operator < (const String &st1, String &st2);
+friend bool operator > (const String &st1, String &st2);
+friend bool operator == (const String &st1, String &st2);
+friend istream& operator >> (istream &is, String &st);
+char& operator[](int i);
+const char & operator[](int i) const;
+static int HowMany();
+
+bool operator < (const String &st1, const String &st2) {
+    return (std::strcmp(str1.str, str2.str) < 0);
+}
+
+bool operator > (const String &st1, const String &st2) {
+    return str2 < st21;
+}
+
+bool operator == (const String &st1, const String &st2) {
+    return (std::strcmp(str1.str, str2.str) == 0);
+}
+
+istream& operator >> (istream &is, String &st) {
+    char temp[String::CINLIM];
+    is.get(temp, String::CINLIM);
+    if (is) st = temp;
+    while (is && is.get() != '\n') 
+        continue;
+    return is;
+}
+
+char& String::operator[] (int i) {
+    return str[i];
+}
+// 为了某些常量
+const char& String::operator[] (int i) const{
+    return str[i];
+}
+```
+
+
+
+### 构造函数中使用new的注意事项
+
+- 在构造中使用new初始化指针成员，则应在析构函数中使用delete。
+
+- new和delete相互兼容，new对应delete，new[]对应delete[]。
+
+- 如果有多个构造函数，必须以相同的方式使用new，要么带括号，要么不带，因为析构函数只有一个。delete可以用于空指针。
+
+  ```cpp
+  str = new char[1]; // 而不是str = new char;
+  ```
+
+- 定义拷贝构造函数，通过深拷贝酱油给对象初始化为拎一个对象。
+
+  ```cpp
+  String::String(const String &st) {
+      num_strings++;
+      len = st.len;
+      str = new char[len+1];
+      std::strcpy(str, st.str);
+  }
+  ```
+
+- 定义一个赋值运算符，通过深度复制，将一个对象复制给另一个对象。
+
+  ```cpp
+  String& String::operatro = (const String &st) {
+      if (this == &st) return *this;
+      delete[] str;
+      len = st.len;
+      str = new char[len+1];
+      std::strcpy(str, st.str);
+      return *this;
+  }
+  ```
+
+
+
+### 函数的返回类型
+
+如果方法或函数返回局部对象，应该返回对象而不是引用。这种情况将使用拷贝构造函数生成返回的对象。
+
+如果方法或函数返回一个没有共有拷贝构造函数的类（ostream），必须返回一个指向对象的引用。
+
+如果方法和函数可以返回对象也可以返回引用，应首选引用，因为效率高。
+
+
+
+### 再谈new和delete
+
+程序不使用对象时，使用delete删除它，对象是单个的，delete不用带括号，delete只是释放对象中的成员的空间，对于成员指针指向的内存由析构函数来释放。
+
+
+
+如果对象是动态成员，在执行完定义对象的程序块，将调用对象的析构函数。
+
+如果多项是静态成员，在程序结束时调用对象的析构函数。
+
+对象时new创建的，只有显式的使用delete删除对象时，才会调用析构函数。
+
+
+
+### 再谈定位new运算符
+
+定位new运算符可以在分配内存时指定内存位置。将这种运算符用于对象的情况有所不同.
+
+```cpp
+class Test{
+    ...
+};
+
+char *buffer = new char[BUF];
+Test *p1, *p2;
+
+p1 = new (buffer) Test;
+p2 = new (buffer) Test;
+
+delete[] buffer;
+```
+
+- 如上使用new定位运算符，可以在buffer内存中创建对象，在创建第二个对象时，定位new运算符使用一个新的对象覆盖了第一个对象的内存单元，如果类动态的为成员分配内存，这将引发问题。可以手动计算偏移量。
+
+  ```cpp
+  p1 = new (buffer) Test;
+  p2 = new (buffer + sizeof(Test)) Test;
+  ```
+
+- 虽然使用delete释放了buffer的内存，但是并不会调用在buffer定义的对象的内存，可以显式的调用析构函数。
+
+  ``` cpp
+  p2->~Test();
+  p1->~Test();
+  delete[] buffer;
+  ```
+
+  需要注意的是要正确的删除顺序，对于使用定位new运算符创建的对象，应以创建顺序相反的顺序进行删除，玩创建的对象可能以来不早创建的对象，当所有对象销毁后，才能释放存储这些对象的缓冲区。
+
+
+
+## 第13章 类继承
+
+### 基类和派生类
+
+创建派生类对象时，程序首先调用基类的构造函数，然后调用派生类的构造函数。基类构造函数负责初始化继承的数据成员，派生类构造函数主要用于初始化新增的数据成员。派生类的构造函数总是调用一个基类构造函数，可以指明使用的基类构造函数，否则使用默认的基类构造函数。
+
+派生类对象过期时，程序搜先调用派生类析构函数，然后调用基类析构函数。
+
+```cpp
+class Base{
+private:
+  int age;
+  string name;
+
+public:
+
+  Base() {
+    age = 0;
+    name = "default";
+  }
+  Base(int age_, const string &name_): age(age_), name(name_) {}
+
+  void show() {
+    cout << "age: " << age << " name: " << name << endl;
+  }
+};
+
+class Child : public Base{
+private:
+  int height;
+
+public:
+  Child(int height_): height(height_) {} // 隐式调用默认构造函数
+
+  Child(int height_, int age_, string &name_): Base(age_, name_)  // 显式调用构造函数
+  {
+    height = height_;
+  }
+
+  Child(int height_, Base &t): Base(t)  // 调用拷贝构造
+  {
+    height = height_;
+  }
+  void show() {
+    cout << "height: " << height << endl;
+  }
+};
+```
+
+
+
+派生类对象可以使用基类的方法，条件是方法不是私有的。
+
+基类指针可以在不进行显式类型转换的情况下指向派生类对象。
+
+基类引用可以在不进行显式类型转换的情况下引用派生类对象。
+
+这种指向是单向的，不能将基类对象和地址赋给派生类引用和指针。
+
+```cpp
+Child b = Child(195, 11, "alice");
+Base &rt = b;
+Base *pt = &b;
+
+rt.show();
+pt->show();
+```
+
+
+
+如果要在派生类种重新定义基类方法，通常将基类方法声明为虚的，这样程序将根据对象类型而不是引用或指针来选择方法版本，为基类声明一个虚析构函数也是惯例。
+
+
+
+向上强制转换：将派生类引用或指针转为基类引用或指针。
+
+向下强制转换：将基类指针或引用转换为派生类指针或引用。
+
+如果不适用显式类型转换，向下强转是不被允许的。因为is-a关系是不可逆的。
+
+
+
+### 虚函数
+
+虚函数的开销：
+
+- 每个对象都将增大，增大量为存储地址的空间。
+- 编译器对每个类创建一个虚函数地址表（指针数组）
+- 每个函数调用，都需要执行一项额外的操作，在表种找到地址。
+
+
+
+虚函数的注意事项：
+
+- 基类方法的声明使用virtual可使该方法在基类以及所有的派生类中是虚的。
+- 如果使用指向对象的引用或指针来调用虚函数，程序就使用为对象类型定义的方法，而不是为引用或指针类型定义的方法。
+- 如果定义的类是基类，需要将哪些要在派生类中刚重新定义的类声明为虚的。
+
+
+
+构造函数不能是虚函数，创建派生类对象时，调用派生类的构造函数，而不是基类的构造函数，派生类构造函数将使用基类的构造函数，这种顺序不同于继承机制，派生类不继承子类的构造函数，所以构造函数声明为虚的没有意义。
+
+析构函数应当是虚的，除非类不做基类。delete基类指针或引用，如果析构函数不是虚的，派生类的析构函数就不会被调用。给类定义虚析构函数没有错，即使类不作为基类，只是效率的问题。
+
+
+
+友元不能是虚函数，因为友元不是类成员，只有成员才能使虚函数。
+
+
+
+如果派生类没有重新定义函数，则使用基类的虚函数版本，如果处在派生链中，则使用罪行的虚函数版本。
+
+
+
+如果在派生类中重新定义函数，不是使用相同的函数特征标覆盖基类声明，而是隐藏同名的基类方法，不管参数特征标如果。
+
+有两种经验规则：
+
+- 返回类型协变：重新定义继承方法，确保与原来的类型完全相同，但如果返回类型是基类引用或指针，则可以修改指向派生类的引用或指针。
+
+  ```cpp
+  class Base{
+  public:    
+      virtual Base& build(int n);
+      ...
+  };
+  
+  class Child: public Base{
+  public:    
+      virtual Child& build(int n);
+      ...
+  };
+  ```
+
+  
+
+- 基类声明中包含虚函数的重载，如果需要重新定义，则要在派生类中重新定义所有的基类版本。
+
+  ```cpp
+  class Base{
+  public:    
+    virtual void show();
+    virtual void show(int x);
+  };
+  
+  class Child: public Base{
+  public:    
+    virtual void show();
+    virtual void show(int x);
+  };
+  ```
+
+  
+
+### 类设计回顾
+
+什么不能被继承？
+
+  - 构造函数不能被继承，传概念派生类对象时，必须调用派生类的构造函数。派生类构造函数通常使用成员初始化列表语法来调用基类构造函数，以创建派生类中基类部分，如果派生类构造函数没有使用成员初始化列表显式基类构造函数，将使用基类的默认构造函数。C++新增了一种能继承构造函数的机制，但默认仍不继承构造函数。
+  - 析构函数也不能继承，程序搜先调用派生类的析构函数，然后调用基类的构造函数，基类的析构函数往往设置为虚的。
+  - 赋值运算符不能继承。
+  - 友元函数不是类成员，不能被继承。
+
+  
+
+赋值运算符
+
+因为基类的引用和指针可以指向派生类，所以可以将派生类对象赋值给基类对象，这是只会赋值基类的成员。
+
+  ```cpp
+  Brass blips;
+  BrassPlus snips("Rafe Plosh", 123, 12.5);
+  blips = snips;
+  // blips.operator=(snips);
+  ```
+
+  
+
+相反不能将基类的对象赋值给派生类，可以定义转换构造函数，先将基类转换为派生类对象，然后进行赋值；
+
+或者定义一个将基类赋给派生类的赋值运算符。
+
+  ```cpp
+  Brass blips("Griff Hexbait", 10, 20);
+  BrassPlus snips;
+  snips = blips;	// not allow
+  // snips.operator=(blips);
+  
+  // 转化构造函数
+  BrassPlus(const Brass &);
+  // 赋值运算符
+  BrassPlus& BrassPlus::operator=(cosnt Brass &);
+  ```
+
+
+
+友元函数
+
+友元函数不是类成员，不能被继承。如果派生类想用基类的友元函数，可以通过强制类型转换，转换为基类对象。
+
+```cpp
+ostream& operator << (ostream& os, const hasDMA& hs) {
+    os << (const baseDMA) hs;
+    os << "Style: " << hs.style << endl;
+    return os;
+}
+```
+
+
+
+
+## 第14章 C++中的代码重用
+
+
+
+### 包含对象成员的类
+
+- valarray类简介
+
+  ```cpp
+  #include <valarray>	// 头文件
+  #include <iostream>
+  using namespace std;
+  
+  int main() {
+  
+    int arr[8] = {1, 2, 3, 4, 5, 6, 7, 8};
+    valarray<int> v2(arr, 4);
+  
+    for (auto it : v2) {
+      cout << it << ' ';
+    }cout << endl;
+  
+    cout << v2[3] << endl;      // 访问元素
+    cout << v2.size() << endl;  // 元素的个数
+    cout << v2.max() << endl;   // 最大的元素
+    cout << v2.min() << endl;   // 最小的元素
+    cout << v2.sum() << endl;   // 所有元素的和
+  
+    return 0;
+  }	
+  ```
+
+- 使用explicit防止单参数构造函数的隐式转换，使用const限制方法修改数据。这样做的根本原因是编译出现的错误优于在运行阶段出现的错误。
+
+- 初始化列表执行的顺序是变量声明的顺序。
+
+
+
+
+
+### 私有继承
+
+C++除了通过包含对象实现has-a关系，还可以通过私有继承来实现。通过私有继承基类的共有成员和保护成员都将称为派生类的私有成员。基类的方法不会成为派生对象共有接口的一部分，但可以在派生类的成员函数使用它们。
+
+```cpp
+class Student : private std::string, private std::valarray<double>
+{
+    ...
+}
+```
+
+
+
+- 初始化基类组件：
+
+  ```cpp
+  // 包含类的初始化
+  Student(const char *str, const double *pd, int n)
+      : name(str), scores(pd, n) {}
+  // 私有继承的初始化
+  Student(const char *str, const double *pd, int n)
+      : std::string(str), ArrayDb(pd, n) {}
+  
+  // typedef std::valarray<double> ArrayDb;
+  ```
+
+  
+
+- 访问基类方法：
+
+  ```cpp
+  double Student::Average() const {
+      if (scores.size() > 0) 
+          return scores.sum() / scores.size();
+      else 
+          return 0;
+  }
+  // 私有继承可通过类名和作用域解析运算符调用基类
+  double Student::Average() const {
+      if (ArrayDb::sizes() > 0)
+          return ArrayDb::sum() / ArrayDb::size();
+      else 
+          return 0;
+  }
+  ```
+
+
+
+- 访问基类对象：
+
+  包含类可以直接返回对象，私有继承需要使用强制类型转换返回基类对象。
+
+  ```cpp
+  const String& Student::Name() const{
+      return (const string&) *this;
+  }
+  ```
+
+
+
+- 访问基类的友元函数：
+
+  使用类名来限定函数名不适合友元函数，这是因为友元不属于类。可以通过显式的转换为基类来调用正确的函数。
+
+  ```cpp
+  ostream & operator << (ostream &os, const Student &stu) {
+      os << "Scores for " << (const string&) stu << endl; 
+  }
+  ```
+
+  通过这样的方式显式的将stu转换为string对象，进而调用函数operator << (ostream&, const string &);
+
+  引用stu不会自动转换为string引用，是因为在私有继承中，不进行显式类型转换情况下，不能将指向派生类的引用或指针赋给基类引用或指针。
+
+
+
+- 使用包含还是私有继承？
+
+  - 类声明中包含标识被包含类的显式命名对象，代码可以通过名称引用这些对象，使用继承将使关系更加抽象。
+
+  - 包含可以包括多个子对象，如果类中需要string对象，可以使用声明包含3个独立的string成员，继承则只能使用一个这样的对象。（对象没有名称时，难以区分）
+  - 私有继承提供的特性比包含多，对于保护成员，只有在派生类中是可用的，使用组合将类包含在另一个类中，后者不是派生类，而是位于继承结构之外的，不能访问保护成员。但是通过继承得到的是派生类，可以访问保护成员。
+  - 需要重新定义虚函数要使用私有继承。派生类可以重新定义虚函数，包含类不能。
+
+  通常使用包含建立has-a关系，如果心累需要访问原有类的保护成员，或需要重新定义虚函数，则应使用私有继承。
+
+
+
+### 保护继承
+
+保护继承是私有继承的变体。
+
+```cpp
+class Student : protected std::string, protected std::valarray<double>
+{
+    ...
+}
+```
+
+使用保护继承时，基类的共有成员和保护成员都将成为派生类的保护成员，和私有继承一样，基类的接口在派生类也是可用的，但是在继承结构之外是不可用的。
+
+当从派生类派生出另一个类时，私有继承和保护继承的区别就体现出来了。私有继承时第三代类将不能使用基类接口，这是因为基类的共有方法在派生类中变为私有方法；使用保护继承时，基类的共有方法在第二代中变为受到保护的，因此第三代派生类可以使用。	
+
+
+
+### 多重继承
+
+多继承通常会引发菱形继承的问题，这时就会出现二义性。
+
+C++在引入多继承的同时引入了虚基类。虚基类使得从多个类（它们的基类相同）派生出的对象只继承一个基类对象。通过类声明中使用关键字virtual来实现。
+
+```cpp
+// public 和 virtual的位置没有要求
+class Singer : virtual public Worker() { ... }
+class Waiter : public virtual Worker() { ... }
+
+class SingerWaiter : public Singer, public Waiter { ... }
+```
+
+SingerWaiter对象只包含Worker对象的一个副本，本质上Singer和Waiter对象共享一个Worker对象，而不是各自引入自己的Worker对象副本。
+
+
+
+- 新的构造函数规则
+
+  ```cpp
+  class A{
+      int a;
+  public:
+      A(int n = 0) : a(n) {}
+      ...
+  }
+  
+  class B : public A{
+      int b;
+  public:
+      A(int m = 0, int n = 0) : A(n), b(m) {}
+      ...
+  }
+  
+  class C: public B{
+      int c;
+  public:
+      A(int q = 0, int m = 0, int n = 0) : B(m, n), c(q) {}
+      ...
+  }
+  ```
+
+  C的构造函数只能调用B的构造函数，B的构造函数只能i调用A的构造函数。如果是虚基类的话，这种信息自动传递将不起作用。
+
+  ```cpp
+  SingerWaiter(const Worker& wk, int p = 0, int v = Singer::Other)
+      : Waiter(wk, p), Singer(wk, v) {} // 错误
+  ```
+
+  因为自动传递信息时，通过2条不同途径将wk传递给Worker对象。为了避免这种冲突，C++在基类时虚的时，禁止通过中间类自动传递给基类。
+
+  ```cpp
+  SingerWaiter(const Worker& wk, int p = 0, int v = Singer::Other)
+      : Worker(wk), Waiter(wk, p), Singer(wk, v) {}
+  ```
+
+  通过显式调用构造函数Worker(const Worker&)（也可使用默认的构造函数），对于虚基类必须这样做，对于非虚基类是非法的。
+
+- 使用那个方法？
+
+  多继承可导致函数调用的二义性，可以使用作用域解析运算符来指明。
+
+  ```cpp
+  SingerWaiter newhire("sanzo", 2005, 6, soprano);
+  newhire.Singer::Show();
+  ```
+
+  更好的方法是重新定义Show方法：
+
+  ```cpp
+  void SingerWaiter::Show() {
+      Singer::show();
+  }
+  ```
+
+  
+
+  在单继承中，派生类可以调用基类的方法。
+
+  ```cpp
+  void Worker::Show() const{
+      cout << "Name " << fullname << endl;
+      cout << "Employee ID: " << id << endl;
+  }
+  
+  void Waiter::Show() const {
+      Worker::Show();
+      cout << "Panache rating: " << panache << "\n";
+  }
+  
+  void HeadWaiter::Show() const{ // HeadWaiter继承Waiter
+      Waiter::show();
+      cout << "Presence rating: " << presence << endl;
+  }
+  ```
+
+  这递增的方式对SingerWaiter无效，因为它忽略了Waiter组件。
+
+  
+
+  ```cpp
+  void SingerWaiter::Show() {
+      Singer::Show();
+      Waiter::Show();
+  }
+  ```
+
+  如果同时调用两个，这样会打印姓名和ID两次。
+
+  可以使用模块化方式解决。提供一个只显示Worker和只显示Waiter或Singer的组件。
+
+  ```cpp
+  void Worker::Data() const {
+      cout << "Name " << fullname << endl;
+      cout << "Employee ID: " << id << endl;
+  }
+  
+  void Waiter::Data() const{
+      cout << "Panache rating: " << panache << endl;
+  }
+  
+  void Singer::Data() const{
+      cout << "Vocal rating: " << panache << endl;
+  }
+  
+  
+  void SingerWaiter::Data() const{
+      Singer::Data();
+      Waiter::Data();
+  }
+  
+  void SingerWaiter::Show() const{
+      cout << "Category: singing waiter\n";
+      Worker::Data();
+      Data();
+  }
+  ```
+
+
+
+混合使用虚基类和非虚基类：
+
+类B用作C、D的虚基类，同时用作类X、Y的非虚基类。类M是从C、D、X、Y中派生出来的，类M从虚基类共继承一个B类对象，从非虚基类中分别继承一个B类子对象。因此包含三个B类子对象。
+
+
+
+### 类模板
+
+C++类模板为生成通用的类声明提供了一种更好的方法。
+
+```cpp
+template <class T>
+class Stack
+{
+    ...
+};
+
+template <class T>
+bool Stack<T>::push(const T& item)
+{
+	...
+}
+```
+
+
+
+使用模板参数来提供常规数组的大小。
+
+```cpp
+template <typename T, int n>
+class ArrayTP
+{
+    ...
+}
+
+template <typename T, int n>
+ArrayTP<T,n>::ArrayTP(const T& v)
+{
+    for (int i = 0; i < n; ++i) {
+        arr[i] = v;
+    }
+}
+
+// 定义名为ArrayTP<double, 12>的类，并创建egg对象。
+ArrayTP<double, 12> egg;
+```
+
+表达式参数可以是整型、枚举、引用、指针，double n是不合法的，但是double *n是合法的。
+
+模板代码不能修改参数的值，也不能使用参数的地址。不能使用n++和&n等表达式。
+
+表达式参数方法的主要缺点是，每种数组大小都将生成自己的模板，下面声明将生成两个独立的类声明。
+
+```cpp
+ArrayTP<double, 12> eggweights;
+ArrayTP<double, 13> donuts;
+```
+
+下面的声明只生成一个类声明，将数组大小信息传给构造函数：
+
+```cpp
+Stack<int> egg(12);
+Stack<int> dunkers(13);
+```
+
+
+
+递归使用模板
+
+```cpp
+// dog是一个包含10个元素的数组，每个元素是一个包含5个int元素的数组
+ArrayTP<ArrayTP<int, 5>, 10> dog;
+
+int dog[10][5];
+```
+
+模板语法中，维的顺序与等价的二维数组相反。
+
+
+
+使用多个函数类型
+
+```cpp
+template<class T1, class T2>
+class Pair
+{
+private:
+    T1 a;
+    T2 b;
+	...    
+}; 
+```
+
+
+
+默认类型模板参数
+
+```cpp
+template <class T1, class T2 = int>
+class Topo
+{
+  ...  
+}; 
+
+Topo<double, double> m1; // T1 is double, T2 is double
+Topo<double> m2;	// T1 is double, T2 is int
+```
+
+
+
+模板的具体化
+
+- 隐式实例化
+
+  ```cpp
+  ArrayTP<int, 100> stuff;
+  
+  ArrayTP<double, 30> *p;			// 未创建对象
+  pt = new ArrayTP<double, 30>;	// 创建对象
+  ```
+
+  编译器在需要对象之前，不会生成类的隐式实例化。
+
+- 显式实例化
+
+  使用template指出所需类型来声明类是，编译器将生成类声明的显式实例化。
+
+  ```cpp
+  template class ArrayTP<string, 100>; // 生成ArrayTP<string, 100> class
+  ```
+
+  这种情况下虽然没有创建类对象，编译器将生成类声明，和隐式实例化一样，根据通用模板来生成具体化。
+
+- 显示具体化
+
+  用于替换模板中的泛型定义，对模板进行修改，使其行为不同。
+
+  对于排序的模板函数:
+
+  ```cpp
+  template <typename T>
+  class SortArray
+  {
+      ...
+  };    
+  ```
+
+  对于const char*类型数据的排序，需要自定义使用strcmp来进行，所以可以使用显示具体化。
+
+  ```cpp
+  template<> class SortArray<const char*>
+  {
+      ...
+  };   
+  
+  SrotArray<const char*> dates; // 使用特殊的定义
+  ```
+
+
+
+成员模板
+
+```cpp
+template <typename T>
+class beta
+{
+private:
+  template <typename V> // 声明 成员模板
+  class hold;
+
+  hold<T> q;
+  hold<int> n;
+public:
+  beta(T t, int i): q(t), n(i) {}
+  template<typename U> // 声明 成员模板函数
+  U blab(U u, T t);
+};
+
+template<typename T>
+  template<typename V>
+  class beta<T>::hold
+  {
+    ...
+  };
+
+template<typename T>
+  template<typename U>
+  U beta<T>::blab(U u, T t)
+  {
+    ...
+  };  
+```
+
+
+
+### 模板别名（c++11）
+
+使用typedef为模板具体化指定别名。
+
+```cpp
+typedef std::array<double, 12> arrd;
+typedef std::arrray<int, 12> arri;
+typedef std::array<std::string, 12> arrst;
+
+arrd gallons;
+arri days;
+arrst months;
+```
+
+使用using。
+
+```cpp
+template <typename T>
+using arrtype = std::array<T, 12>;
+```
+
+
+
+C++11可以使用using=用于非模板函数。
+
+```cpp
+typedef const char* pc1;
+using pc2 = const char*;
+
+typedef const int *(*pa1)[10];
+using pa2 = const int *(*)[10];
+```
+
+
+
+
+
+## 第15章 友元、异常和其他
+
+### 友元
+
+- 友元类
+
+  假设有两个类：电视类和遥控器类，遥控器是电视的友元类。
+
+  ```cpp
+  class Tv
+  {
+  public:
+    friend class Remote;
+    enum {OFF, ON};
+    Tv(int s = OFF, int mc = 125): state(s), maxchannel(mc), channel(0){}
+    void chanup();
+    void chandown();
+    
+  private:
+    int state;
+    int maxchannel;
+    int channel;
+  };
+  
+  class Remote
+  {
+  private:
+    int mode;
+  public:
+    Remote(int m): mode(m) {}
+    void chanup(Tv &t) { t.chanup(); }
+    void chandown(Tv &t) { t.chandown(); }
+    void set_chan(Tv &t, int c) { t.channel = c; }
+  };
+  ```
+
+  可以看出Remote中只有set_chan直接的使用了Tv的私有成员，其他函数都是通过Tv的接口间接访问私有成员。
+
+  可以将set_chan单独作为Tv的友元函数。
+
+- 友元成员函数
+
+  友元成员函数要小心的排列各种声明和定义的顺序。
+
+  ```cpp
+  class Tv
+  {
+    friend void Remote::set_chan(Tv &t, int c);  
+  };
+  ```
+
+  正确的排列方式是：
+
+  ```cpp
+  class Tv;	// 前向声明
+  class Remote { ... };
+  class Tv { ... };
+  ```
+
+  错误的排列方式：
+
+  ```cpp
+  class Remote; // 前向声明
+  class Tv { ... };
+  class Remote { ... };
+  ```
+
+  编译器在Tv中看到Remote的一个方法声明为Tv友元之前，要先看到Remote的声明和set_chan()方法的声明。
+
+  另外，因为Remote中包含有内联函数。
+
+  ```cpp
+  void onoff(Tv &t) { t.onoff(); }
+  ```
+
+  由于调用了Tv的方法，所以编译器此时必须已经看到Tv的声明，这样才知道Tv有哪些方法。
+
+- 共同的友元
+
+  ```cpp
+  class Analyzer;
+  
+  class Probe
+  {
+  	friend void sync(Analyzer &a, const Probe &p);
+  	friend void sync(Probe &p, const Analyzer &a); 
+  	...
+  };
+  
+  class Analyzer
+  {
+  	friend void sync(Analyzer &a, const Probe &p);
+  	friend void sync(Probe &p, const Analyzer &a); 
+      ...
+  };
+  
+  inline void sync(Analyzer &a, const Probe &p) 
+  {
+  	...    
+  }
+  
+  inline void sync(Probe &p, const Analyzer &a)
+  {
+  	...    
+  }
+  ```
+
+  前向声明使编译器看到Probe类声明中的友元声明时，直到Analyzer是一种类型。
+
+
+
+### 嵌套类
+
+嵌套类的访问权限和普通类的访问权限类似，分为嵌套类放在共有、私有、保护三种不同的状态，当嵌套类在类外定义时，要使用嵌套的类说明。类声明位置决定了类的作用域和可见性。
+
+
+
+### 异常
+
+```cpp
+thorw "error";
+
+try{
+    ...
+}catch (...) {
+    ...
+}
+
+
+```
+
+
+
+```cpp
+#include <iostream>
+using namespace std;
+
+double func(double a, double b) {
+  if (a == -b) {
+    throw "bad arguments: a = -b";
+  }
+  return (a - b) / (a + b);
+}
+
+
+int main() {
+
+  double x, y, z;
+  cout << "Enter tow numbers:";
+  while (cin >> x >> y) {
+    try{
+      z = func(x, y);
+    }catch (const char *s) {
+      cout << s << endl;
+      cout << "Enter tow numbers:";
+      continue;
+    }
+
+    cout << "ans: " << z << endl;
+    cout << "Enter next set of numbers <q to quit>: ";
+  }
+
+  cout << "bye!" << endl;
+  return 0;
+}
+```
+
+
+
+将对象用作异常类型
+
+```cpp
+class bad_func
+{
+private:
+  double v1, v2;
+public:
+  bad_func(int a = 0, int b = 0): v1(a), v2(b) {}
+  void mesg();
+};
+
+void bad_func::mesg() {
+  cout << "func(" << v1 << ", " << v2 << "): invalid arguments a = -b" << endl;
+}
+
+try{
+    ...
+    throw bad_func(a, b);
+}catch (bad_func &t) {
+    t.mesg();
+    ...
+}
+```
+
+
+
+关键字noexcept指出函数不会引发异常。
+
+```cpp
+double marm() noexcept;
+
+double harm(double a) throw (bad_thing); // may throw bad_thing exception
+```
+
+
+
+引发异常时编译器总是创建一个临时拷贝，即使异常规范和catch块中指定的是引用。
+
+```cpp
+void super() trhow(problem)
+{
+    if (oh_no) {
+        problem oops;
+        throw oops;
+    }
+};
+
+try{
+    super();
+}catch (problem &p) {
+    ...
+}
+```
+
+p指向的是oops的副本，而不是oops本身。这是件好事，因为supper执行完之后，oops不再存在了。
+
+既然返回的是副本，为什么catch里还要使用引用类型，这样可以使用基类引用去与派生类匹配。
+
+如果有一个异常类继承层次结构，应将层次结构中最下层的捕获放到前面，然后是基类的捕获。
+
+
+
+exception类
+
+可以将exception类作为其他异常类的基类，也可以将exception类作为基类。
+
+exception中有一个what()的虚成员函数，返回一个字符串，派生类可以对这个方法重新定义。
+
+```cpp
+#include <exception>
+class bad_func : public std::exception
+{
+public:
+    const char* what() { return "bad arguments to func()"; }
+};
+
+try{
+    ...
+}catch (std::exception &e) {
+    cout << e.what() << endl;
+}
+```
+
+
+
+new在申请空间失败时，会抛出bad_alloc异常。
+
+```cpp
+try{
+    int *pb = new int;
+}catch (bad_alloc &ba) {
+    ...
+}
+```
+
+C++提供了一种在失败返回空指针的new。
+
+```cpp
+int *p = new(std::nothrow) int[100];
+if (p == 0) {
+    ...
+}
+```
+
+
+
+异常何时会迷失方向？
+
+- 异常在带有异常规范中引发，必须与规范列表中的某种异常匹配，否则为意外异常。
+
+- 如果异常不是在函数中引发，必须捕获它，如果没有捕获它，则为未捕获异常。
+
+  未捕获异常一般会通过terminate()来调用abort()函数终止程序。我们可以通过set_terminate()函数来设置指定的行为。
+
+  ```cpp
+  #include <exception>
+  using namespace std;
+  void myQuit() {
+      cout << "Terminating due to uncaught exception\n";
+      exit(5); // 退出状态设置为5
+  }
+  
+  set_terminate(myQuit); //参数为指向没有参数和返回值的函数指针
+  ```
+
+
+
+### RTTI
+
+RTTI是运行阶段类型识别。
+
+只能将RTTI用于包含虚函数类层次结构中，原因是只有对于这种类层次结构，才应该将派生对象的地址赋给基类指针。
+
+C++有三个支持RTTI的元素：
+
+- dynamic_cast运算符使用一个指向基类的指针申城指向派生类的指针，肉则返回0（空指针）
+
+  它能够解决“是否可以安全的将对象的地址赋给特定类型的指针”这一问题。
+
+  ```cpp
+  class Grand { // has virtual methods };
+  class Superb : public Grand { ... };    
+  class Magnificent : public Superb { ... };    
+      
+  Grand *pg = new Grand;		
+  Grand *ps = new Superb;		
+  Grand *pm = new Magnificent;
+      
+  Magnificent *p1 = (Magnificent *) pm;	// 安全
+  Magnificent *p2 = (Magnificent *) pg;	// 不安全，向下转化
+  Superb *p3 		= (Magnificent *) pm;   // 安全，向上转换
+      
+  Superb *pm     = dynamic_cast<Superb *> (pg);
+  if (pm == 0) {
+      cout << "not allowed!\n";
+  }    
+  ```
+
+  dynamic_cast也可以用于引用，没有空指针对应的引用值，因此无法使用特殊的引用值表示失败，当请求不正确时，dynamic_cast将引发类型为bad_cast的异常。
+
+  ```cpp
+  try{
+      Superb &rs = dynamic_cast<Superb &>(rg);
+  }catch (bad_cast &) {
+      ...
+  }
+  ```
+
+  
+
+- typeid运算符返回一个指向对象的类型值。
+
+  typeid可以接受两种参数：类名、结果为对象的表达式。
+
+  返回一个对type_info的引用，type_info重载了==和!=运算符，以便可以使用这种运算符来对类型进行比较。
+
+  ```cpp
+  typeid(Magnificent) == typeid(*pg)
+  ```
+
+  如果pg是个空指针，程序引发bad_typeid异常。
+
+  
+
+- type_info结构存储了有关特定类型的信息。
+
+  type_info中包含一个name()的成员，返回一个随实现而异的字符串，通常是类的名称。
+
+
+
+```cpp
+class Grand
+{
+	virtual Speak() const { coust << "Grand\n"; }
+};
+
+class Superb : public Grand
+{
+	virtual Speak() const { coust << "Superb\n"; }
+    virtual Say() const { cout << "I'm Superb\n"; }
+};
+
+class Magnificent : public : Superb
+{
+	virtual Speak() const { coust << "Magnificent\n"; }
+    virtual Say() const { cout << "I'm Magnificent\n"; }
+};
+
+Grand *pg;
+Super* ps;
+
+pg = GetOne(); // 随机获取三个对象之一
+pg->Speak(); // 共有的方法
+if(ps = dynamic_cast<Superb *>(pg)) {
+    ps->Say(); // Superb和Magnificent共有的方法
+}
+
+if (typeid(Magnificent) == typeid(*pg)) {
+    cout << "you are Magnificent\n";
+}
+```
+
+如果放弃使用dynamic_cast和虚函数，而是使用typeid，可以这样写:
+
+```cpp
+Grand *pg;
+Super *ps;
+Magnificent *pm;
+pg = GetOnd();
+if (typeid(Magnificnet) == typeid(*pg)) {
+    pm = (Magnificent*) pg;
+    pm->Speak();
+    pm->Say();
+}else if(typeid(Superb) == typeid(*pg)) {
+    ps = (Superb*) pg;
+    ps->Speak();
+    ps->Say();
+}else {
+    pg->Speak();
+}
+```
+
+对比发现使用typeid更加复杂写，而且如果扩展新的类，需要添加或修改if-else结构。
+
+
+
+### 类型转换运算符
+
+C++包含四种类型转换运算符：
+
+- dynamic_cast
+
+  当Low类是High类的基类时，才可以将High\*赋值为Low\*.
+
+  ```cpp
+  dynamic_cast <type-name> (expression)
+  ```
+
+  
+
+- const_cast
+
+  只能用于const和volatile的转换。除了const或volatile特征可以不同，type-name和expression的类型必须相同。
+
+  ```cpp
+  const_cast <type-name> (expression)
+  ```
+
+  ```cpp
+  int main() {
+  
+    int a = 10;
+    const int *p = &a;
+  
+    int *q = const_cast<int *> (p);
+    *q = 15;
+  
+    cout << a << endl; // 15
+  
+    return 0;
+  }
+  ```
+
+  const_cast可以修改指向一个值的指针，如果修改const的值结果不确定。
+
+  ```cpp
+  int main() {
+  
+    const int a = 10; // const类型的变量
+    const int *p = &a;
+  
+    int *q = const_cast<int *> (p);
+    *q = 15;
+  
+    cout << a << endl; // 10
+  
+    return 0;
+  }
+  ```
+
+  
+
+- static_cast
+
+  仅当type_name可以被隐式转换为expression所属类型或expression可以隐式转换为type_name所属类型时才是合法的。
+
+  ```cpp
+  static_cast <type-name> (expression)
+  ```
+
+  
+
+- reinterpret_cast
+
+  ```cpp
+  reinterpret_cast <type-name> (expression)
+  ```
+
+  ```cpp
+  struct dat {
+      short a;
+      short b;
+  };
+  long value = 0xA223B112;
+  dat *p = reinterpret_cast<dat*> (&value);
+  cout << hex << p->a;	// 打印前两个字节 B112
+  ```
+
+  
+
+
+
+## 第16章 string类和标准模板库
+
+string库实际上时基于一个模板类的：
+
+```cpp
+template <class charT, class traits = char _traits<charT>, 
+	class Allocator = allocator<charT> >
+basic_string {...};        
+```
+
+模板basic_string有4个具体化，每个具体化都有一个typedef名称：
+
+```cpp
+typedef basic_string<char> string;
+typedef basic_string<wchar_t> wstring;
+typedef basic_string<char16_t> u16string;
+typedef basic_string<char32_t> u32string;
+```
+
+
+
+### 智能指针模板类
+
+```cpp
+void func(std::string &str) {
+    std::string *ps = new std::string(str);
+    ...
+    str = ps;
+    return;
+}
+```
+
+上面代码存在缺陷，每次调用时函数分配内存，但不收回，大致内存泄漏。当然你可以添加delete手动管理，但是仍然有一些情况，不能执行delete，例如中间发生了异常，后面的代码也不能执行。
+
+```cpp
+void func(std::string &str) {
+    std::string *ps = new std::string(str);
+    ...
+        
+    if (weird_thing()) {
+        throw exception();
+    }
+        
+    str = ps;
+    delete ps;
+    return;
+}
+```
+
+
+
+如果本地变量从栈内存中删除，它指向的内存也被释放，就可以解决这样的问题。普通的指针没有析构函数，所以引入智能指针概念。
+
+四种智能指针：
+
+- auto_ptr
+
+  auto_ptr现在几乎不再使用(使用g++编译提示deprecated)，如果存在多个指针指向同一个内存，这是不能接受的，这样会重复删除对象两次，从而造成程序的崩溃，auto_ptr并没有对这种行为做出判断。
+
+  ```cpp
+  auto_ptr<string> ps(new string("Hello"));
+  auto_ptr<string> vocation;
+  vacation = ps;
+  ```
+
+  如果避免这种情况呢？
+
+  - 定义赋值运算符，使之执行深复制，这样两个指针将指向不同的对象，其中一个对象是另一个对象的副本。
+
+  - 建立所有权概念，对于特定的对象，智能有一个智能指针可以拥有它，这样只有拥有对象的智能指针的构造函数会删除对象，然后让赋值操作转让所有权。这就是用于auto_ptr和unique_ptr的策略，但unique_ptr的策略更加严格。
+
+    ```cpp
+    auto_ptr<string> ps(new string("Hello"));
+    auto_ptr<string> vocation;
+    vacation = ps;
+    cout << *ps << endl; // Segmentation fault (core dumped)
+    cout << *vacation << endl;
+    ```
+
+  - 创建更高智能的指针，跟踪引用特定对象的智能指针数，这称为引用计数。当最后一个指针过期时，才调用delete，这就是shared_ptr采用的策略。
+
+    
+
+- unique_ptr
+
+  ```cpp
+  unique_ptr<string> demo(const char* s) {
+      unique_ptr<string> temp(new string(s));
+      return temp;
+  }
+  
+  unique_ptr<string> ps;
+  ps = demo("Hello");
+  ```
+
+  demo返回一个临时的unique_ptr，然后ps接管了这个对象，返回的临时对象被销毁。这种赋值是允许的。
+
+  程序试图将一个unique_ptr赋给另一个时，如果源unique_ptr是一个临时右值，编译器允许。如果源unique_ptr将存在一段时间，编译器将禁止这样做。
+
+  ```cpp
+  unique_ptr<string> pu1(new string("Hello"));
+  unique_ptr<string> pu2;
+  pu2 = pu1;	// not allowed
+  unique_ptr<string> pu3;
+  pu3 = unique_ptr<string>(new string ("World"));  // 临时对象
+  ```
+
+  可以使用move转为右值引用。
+
+  ```cpp
+  pu2 = std::move(pu1);
+  ```
+
+  
+
+  相对于auto_ptr，unique_ptr还有一个优点，它有一个可用于数组的变体。delete和new配对，将delete[]和new[]配对使用。模板auto_ptr使用delete而不是delete[]，因此只能与new一起使用。
+
+  ```cpp
+  std::unique_ptr<double[]> pad(new double[5]);
+  ```
+
+  使用new分配内存时，才能使用auto_ptr和shared_ptr，使用new[]分配内存时，不能使用他们。
+
+  不使用new分配内存时，不能使用auto_ptr或shared_ptr。
+
+  不使用new或new[]分配内存时，不能使用unique_ptr。
+
+- shared_ptr
+- weak_ptr
+
+所有智能指针类都有一个explicit构造函数，该构造函数将指针作为参数，不需要自动将指针转换为指针对象。
+
+
+
+### STL函数
+
+- for_each()
+
+  for_each()函数将被指向的函数应用于容器区间中的各个元素，被指向的函数不能修改容器元素的值。
+
+  ```cpp
+  for_each(books.begin(), books.end(), Show);
+  ```
+
+  
+
+- random_shuffle()
+
+  随机排列区间中的元素，该函数要求容器类允许随机访问，vector可以做到这一点。
+
+  ```cpp
+  random_shuffle(books.begin(), books.end());
+  ```
+
+  
+
+- sort()
+
+  ```cpp
+  vector<int> coolstuff;
+  sort(coolstuff.begin(), coolstuff.end());
+  ```
+
+  
+
+基于范围i的for循环时为用于STL而设计的，循环体使用指定的变量一次访问容器的每个元素。
+
+```cpp
+for (double x : prices)
+    cout << x << endl;
+```
+
+
+
+### 泛型编程
+
+面向对象编程关注的是编程的数据方面，泛型编程关注的是算法，他们的共同点是抽象和创建可重用的代码。
+
+
+
+为了区分++运算符的前缀和后缀版本，C++将operator++作为后缀，将operator++(int)作为前缀，参数不会使用，所以不用指定名称。
+
+```cpp
+iterator& operator++() // ++it
+{
+	pt = pt->p_next;
+    return *this;
+}
+
+iterator& operator++(int) // it++
+{
+	iterator tmp = *this;
+    pt = pt->p_next;
+    return tmp;
+}
+```
+
+
+
+迭代器的种类：
+
+- 输入迭代器
+- 输出迭代器
+- 正向迭代器
+- 双向迭代器
+- 随机迭代器

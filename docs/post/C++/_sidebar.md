@@ -9,3 +9,4 @@
 * [function&bind](post/C++/boost_function&bind)
 * [explicit](post/C++/explicit)
 * [stdcopy](post/C++/stdcopy)
+* [可变参数](post/C++/可变参数)
