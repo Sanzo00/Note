@@ -3849,3 +3849,242 @@ STL将算法库分为4组：
 - 修改式序列操作
 - 排序和相关操作
 - 通用数字运算
+
+
+
+## 第17章 输入、输出和文件
+
+### 流和缓冲区
+
+C++程序把输入和输出看作字节流，输入的时候从输入流中抽取字节，输出的时候将字节插入到输出流中。C++程序在使用输入输出时，并不需要知道流的来源和去向，因此管理输入包括两步：
+
+- 将流和输入去向的程序关联起来
+- 将流和文件连接起来
+
+从磁盘文件中读取字符需要大量的硬件活动，速度非常慢，缓冲的方法就是从磁盘中读取大量的信息，将这些信息存放在缓冲区中，然后每次从缓冲区中读取字节，输出也是同样的道理。
+
+```cpp
+// 刷新缓冲区
+cout << "hello" << flush;
+flush(cout);
+```
+
+![](img/iostream.jpg)
+
+streambuf类为缓冲区提供了内存，提供用于填充缓冲区、访问缓冲区、刷新缓冲区、管理缓冲区的方法。
+
+ios_base类表示流的特征，包括是否可读写，二进制、文本等。
+
+ios类基于ios_base，其中包括了一个指向streambuf对象的指针成员。
+
+ostream类是从ios类中派生出来的，提供输出的方法。
+
+istream类是从ios类中派生出来，提供输入的方法。
+
+iostream类是基于istream和ostream类的，因此继承了输入方法和输出方法。
+
+### C++11新特性
+
+#### 统一的初始化
+
+使用大括号进行初始化。
+
+```cpp
+int x = {5};
+double y = {2.3};
+int arr[3] = {1, 2, 3};
+int *arr = new int[4] {1, 2, 3, 4};
+```
+
+
+
+#### auto
+
+auto实现自动类型推断。
+
+```cpp
+auto a = 12;
+auto p = &a;
+double func(int a, int b);
+auto pf = func;
+```
+
+
+
+#### decltype
+
+decltype将变量的类型声明为表达式指定的类型。
+
+```cpp
+decltype(x) y;
+
+double x;
+int n;
+decltype(x*n) q; // q same type as x*n is double
+
+// 模板实例化时确定类型
+template<typename T, typename U>
+void ef(T t, U u) {
+    decltype(T*U) tu;
+}
+```
+
+
+
+#### 返回类型后置
+
+可以使用decltype指定模板函数的返回类型。
+
+```cpp
+double func(double, int);
+
+auto func(double, int) -> double;
+
+template<typename T, typename U>
+auto func(T t, U u) ->decltype(T*U)
+{
+    ...
+}
+```
+
+
+
+#### nullptr
+
+使用nullptr表示空指针，防止将nullptr赋值给整型变量。
+
+
+
+#### 智能指针
+
+使用unique_ptr、shared_ptr、weak_ptr管理内存。
+
+
+
+#### 移动语义和右值
+
+使用移动语义，减少不必要的拷贝。
+
+```cpp
+class Useless{
+public:
+    Useless();
+    Useless(Useless &&f);
+    Useless operator+(const Useless &f) const;
+    
+private:
+    int n;
+    char *pc;
+};
+// 移动构造
+Useless::Useless(Useless &&f) : n(f.n)
+{
+    pc = f.pc;
+    f.pc = nullptr;
+    f.n = 0;
+}
+
+Useless four(one + three);
+```
+
+
+
+```cpp
+// 普通赋值
+Useless& Useless::operator=(const Useless &f)
+{
+    if (this == &f) return *this;
+    delete [] pc;
+    n = f.n;
+    pc = new char[n];
+    for (int i = 0; i < n; ++i)
+        pc[i] = f.pc[i];
+    return *this;
+}
+
+// 移动赋值
+Useless& Useless::operator=(Useless &&f)
+{
+    if (this == &f) return *this;
+    delete[] pc;
+    pc = f.pc;
+    n = f.n;
+    pc = nullptr;
+    n = 0;
+    return *this;
+}
+```
+
+
+
+如果想对左值进行右值操作，除了可以使用static_cast<>将对象类型强制转换为Useless&&，亦可以使用std::move进行。
+
+
+
+#### 默认的方法和禁用的方法
+
+如果提供析构函数、复制构造、赋值运算符，编译器不会自动提供移动构造和移动赋值运算符。
+
+如果提供移动构造和移动赋值运算符，编译器不会自动提供复制构造和赋值运算符。
+
+使用default显示声明这些方法的默认版本。
+
+```cpp
+class Someclass
+{
+public:
+    Someclass(Someclass &&);
+    Someclass() = default;
+    Someclass(const Someclass &) = default;
+    Someclass & operator=(const Someclass &) = default;
+};
+```
+
+
+
+使用delete禁止编译器使用特定的方法。
+
+```cpp
+class Someclass
+{
+public:
+    Someclass() = default;
+    Someclass(const Useless &) = delete;
+    Someclass& operator=(const Someclass &) = delete;
+    
+	Someclass(Someclass &&) = default;
+};
+
+Someclass one;
+Someclass two;
+Someclass three(one); 		// not allow;
+Someclass four(ont + two); 	// allowed;
+```
+
+
+
+#### lambda
+
+lambda表达式的好处：距离、简洁、效率、功能。
+
+[]可以指定访问的变量：
+
+- [z]按值访问变量
+- [&z]按引用访问动态变量
+- [=]按值访问所有动态变量
+- [&]按引用访问所有动态变量
+- [&, z]按值访问z，按引用访问其他变量
+
+```cpp
+auto f3 = [](int x) {
+    return x % 3 == 0;
+};
+
+int cnt = count_if(num.begin(), num.end(), f3);
+```
+
+
+
+
+
+
