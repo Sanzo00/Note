@@ -5,5 +5,7 @@
 * [静态库和动态库](post/Linux系统编程/静态库和动态库)
 * [gdb调试](post/Linux系统编程/gdb调试)
 * [makefile](post/Linux系统编程/makefile)
+* [man使用技巧](post/Linux系统编程/man使用技巧)
 * [标准库函数与系统函数](post/Linux系统编程/标准库函数与系统函数)
+* [文件操作](post/Linux系统编程/文件操作)
 * [静态库链接问题](post/Linux系统编程/静态库链接问题)
