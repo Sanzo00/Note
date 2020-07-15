@@ -147,3 +147,10 @@ l main.c:main
   ```bash
   undisplay 1 # 对应变量的编号
   ```
+
+## 多进程调试
+
+在fork之前设置mode。
+
+- set follow-fork-mode child，跟踪子进程
+- set follow-fork-mode parent 跟踪父进程
