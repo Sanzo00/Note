@@ -847,4 +847,140 @@ int main(void)
 
 
 
-## 5. 本地套接字
+## 5. 本地套接字（domain）
+
+IPC四种通信方式
+
+1. pipe fifo	实现简单
+2. mmap			进程间非血缘关系
+3. signal		开销小
+4. domain		稳定性好
+
+```c
+size_t offsetof(type, member);
+
+((int) &( (type*)0 )->member)
+    
+struct sockaddr_un {
+    __kernel_sa_family_t sun_family; /* AF_UNIX */
+    char sun_path[UNIX_PATH_MAX];	/* pathname */
+};
+```
+
+
+
+```c
+// server.c
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <string.h>
+#include <ctype.h>
+#include <strings.h>
+#include <arpa/inet.h>
+#include <sys/un.h>
+#include <stddef.h>
+
+#include "wrap.h"
+
+#define SERV_ADDR "serv.socket"
+
+int main() {
+	int lfd, cfd, len, size, i;
+	struct sockaddr_un servaddr, cliaddr;
+	char buf[BUFSIZ];
+	
+	lfd = Socket(AF_UNIX, SOCK_STREAM, 0);
+	bzero(&servaddr, sizeof(servaddr));
+	servaddr.sun_family = AF_UNIX;
+	strcpy(servaddr.sun_path, SERV_ADDR);
+	
+    // 结构体实际长度
+	len = offsetof(struct sockaddr_un, sun_path) + strlen(servaddr.sun_path);
+	
+	// 确保Bind之前不存在文件, Bind会新建文件
+	unlink(SERV_ADDR);
+	// 参数3不是sizeof(servaddr)
+	Bind(lfd, (struct sockaddr *)&servaddr, len);
+	
+	Listen(lfd, 20);
+
+	printf("Accept ...\n");
+	while (1) {
+		len = sizeof(cliaddr);
+        // len传入传出参数
+		cfd = Accept(lfd, (struct sockaddr *)&cliaddr, (socklen_t *)&len);
+		
+		// 获取客户端socket文件名的长度
+		len -= offsetof(struct sockaddr_un, sun_path);
+		cliaddr.sun_path[len] = '\0';
+
+		printf("client bind filename %s\n", cliaddr.sun_path);
+
+		while ((size = read(cfd, buf, sizeof(buf))) > 0) {
+			for (i = 0; i < size; ++i) {
+				buf[i] = toupper(buf[i]);
+			}
+			write(cfd, buf, size);
+		}
+		close(cfd);
+	}
+	return 0;
+}
+```
+
+```c
+//client.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <arpa/inet.h>
+#include <sys/un.h>
+#include <stddef.h>
+#include "wrap.h"
+
+#define SERV_ADDR "serv.socket"
+#define CLIE_ADDR "clie.socket"
+
+int main () {
+	int cfd, len;
+	struct sockaddr_un servaddr, cliaddr;
+	char buf[4096];
+
+	cfd = Socket(AF_UNIX, SOCK_STREAM, 0);
+
+	bzero(&cliaddr, sizeof(cliaddr));
+	cliaddr.sun_family = AF_UNIX;
+	strcpy(cliaddr.sun_path, CLIE_ADDR);
+
+	// 地址结构的有效长度
+	len = offsetof(struct sockaddr_un, sun_path) + strlen(cliaddr.sun_path);
+
+	unlink(CLIE_ADDR);
+	// 客户端也要bind, 不能依赖自动绑定
+	Bind(cfd, (struct sockaddr *)&cliaddr, len);
+
+	bzero(&servaddr, sizeof(servaddr));
+	servaddr.sun_family = AF_UNIX;
+	strcpy(servaddr.sun_path, SERV_ADDR);
+
+	// 服务端地址结构的长度
+	len = offsetof(struct sockaddr_un, sun_path) + strlen(servaddr.sun_path);
+
+	Connect(cfd, (struct sockaddr *)&servaddr, len);
+
+	while(fgets(buf, sizeof(buf), stdin) != NULL) {
+		write(cfd, buf, strlen(buf));
+		len = read(cfd, buf, sizeof(buf));
+		write(STDOUT_FILENO, buf, len);
+	}
+	close(cfd);
+
+	return 0;
+}
+```

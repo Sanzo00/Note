@@ -5,6 +5,7 @@
 * [数据库](post/学习笔记/数据库)
 * [C++基础问题](post/学习笔记/C++基础问题)
 * [HTTP](post/学习笔记/HTTP)
+* [其他](post/学习笔记/其他)
 * [项目相关](post/学习笔记/项目相关)
 * [git 笔记](post/学习笔记/git笔记)
 * [python 笔记](post/学习笔记/python笔记)
