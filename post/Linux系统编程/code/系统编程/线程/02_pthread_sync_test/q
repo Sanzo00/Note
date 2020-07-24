@@ -1,0 +1,179 @@
+SEM_WAIT(3)                                   Linux Programmer's Manual                                   SEM_WAIT(3)
+
+NNAAMMEE
+       sem_wait, sem_timedwait, sem_trywait - lock a semaphore
+
+SSYYNNOOPPSSIISS
+       ##iinncclluuddee <<sseemmaapphhoorree..hh>>
+
+       iinntt sseemm__wwaaiitt((sseemm__tt **_s_e_m));;
+
+       iinntt sseemm__ttrryywwaaiitt((sseemm__tt **_s_e_m));;
+
+       iinntt sseemm__ttiimmeeddwwaaiitt((sseemm__tt **_s_e_m,, ccoonnsstt ssttrruucctt ttiimmeessppeecc **_a_b_s___t_i_m_e_o_u_t));;
+
+       Link with _-_p_t_h_r_e_a_d.
+
+   Feature Test Macro Requirements for glibc (see ffeeaattuurree__tteesstt__mmaaccrrooss(7)):
+
+       sseemm__ttiimmeeddwwaaiitt(): _POSIX_C_SOURCE >= 200112L
+
+DDEESSCCRRIIPPTTIIOONN
+       sseemm__wwaaiitt() decrements (locks) the semaphore pointed to by _s_e_m.  If the semaphore's value is greater than zero,
+       then the decrement proceeds, and the function returns, immediately.  If the semaphore currently has the  value
+       zero,  then  the  call  blocks  until either it becomes possible to perform the decrement (i.e., the semaphore
+       value rises above zero), or a signal handler interrupts the call.
+
+       sseemm__ttrryywwaaiitt() is the same as sseemm__wwaaiitt(), except that if the decrement cannot be  immediately  performed,  then
+       call returns an error (_e_r_r_n_o set to EEAAGGAAIINN) instead of blocking.
+
+       sseemm__ttiimmeeddwwaaiitt()  is  the  same  as sseemm__wwaaiitt(), except that _a_b_s___t_i_m_e_o_u_t specifies a limit on the amount of time
+       that the call should block if the decrement cannot be immediately performed.  The _a_b_s___t_i_m_e_o_u_t argument  points
+       to  a  structure  that  specifies  an  absolute timeout in seconds and nanoseconds since the Epoch, 1970-01-01
+       00:00:00 +0000 (UTC).  This structure is defined as follows:
+
+           struct timespec {
+               time_t tv_sec;      /* Seconds */
+               long   tv_nsec;     /* Nanoseconds [0 .. 999999999] */
+           };
+
+       If the timeout has already expired by the time of the call, and the semaphore could not be locked immediately,
+       then sseemm__ttiimmeeddwwaaiitt() fails with a timeout error (_e_r_r_n_o set to EETTIIMMEEDDOOUUTT).
+
+       If  the operation can be performed immediately, then sseemm__ttiimmeeddwwaaiitt() never fails with a timeout error, regard‐
+       less of the value of _a_b_s___t_i_m_e_o_u_t.  Furthermore, the validity of _a_b_s___t_i_m_e_o_u_t is not checked in this case.
+
+RREETTUURRNN VVAALLUUEE
+       All of these functions return 0 on success; on error, the value of the semaphore is left unchanged, -1 is  re‐
+       turned, and _e_r_r_n_o is set to indicate the error.
+
+EERRRROORRSS
+       EEIINNTTRR  The call was interrupted by a signal handler; see ssiiggnnaall(7).
+
+       EEIINNVVAALL _s_e_m is not a valid semaphore.
+
+       The following additional error can occur for sseemm__ttrryywwaaiitt():
+
+       EEAAGGAAIINN The  operation  could  not  be  performed without blocking (i.e., the semaphore currently has the value
+              zero).
+
+       The following additional errors can occur for sseemm__ttiimmeeddwwaaiitt():
+
+       EEIINNVVAALL The value of _a_b_s___t_i_m_e_o_u_t_._t_v___n_s_e_c_s is less than 0, or greater than or equal to 1000 million.
+
+       EETTIIMMEEDDOOUUTT
+              The call timed out before the semaphore could be locked.
+
+AATTTTRRIIBBUUTTEESS
+       For an explanation of the terms used in this section, see aattttrriibbuutteess(7).
+
+       ┌───────────────────────────┬───────────────┬─────────┐
+       │IInntteerrffaaccee                  │ AAttttrriibbuuttee     │ VVaalluuee   │
+       ├───────────────────────────┼───────────────┼─────────┤
+       │sseemm__wwaaiitt(), sseemm__ttrryywwaaiitt(), │ Thread safety │ MT-Safe │
+       │sseemm__ttiimmeeddwwaaiitt()            │               │         │
+       └───────────────────────────┴───────────────┴─────────┘
+CCOONNFFOORRMMIINNGG TTOO
+       POSIX.1-2001, POSIX.1-2008.
+
+EEXXAAMMPPLLEE
+       The (somewhat trivial) program shown below operates on an unnamed semaphore.  The program expects two command-
+       line arguments.  The first argument specifies a seconds value that is used to set an alarm timer to generate a
+       SSIIGGAALLRRMM  signal.   This  handler  performs a sseemm__ppoosstt(3) to increment the semaphore that is being waited on in
+       _m_a_i_n_(_) using sseemm__ttiimmeeddwwaaiitt().  The second command-line argument specifies the length of the timeout,  in  sec‐
+       onds, for sseemm__ttiimmeeddwwaaiitt().  The following shows what happens on two different runs of the program:
+
+           $ ..//aa..oouutt 22 33
+           About to call sem_timedwait()
+           sem_post() from handler
+           sem_timedwait() succeeded
+           $ ..//aa..oouutt 22 11
+           About to call sem_timedwait()
+           sem_timedwait() timed out
+
+   PPrrooggrraamm ssoouurrccee
+
+       #include <unistd.h>
+       #include <stdio.h>
+       #include <stdlib.h>
+       #include <semaphore.h>
+       #include <time.h>
+       #include <assert.h>
+       #include <errno.h>
+       #include <signal.h>
+
+       sem_t sem;
+
+       #define handle_error(msg) \
+           do { perror(msg); exit(EXIT_FAILURE); } while (0)
+
+       static void
+       handler(int sig)
+       {
+           write(STDOUT_FILENO, "sem_post() from handler\n", 24);
+           if (sem_post(&sem) == -1) {
+               write(STDERR_FILENO, "sem_post() failed\n", 18);
+               _exit(EXIT_FAILURE);
+           }
+       }
+
+       int
+       main(int argc, char *argv[])
+       {
+           struct sigaction sa;
+           struct timespec ts;
+           int s;
+
+           if (argc != 3) {
+               fprintf(stderr, "Usage: %s <alarm-secs> <wait-secs>\n",
+                       argv[0]);
+               exit(EXIT_FAILURE);
+           }
+
+           if (sem_init(&sem, 0, 0) == -1)
+               handle_error("sem_init");
+
+           /* Establish SIGALRM handler; set alarm timer using argv[1] */
+
+           sa.sa_handler = handler;
+           sigemptyset(&sa.sa_mask);
+           sa.sa_flags = 0;
+           if (sigaction(SIGALRM, &sa, NULL) == -1)
+               handle_error("sigaction");
+
+           alarm(atoi(argv[1]));
+
+           /* Calculate relative interval as current time plus
+              number of seconds given argv[2] */
+
+           if (clock_gettime(CLOCK_REALTIME, &ts) == -1)
+               handle_error("clock_gettime");
+
+           ts.tv_sec += atoi(argv[2]);
+
+           printf("main() about to call sem_timedwait()\n");
+           while ((s = sem_timedwait(&sem, &ts)) == -1 && errno == EINTR)
+               continue;       /* Restart if interrupted by handler */
+
+           /* Check what happened */
+
+           if (s == -1) {
+               if (errno == ETIMEDOUT)
+                   printf("sem_timedwait() timed out\n");
+               else
+                   perror("sem_timedwait");
+           } else
+               printf("sem_timedwait() succeeded\n");
+
+           exit((s == 0) ? EXIT_SUCCESS : EXIT_FAILURE);
+       }
+
+SSEEEE AALLSSOO
+       cclloocckk__ggeettttiimmee(2), sseemm__ggeettvvaalluuee(3), sseemm__ppoosstt(3), sseemm__oovveerrvviieeww(7), ttiimmee(7)
+
+CCOOLLOOPPHHOONN
+       This  page  is part of release 4.16 of the Linux _m_a_n_-_p_a_g_e_s project.  A description of the project, information
+       about   reporting   bugs,   and    the    latest    version    of    this    page,    can    be    found    at
+       https://www.kernel.org/doc/man-pages/.
+
+Linux                                                 2017-09-15                                          SEM_WAIT(3)

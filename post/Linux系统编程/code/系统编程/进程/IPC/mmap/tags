@@ -1,0 +1,28 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CC	file_IPC/makefile	/^CC = gcc$/;"	m
+CC	makefile	/^CC = gcc$/;"	m
+CFLAGS	file_IPC/makefile	/^CFLAGS = -Wall -g -lpthread$/;"	m
+CFLAGS	makefile	/^CFLAGS = -Wall -g$/;"	m
+N	file_IPC/test1.c	10;"	d	file:
+main	file_IPC/test1.c	/^int main(void)$/;"	f	signature:(void)
+main	file_IPC/test2.c	/^int main(void)$/;"	f	signature:(void)
+main	fork_map_anon.c	/^int main(void)$/;"	f	signature:(void)
+main	fork_map_anon_linux.c	/^int main(void)$/;"	f	signature:(void)
+main	fork_mmap.c	/^int main(void)$/;"	f	signature:(void)
+main	fork_share_fd.c	/^int main(void)$/;"	f	signature:(void)
+main	mmap.c	/^int main(void)$/;"	f	signature:(void)
+main	mmap_test.c	/^int main(void)$/;"	f	signature:(void)
+main	smalloc.c	/^int main(void)$/;"	f	signature:(void)
+sfree	smalloc.c	/^void sfree(void *ptr, size_t size)$/;"	f	signature:(void *ptr, size_t size)
+smalloc	smalloc.c	/^void *smalloc(size_t size)$/;"	f	signature:(size_t size)
+src	file_IPC/makefile	/^src = $(wildcard *.c)$/;"	m
+src	makefile	/^src = $(wildcard *.c)$/;"	m
+sys_err	mmap.c	/^void sys_err(char *str)$/;"	f	signature:(char *str)
+targets	file_IPC/makefile	/^targets = $(patsubst %.c, %, $(src))$/;"	m
+targets	makefile	/^targets = $(patsubst %.c, %, $(src))$/;"	m
+var	fork_mmap.c	/^int var = 100;$/;"	v
