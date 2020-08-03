@@ -1,0 +1,12 @@
+CREATE TABLE `tbl_user`(
+`id` INT(11) NOT NULL AUTO_INCREMENT,
+`NAME` VARCHAR(20) DEFAULT NULL,
+`age` INT(11) DEFAULT NULL,
+email VARCHAR(20) DEFAULT NULL,
+PRIMARY KEY (`id`)
+) ENGINE =INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+INSERT INTO tbl_user(NAME,age,email) VALUES('1aa1',21,'b@163.com');
+INSERT INTO tbl_user(NAME,age,email) VALUES('2aa2',222,'a@163.com');
+INSERT INTO tbl_user(NAME,age,email) VALUES('3aa3',265,'c@163.com');
+INSERT INTO tbl_user(NAME,age,email) VALUES('4aa4',21,'d@163.com');

@@ -1,6 +1,6 @@
 window.$docsify = {
   name: 'Sanzo',
-  repo: 'https://github.com/Sanzona',
+  repo: 'https://github.com/Sanzona/Note',
   coverpage: true, // 首页
   loadNavbar: false, // 导航栏
   loadSidebar: true, // 侧边栏
@@ -46,5 +46,5 @@ window.$docsify = {
     float: "left",
     isExpected: true, // 时间
   },
-  
+
 };

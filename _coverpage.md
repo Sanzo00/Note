@@ -4,5 +4,5 @@
 
 - 文章管理
 
-[GitHub](<https://github.com/Sanzona/Note>)
+[GitHub](<https://github.com/Sanzona>)
 [开始阅读](README.md)

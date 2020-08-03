@@ -1,6 +1,5 @@
 * [返回](README.md)
-* [系统编程](post/Linux系统编程/系统编程)
-* [虚拟地址空间](post/Linux系统编程/虚拟地址空间)
+* [基本概念](post/Linux系统编程/基本概念)
 * [gcc编译过程](post/Linux系统编程/gcc编译过程)
 * [静态库和动态库](post/Linux系统编程/静态库和动态库)
 * [gdb调试](post/Linux系统编程/gdb调试)

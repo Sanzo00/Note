@@ -167,7 +167,7 @@ void run() {
 	A* p = p1.get();	// get返回托管的指针, p指向A(1)
 	cout << p->i << endl; // 输出1
 
-	p1.reset(new A(2));	// p1和p2托管新的指针
+	p1.reset(new A(2));	// 托管新的指针
 	p2.reset(new A(3));
 	p3.reset(new A(4));
 	// 无人托管A(1), A(1)自动析构
@@ -331,7 +331,7 @@ mutex分为递归和非递归，也称为可重入和非可重入。区别在于
 
 在同一线程中对non-recursive mutex重复加锁会立刻导致死锁，可以帮助在编码阶段发现问题。
 
-recursive mutex可能会隐藏一些问题，当你以为拿到一个锁就能修改对象，没想到外层代码已经拿到了锁，增在修改或读取同一个对象
+recursive mutex可能会隐藏一些问题，当你以为拿到一个锁就能修改对象，没想到外层代码已经拿到了锁，正在修改或读取同一个对象
 
 ```c++
 MutexLock mutex;
@@ -356,7 +356,7 @@ void traverse() { // 加锁访问对象
 解决上面问题有两种做法：
 
 - 把修改推迟，记录循环中试图添加修改的元素，等到循环结束再调用post
-- 如果一个函数可能在加锁的情况被调用，也可能在为假锁的情况被调用，可以把函数拆成两部分
+- 如果一个函数可能在加锁的情况被调用，可以把函数拆成两部分
   - 跟原函数同名，函数加锁，调用第二个函数
   - 函数名加后缀WithLockHold，不加锁，把原来的函数体搬过来
 
@@ -373,7 +373,7 @@ void postWithLockHold(const Foo& f) {
 如上也会造成两个问题：
 
 1. 误用加锁版本，死锁
-2. 无用不加锁版本，数据损坏
+2. 误用不加锁版本，数据损坏
 
 对于(1)可以通过调用栈进行排错，对于(2)可以在调用的时候判断锁是否时调用线程加的 (isLockedByThisThread)
 
@@ -459,7 +459,7 @@ void postWithLockHold(const Foo& f) {
   1. 线程1加读锁，进行读操作
 
   2. 线程2加写锁， 等待线程1，阻塞后面的读操作
-  3. 线程1内部间接调用对操作，因为reader lock的可重入，线程1的读操作阻塞
+  3. 线程1内部间接调用读操作，因为reader lock的可重入，线程1的读操作阻塞
   4. 发生死锁
 
 
@@ -546,13 +546,13 @@ void postWithLockHold(const Foo& f) {
   - 互斥锁（mutex）
   - 条件变量（condition variable）
 
-  - 对写锁（reader-writer lock）
+  - 读写锁（reader-writer lock）
 
   - 文件锁（record locking）
 
   - 信号量（semaphore）
 
-- TCPport有进程独占，操作系统会自动回收， listening port和已建立连接的TCPsocket都是文件描述符，当进程结束会关闭所有的文件描述符。程序意外退出不会留下垃圾，程序重启后比较容易恢复，不需要重启系统。port的独占可以防止程序重复运行
+- TCP port有进程独占，操作系统会自动回收， listening port和已建立连接的TCPsocket都是文件描述符，当进程结束会关闭所有的文件描述符。程序意外退出不会留下垃圾，程序重启后比较容易恢复，不需要重启系统。port的独占可以防止程序重复运行
 - TCP长连接的好处：
   - 容易定位分布式系统中的服务之间的依赖关系
   - 通过接受和发送队列的长度比较容易定位网络或程序故障，正常情况netstat打印的Recv-Q和Send-Q都应该接近0，或在0附近摆动。Recv-Q保持不变或持续增加，通常意味着服务进程的处理速度变慢，可能发生阻塞或死锁。如果Send-Q保持不变或持续增长，有可能对方服务器太忙、来不及处理，也有可能网络中某个路由器或交换机故障造成丢包，甚至对方掉线
@@ -561,7 +561,7 @@ void postWithLockHold(const Foo& f) {
 
 ## 第四章 C++多线程系统编程精要
 
-- Pthreads只保证统一进程之内，同一时刻的各个线程的id不同，不能保证同一进程先后多个进程具有不同的id，更不要说一台机器上多个进程之间的id唯一性，pthread_t不适合用做程序对线程的标识符。
+- pthreads只保证同一进程之内，同一时刻的各个线程的id不同，不能保证同一进程先后多个进程具有不同的id，更不要说一台机器上多个进程之间的id唯一性，pthread_t不适合用做程序对线程的标识符。
 
 - 推荐使用  **gettid()** 的返回值作为线程id
 
@@ -595,7 +595,7 @@ void postWithLockHold(const Foo& f) {
 
 ### 4.3 exit在C++中不是线程安全的
 
-exit()函数在C++中的作用除了终止进程，还会析构全局对象和已经构造完的函数静态对象。这回潜在的死锁可能
+exit()函数在C++中的作用除了终止进程，还会析构全局对象和已经构造完的函数静态对象。存在潜在的死锁可能
 
 ```c
 void someFunctionMayCallExit() {
@@ -629,11 +629,11 @@ int main() {
 
 - 多线程与IO可能存在的问题：
 
-  - 线程正在阻塞read()某个socket，另一个线程close()这个socket
+  - 线程正在阻塞read某个socket，另一个线程close这个socket
 
-  - 线程正在阻塞的accept()某个listening socket，另一个线程close()这个socket
+  - 线程正在阻塞的accept某个listening socket，另一个线程close()这个socket
 
-  - 线程准备read()某个socket，另一个线程close()socket，第三个线程又open()了相同的fd的socket。POSIX标准要求每次新打开的文件使用当前最小的可用的文件描述符
+  - 线程准备read某个socket，另一个线程close socket，第三个线程又open了相同的fd的socket。POSIX标准要求每次新打开的文件使用当前最小的可用的文件描述符
 
 - 为什么服务端程序不应该关闭标准输出和标准出错？
 
@@ -644,7 +644,7 @@ int main() {
 ### 4.5 多线程与fork
 
 
-  fork()之后，子进程继承了父进程的几乎全部状态，有些少数例外。子进程会继承地址空间和文件描述符。
+  fork之后，子进程继承了父进程的几乎全部状态，有些少数例外。子进程会继承地址空间和文件描述符。
 
   子进程不会继承的有：
 
@@ -703,7 +703,7 @@ fork()之后，子进程不能调用：
 
 - 分布式系统中的服务进程而言，日志的目的地只有一个：本地文件。往网络写日志消息时不靠谱的，因为诊断日志功能之一正是诊断网络故障，如果日志消息也是通过网络发到另一台机器就一损俱损...
 
-- 本地文件作为destination，日志文件的滚动时必须的，可以简化日志的归档实现
+- 本地文件作为destination，日志文件的滚动是必须的，可以简化日志的归档实现
 
   - 文件大小（例如写满10GB就换下一个文件）
   - 时间（例如每天零点新建一个日志文件，不论上一个文件是否写满）
@@ -726,7 +726,7 @@ fork()之后，子进程不能调用：
   - 在多线程中不造成争用
 - muduo日志库的实现的优化措施：
   - 时间戳字符串中的日期和时间两部分是缓冲的，一秒之内的多条日志只需重新格式化微妙部分
-  - 日志消息前4个字节时定长的，避免在运行期间求strlen，编译器认识memcpy()函数，对于定长的内存复制，会在编译期把它inline展开为高效的目标代码
+  - 日志消息前4个字节是定长的，避免在运行期间求strlen，编译器认识memcpy()函数，对于定长的内存复制，会在编译期把它inline展开为高效的目标代码
   - 线程id时预先格式化为字符串，输出只需要拷贝几个字节
   - 每条日志消息的源文件名部分采用了编译期计算来获得basename，避免运行期strrchr()开销
 
@@ -746,13 +746,13 @@ fork()之后，子进程不能调用：
 
   - 前端写日志频率不高，后端3秒超时写入文件
 
-    ![](./img/5.3-buf1.png)
+    ![](img/muduo/5.3-buf1.png)
 
     在第2.9s，curr使用了80%，第3秒后端线程醒过来，将curr送到buffers，把new1移动到curr，随后交换buffers和buffersToWrite，当文件写完之后，把new1重新填上，等待下次cond.waitForSeconds()返回
 
   - 3秒超时之前已经写满burr buffer，唤醒后端开始写入文件
 
-    ![](./img/5.3-buf2.png)
+    ![](./img/muduo/5.3-buf2.png)
 
     在第1.5s，curr使用了80%，在1.8scurr写满送到buffers，将next替换到curr buff，唤醒后端线程。后端将curr加到buffers中，在把new1移动到curr，交换buffers和buffersToWrite，new2替换next。完成之后重新填充new1和new2
 
@@ -760,7 +760,7 @@ fork()之后，子进程不能调用：
 
   - 前端短时间密集写入日志消息，用完了两个缓冲需要新分配缓冲
 
-    ![](./img/5.3-buf3.png)
+    ![](./img/muduo/5.3-buf3.png)
 
     在第1.8s，A已经写满，B接近满，已经notify()后端线程，但是后端线程由于一些原因没有立即响应，到1.9s线程B写满，前端线程新创建缓冲E。在1.8s+后端线程获得控制权，将C，D移动给前端，把当前的curr放到buffers，将A、B、E写到文件。使用A、B填充new1/2释放缓冲E
 
@@ -768,7 +768,7 @@ fork()之后，子进程不能调用：
 
   - 文件写入速度较慢，导致前端耗尽了两个缓冲，并分配了新缓冲
 
-    ![](./img/5.3-buf4.png)
+    ![](./img/muduo/5.3-buf4.png)
 
     1.8s前和场景2相同，后端线程写入过慢，导致前端已经写满两个缓冲并且分配了一个新的缓冲，这期间notify已经丢失。当后端完成之后，发现buffers不为空，立刻进入下个循环
 
@@ -899,7 +899,7 @@ EventLoop增加了quit()，通过scoped_ptr间接持有Poller。
 
 EventLoop::loop()调用Poller::poll()获得当前活动事件的Channel列表，依次调用每个Channel的handleEvent()函数。
 
-![](./img/8.1.png)
+![](./img/muduo/8.1.png)
 
 
 
@@ -1079,7 +1079,7 @@ int main()
 1. 连接建立：包括服务端被动（accept）和客户端主动发起连接（connect）。TCP连接一旦建立，客户端和服务端就是平等的，各自收发数据
 2. 连接断开：包括主动断开（close，shutdown）和被动断开（read返回0）
 3. 消息到达：文件描述符可读，这是最重要的一个事件，对它的处理方式决定了网络编程风格（阻塞和非阻塞，如何处理分包，应用层的缓冲如何设计等）
-4. 消息发送完毕：这算半个事件，对于低流量的服务，可以不用关心这个事件。发送完毕时指数据写入操作系统缓冲区（内核缓冲区），由TCP协议负责数据的发送和重传，不代表对方已经收到数据
+4. 消息发送完毕：这算半个事件，对于低流量的服务，可以不用关心这个事件。发送完毕是指数据写入操作系统缓冲区（内核缓冲区），由TCP协议负责数据的发送和重传，不代表对方已经收到数据
 
 
 
@@ -1176,7 +1176,7 @@ copy(b.begin(), b.end(), a.begin());
 
 - 小端字节序：数据的高位在地址的高位，从右向左
 
-  ![](./img/endian.png)
+  ![](./img/muduo/endian.png)
 
 
 
@@ -1231,3 +1231,478 @@ v[0] = 1;
 v[1] = 2;
 iter_swap(v.begin(), v.begin()+1);
 ```
+
+
+
+## base库
+
+### copyable、noncopyable
+
+删除默认的拷贝构造和赋值来实现类的不可拷贝的属性。
+
+```c
+noncopyable(const noncopyable&) = delete;
+void operator=(const noncopyable&) = delete;
+```
+
+
+
+### Atomic
+
+Atomic是原子操作类，它是一个模板类，使用GCC提供的加减和逻辑原子操作来实现。
+
+```c
+private:
+	volatile T value_;
+
+// 原子比较和交换，先判断*ptr是否和oldval相等, 如果相等将值设置为newval
+__sync_val_compare_add_swap(type *ptr, type oldval, newval);
+
+// value_ += x;
+__sync_fetch_and_add(&value_, x);
+
+// value_ = newValue;
+__sync_lock_test_and_set(&value_, newValue);
+```
+
+通过以上代码，封装自增、自减和赋值等原子操作。
+
+Atomic的类模板定义在`namespace detail`中，在`namespace muduo`使用模板创建了两个类。
+
+```c
+typedef detail::AtomicIntegerT<int32_t> AtomicInt32;
+typedef detail::AtomicIntegerT<int64_t> AtomicInt64;
+```
+
+
+
+### Timestamp
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/Timestamp.cpp)
+
+Timestamp使用微妙来计算时间，提供`toString`和格式化的接口，可以获取当前时间，返回一个对应的Timestamp对象，也可以返回一个
+
+```c
+static Timestamp now(); // 返回当前时间
+static Timestamp invalid(); // 返回一个空对象
+string toString() const; // 返回（秒.微妙）格式
+string toFormattedString(bool showMicroseconds = true) const; // 格式化时间，年月日 时:分:秒.微妙
+```
+
+Timestamp继承`boost::less_than_comparable`，只需提供`<`的实现，自动实现`>`、`<=`、`>=`，继承`boost::equality_comparable`只需提供`==`自动实现`!=`。
+
+```c
+class Timestamp :  
+	public boost::equality_comparable<Timestamp>,
+	public boost::less_than_comparable<Timestamp>        
+```
+
+ 跨平台，`int64_t`在32位系统是`long long int(%lld)`, 在64位系统是`long int(%ld)`
+
+```c
+printf("%" PRId64 "\n", value);
+```
+
+
+
+### Date
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/Date.cpp)
+
+使用`julianDayNumber`来计算年月日。距离公元前4713年1月1日的天数。和Timestamp类似，提供一些常用的接口。
+
+```c
+YearMonthDay getYearMonthDay(int julianDayNumber); // 获取对应的年月日
+int getJulianDayNumber(int year, int month, int day)// 获取julian day
+string Date::toIsoString(); // 格式化（年-月-日）
+```
+
+### Mutex
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/Mutex.h)
+
+Mutex封装锁，提供加锁解锁等操作。
+
+```c
+// 属性
+pthread_mutex_t mutex_; // 定义一把锁
+pid_t holder_;			// 记录加锁的线程ID
+```
+
+Mutex中一共有3个类：`MutexLock`、`UnassignGuard`、`MutexLockGuard`。
+
+`MutexLock`使用`pthread_mutex_`函数封装初始化锁、加锁、解锁、销毁锁的操作。
+
+`UnassignGuard`是`MutexLock`的内部类，他的特点是在构造函数中清除锁的持有者ID，析构的时候设置锁的持有者ID，这是供``Condition`的`wait()`使用。
+
+`MutexLockGuard`采用RAII，构造的时候申请资源`lock`，析构的时候释放资源`unlock`，解放双手。
+
+
+
+### Condition
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/Condition.h)
+
+`Condition`实现条件变量功能，使用`pthread_cond_`函数来封装`wait()`，`notify()`，`notifyAll`功能。也是采用RAII的机制，在构造中初始化条件变量`pcond_`，在析构函数中销毁条件变量。
+
+`Condition`是`MutexLock`的友元，可以使用`MutexLock`的内部类`UnassignGuard`来实现`wait()`的功能。
+
+`pthread_cond_wait`内部的机制时在线程进入阻塞前释放资源，当函数返回，重新持有锁。
+
+```c
+void wait()
+{
+    MutexLock::UnassignGuard ug(mutex_);
+    int ret = pthread_cond_wait(&pcond_, mutex_.getPthreadMutex()); // 将线程添加到条件变量
+    assert(ret == 0);
+}
+```
+
+
+
+### CountDownLatch
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/CountDownLatch.cpp)
+
+倒计时类，将MutexLock和Condition封装在一起。
+
+```c
+mutable	MutexLock mutex_;
+Condition 	condition_;
+int 		count_;
+
+void wait(); // 调用Condition等待
+void countDown(); // 技术减1
+int getCount(); // 获取当前的计数
+```
+
+
+
+### Thread
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/Thread.cpp)
+
+线程类，在namespace muduo中定义了ThreadNameInitializer类负责主线程的初始化操作，指定如果fork之后再之进程中执行after函数。
+
+```c
+ThreadNameInitializer()
+{
+    muduo::CurrentThread::t_threadName = "main";
+    CurrentThread::tid();
+    pthread_atfork(NULL, NULL, &afterFork);
+}
+```
+
+设置ThreadData的结构体，保存线程的回调函数，名字，id，计数等信息。在ThreadData中定义了runInThread函数，用来执行回调函数。
+
+线程执行的流程是：
+
+- Thread构造，设置回调函数func_，默认CountDownLatch为1。
+
+- pthread_create创建线程，绑定回调函数startThread，将ThreadData作为参数，创建成功之后主线程阻塞在latch_上，等待子线程的退出。
+- 在startThread中调用ThreadData的runInThread函数
+- latch_-1唤醒主线程，同时执行回调函数func\_，同时对异常进行处理。
+
+
+
+### CurrentThread
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/CurrentThread.cpp)
+
+主线程类，提供stackTrace()用于查看堆栈的信息，同时包括线程的一些基本属性，id、名字等。
+
+
+
+### Exception
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/Exception.h)
+
+异常处理类，继承std::exception，封装CurrentThread类的stackTrace()和重写what()方法。
+
+
+
+### BlockingQueue
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/BlockingQueue.h)
+
+无界阻塞队列，底层是deque，利用条件变量实现一个生产者消费者模型，另外还有一个有界的阻塞队列（[BoundedBlockingQueue](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/BoundedBlockingQueue.h)），底层是circular_buffer。
+
+
+
+### StringPiece
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/StringPiece.h)
+
+C++支持两种字符串：string和char*，当char\*传入函数，会构造一个临时的string变量，这就发生了内存的拷贝。StringPiece就是为了减少这种内存的拷贝，统一使用char\*记录字符串。重载了[]、等于、比较等操作。重载<<支持logged的使用。
+
+
+
+### LogStream
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/LogStream.cpp)
+
+muduo的日志库采用C++的stream风格，有个好处是输出日志级别高于语句的日志级别的时候，打印是个空操作。muduo没有使用标准库中的iostream，而是自己封装的LogStream，不同于iostream，LogStream的<<操作是将数据放到缓冲区(FixedBuffer)中，外部程序可以重定向到任何文件中。
+
+
+
+### Logging
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/base/Logging.cpp)
+
+日志类，muduo日志信息一共有5个级别，TRACE，DEBUG，INFO，WARN，ERROR，FATAL。通过宏定义创建Logger的临时对象，调用stream()函数返回LogStream对象。在Logging中定义了Impl类和SourceFile类，Impl类保存日志需要数据，SourceFile中LOG_函数所在的源文件和行号。
+
+
+
+## net库
+
+### Endian
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/net/Endian.h)
+
+提供字节序的转化。
+
+本地字节序 <--> 网络字节序
+
+
+
+### InetAddress
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/net/InetAddress.cpp)
+
+InetAddress是对sockaddr_in和sockaddr_in6的封装。
+
+```c
+// 设置本地端口
+InetAddress(uint16_t port = 0, bool loopbackOnly = false, bool ipv6 = false);
+// 设置一个指定的ip和端口
+InetAddress(StringArg ip, uint16_t port, bool ipv6 = false);
+
+sa_family_t family(); // 返回协议类型
+string toIpPort() const; // 获取ip和port
+string toIp() const; // 获取ip
+uint16_t toPort() const; // 获取port
+```
+
+
+
+### SocketsOps
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/net/SocketsOps.cpp)
+
+封装对socket的常用操作。
+
+```c
+int createNonblockingOrDie(sa_family_t family); // 创建非阻塞的socket
+int connect(int sockfd, const struct sockaddr* addr);
+void bindOrDie(int sockfd, const struct sockaddr* addr);
+void listenOrDie(int sockfd);
+int accept(int sockfd, struct sockaddr_in6* addr); // 包含错误处理
+void close(int sockfd);
+void shutdownWrite(int sockfd);
+
+void toIpPort(char* buf, size_t size, const struct sockaddr* addr); // 获取ip+port
+void toIp(char* buf, size_t size, const struct sockaddr* addr); // 获取ip
+// 根据ip和port得到对应的sockaddr_in
+void fromIpPort(const char* ip, uint16_t port, struct sockaddr_in* addr);
+void fromIpPort(const char* ip, uint16_t port, struct sockaddr_in6* addr);
+// sockaddr和sockaddr_in(ip和端口分开存储)的转换
+int getSocketError(int sockfd);
+const struct sockaddr* sockaddr_cast(const struct sockaddr_in* addr);
+const struct sockaddr* sockaddr_cast(const struct sockaddr_in6* addr);
+struct sockaddr* sockaddr_cast(struct sockaddr_in6* addr);
+const struct sockaddr_in* sockaddr_in_cast(const struct sockaddr* addr);
+const struct sockaddr_in6* sockaddr_in6_cast(const struct sockaddr* addr);
+
+struct sockaddr_in6 getLocalAddr(int sockfd);
+struct sockaddr_in6 getPeerAddr(int sockfd);
+bool isSelfConnect(int sockfd); // 判断子连接
+
+ssize_t read(int sockfd, void *buf, size_t count);
+ssize_t readv(int sockfd, const struct iovec *iov, int iovcnt);
+ssize_t write(int sockfd, const void *buf, size_t count);
+```
+
+
+
+### Socket
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/net/Socket.cpp)
+
+Socket是对socket fd的封装，通过调用SocketsOps来实现。
+
+```c
+// 获取tcp的信息
+bool getTcpInfo(struct tcp_info*) const;
+bool getTcpInfoString(char* buf, int len) const;
+
+void bindAddress(const InetAddress& localaddr); // 绑定地址
+void listen(); // 监听湍口
+int accept(InetAddress* peeraddr); // 获取连接
+void shutdownWrite(); // 关闭写端而不是直接close
+
+// TCP_NODELAY
+void setTcpNoDelay(bool on);
+// SO_REUSEADDR
+void setReuseAddr(bool on);
+// SO_REUSEPORT
+void setReusePort(bool on);
+// SO_KEEPALIVE
+void setKeepAlive(bool on);
+```
+
+muduo在断开连接时，不是直接close socket，而是关闭写端，意味着还可以读，这样可以完整接受对方的数据。
+
+
+
+### Channel
+
+[代码链接](https://github.com/Sanzona/learn_muduo/blob/master/muduo/net/Channel.h)
+
+Channel类负责注册每个fd的事件回调函数，每个Channel只负责一个fd的事件分发，不拥有fd，不会在析构的时候关闭fd，Channel不是基类，不需要继承，一般作为其他类的成员。
+
+### Poller
+
+Poller是IO复用的封装，在muduo中是一个抽象基类，作为poll和epoll两种IO复用机制的父类。Poller是EventLoop的间接成员，只供owner EventLoop在IO线程中调用。poll返回之后，通过遍历pollfds_数组，找到对应的活动事件，复杂度O(n)，在Poller中有一个map<int, Channel*>的映射channels\_,
+
+插入新的Channel的复杂度是O(logN)，更新已有的Channel的复杂度是O(1)，因为Channel记录了它的pollfds_数组中的下标，可以快速定位。删除Channel的复杂度也是O(n)。
+
+### EventLoop
+
+EventLoop中的loop不断的调用poll，来获取当前的活动事件，然后调用每个channel的handleEvent()方法，来处理事件。
+
+EventLoop的runInLoop()函数，可以在IO线程中执行某个用户的任务回调，如果当前IO线程调用runInLoop()直接执行，否则放入到队列中等待执行，queueInLoop()，这样可以将TimerQueue的成员函数移动到其他IO线程，这样可以在不加锁的情况下保证线程安全。
+
+IO线程一般阻塞在poll调用，为了让IO线程可以立即执行用户回调，muduo的做法是通过调用wakeup来唤醒IO线程，具体是向wakeupfd_中读写一个字节来实现，通过wakeup()和handleRead()对wakeupFd\_读写数据。
+
+queuInLoop()的具体实现是，将cb放到队列中，在必要时唤醒IO线程，唤醒的条件有两个：调用queueInLoop的不是IO线程、正在执行队列中的回调函数doPendingFunctors()，原因是执行回调的函数有可能也会执行queueInLoop()，这样就要wakeup唤醒IO线程及时做处理，否则新添加的回调函数cb就不能及时被调用。
+
+
+
+Reactor模型核心内容时序图。
+
+![](img/muduo/EventLoop.png)
+
+
+
+### TimerQueue
+
+TimerQueue定时器，一般通过select、poll的等待时间来实现定时，在muduo中使用timerfd，将对时间的处理和IO事件统一起来。
+
+muduo的定时器由三个类：TimerId、Timer、TimerQueue。
+
+TimerQueue的接口有addTimer()和cancel()，addTimer()是供EventLoop使用，EventLoop封装为更好用的runAt()、runAfter()、runEvery()。
+
+TimerQueue使用set管理Timer，set中的key是pair<Timestamp,Timer*>，这样可以方便处理相同到期时间的Timer。
+
+TimerQueue使用一个Channel来官差timerfd_上的可读事件。
+
+TimerQueue目前有一个不理性的地方，Timer使用裸指针的方法管理，需要手动delete，在C++11中可以改为unique_ptr，避免手动释放资源。
+
+通过TimerQueue的getExpired()来获取超时事件。
+
+TimerQueue回调用户代码onTimer()的时序图。
+
+![](img/muduo/TimerQueue.png)
+
+
+
+一次事件循环是从poll返回到再次调用poll阻塞。
+
+循环中的各种回调发生的顺序。
+
+![](img/muduo/callback.png)
+
+
+
+### Acceptor
+
+Acceptor用于accept()新的TCP连接，通过回调函数通知使用者，供TcpServer使用，生命期由TcpServer控制。
+
+成员函数包括Socket、Channel。Socket封装了socket文件描述符生命期，Channel用于观察socket上的可读事件，回调handleRead()，accept来接受新的连接，并回调用户的callback。
+
+
+
+### TcpConnection
+
+TcpConnection是唯一默认使用shared_ptr来管理的class，是muduo最复杂的class。
+
+TcpConnection使用Channel来获取socket上的IO事件，自己处理可写事件，把可读事件通过MessageCallback传给用户，TcpConnection拥有Tcp socket，在析构中会close fd。
+
+TcpConnection关闭连接的方式是被动关闭，对方先关闭连接，read返回0，触发关闭逻辑。
+
+Tcp的关闭流程，X表示TcpConnection通常在这里析构。
+
+![](img/muduo/TcpConnection_close.png)
+
+TcpConnection增加CloseCallback事件回调，提供给TcpServer和TcpClient使用，通知移除TcpConnectionPtr，普通用户使用ConnectionCallback。
+
+TcpConnection的状态图。
+
+![](img/muduo/TcpConnection_status.png)
+
+
+
+### Connector
+
+socket是一次性的，一旦出错（对方拒绝连接），就无法恢复，只能重来。但是Connector是可以反复使用的，每次尝试连接都要使用新的socket文件描述符和新的Channel对象。
+
+重试的间隔应该逐渐延长，例如0.5s、1s、2s、4s直到30秒，对于对象的生命期管理方面，如果使用EventLoop::runAfter()定时，而Connector在定时器到期之前析构了怎么办？可以在Connector的析构函数中注销定时器。
+
+对于自连接的问题的处理，在发起连接时，首先在本地选择IP（由路由表确定）和随机选择端口，如果目标IP刚好是主机而且端口也相同，这就发生了自连接，处理办法就是断开连接重试。
+
+
+
+
+### Buffer
+
+muduo在读取数据时，采用cantter/gatherIO(分散聚集IO)，在一次系统调用可以对多个缓冲区进行输入输出，而且一部分的缓冲区来自stack，这样缓冲区足够大，通常一次readv调用就可以取完数据，
+
+muduo采用的是水平触发，这样做不会丢失数据或消息，每次读取数据只需要一次系统调用，照顾了多个连接的公平性，不会因为某个连接上的数据量过大而影响其他连接处理消息。
+
+发送数据的逻辑是，先尝试发送数据，如果只发送了部分数据，把剩余的数据放到outputBuffer_，开始关注writable事件，在handleWrite()中记录发送数据，如果outputBuffer\_中已经有待发送的的数据，就不能尝试发送，否则造成数据错乱。
+
+
+
+### TcpServer
+
+TcpServer用于处理新建TcpConnection。
+
+TcpServer新建连接的函数调用。
+
+![](img/muduo/TcpServer.png)
+
+TcpServer用来管理accpet获得的TcpConnection，供用户使用，生命期由用户控制。使用Accpetor获取新连接的fd，保存用户提供的ConnectionCallback和MessageCallback，在新建TcpConnection之后，将这两个回调函数传递给后者。
+
+随机选择pool中的EventLoop，不允许TcpConnection在运行中更换EventLoop，每个TcpServer有自己的EventLoopThreadPool。
+
+
+
+### TcpClient
+
+TcpClient主要使用Connector来进行连接，Connector具备反复尝试连接的功能，因此客户端和服务端启动的顺序就无关紧要了。
+
+连接断开后初次尝试连接应该具有随机性，如果服务端崩溃大量客户端重连，同时重连也会发生丢包，每个TcpClient应该	等待一段随机时间（0.5-2s）再尝试连接避免拥塞。
+
+发起连接的时候如果发生TCP SYN丢包，那么系统默认的重试间隔是3s，职期间不会发生错误码。
+
+
+
+### epoll
+
+epoll是linux独有的高效的IO复用机制，它与poll的不同之处主要在于poll每次返回整个文件描述符数组，用户代码需要遍历数组以找到哪些文件描述符上有IO事件，epoll_wait()返回活动fd的列表，需要遍历的数组通常会小的多，再并发连接较大而活动连接比例不高时，epoll比poll更高效。
+
+muduo定义Poller基类并提供两份实现PollPoller和EPollPoller。
+
+
+
+### HttpServer
+
+[代码链接](https://github.com/Sanzona/learn_muduo/tree/master/muduo/net/http)
+
+[HttpRequest](https://github.com/Sanzona/learn_muduo/blob/master/muduo/net/http/HttpRequest.h)封装了HTTP请求包的基本格式。
+
+[HttpResponse](https://github.com/Sanzona/learn_muduo/blob/master/muduo/net/http/HttpResponse.h)封装了HTTP的响应包的基本格式。
+
+[HttpContext](https://github.com/Sanzona/learn_muduo/blob/master/muduo/net/http/HttpContext.h)主要是对HTTP请求包的解析，将解析的结果存在对象HttpRequest中。
+
+[HttpServer](https://github.com/Sanzona/learn_muduo/blob/master/muduo/net/http/HttpServer.h)封装了HTTP的对请求内容的响应，通过用户指定回调函数来处理请求，使用TcpServer来进行对连接进行处理。

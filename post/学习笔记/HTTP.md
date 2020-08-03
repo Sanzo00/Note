@@ -17,7 +17,7 @@ http是超文本传输协议，计算机在两点之间传输数据的约定和�
   - 3xx，表示客户端请求的资源发生变动，需要客户端用新的URL重新发送请求获取资源，也就是重定向。
 
     - [301 Moved Permanently] 表示永久重定向，说明请求的资源已经不存在了，需改用新的URL再次访问。
-    - [302 Moved Permanently] 表示临时重定向，说明请求的资源还在，但是暂时要一个新的URL来访问。
+    - [302 Moved Temporarily] 表示临时重定向，说明请求的资源还在，但是暂时要一个新的URL来访问。
 
       301和302都会在响应头中使用Location，指明后续需要跳转的URL，浏览器自动重定向新的URL。
 
@@ -87,7 +87,7 @@ HTTP优缺点是无状态、明文传输，缺点就是不安全。无状态的�
 
 HTTP的端口是80，HTTPS的端口是443。
 
-HTTPS需要向CA申请数字整数，保证身份的可靠性。
+HTTPS需要向CA申请数字证书，保证身份的可靠性。
 
 HTTPS可以解决HTTP的安全问题，HTTPS通过引入SSL/TLS层。
 
@@ -130,7 +130,7 @@ HTTP/1.1采用长连接，在同一个TCP连接中，客户端可以发送多个
 
 - 多个HTTP请求复用一个TCP连接，TCP不知道有多少个HTTP请求，如果发生丢包，触发TCP重传机制，这样一个TCP连接中的所有的HTTP请求都要等待这个丢包重传回来。
 
-HTTP/3把HTTP下层的TCP协议改成了UDP，UDP不管顺序、丢包，不会出现HTTP/1.1和HTTP/2的队头阻塞和丢包的问题，UDP是不可靠传输，但是google基于UDP发明了QUIC协议，可以实现TCP的可靠传输，QUIC是UDP上一个伪TCP+TLS+HTTP/2的多路复用的协议。
+HTTP/3把HTTP下层的TCP协议改成了UDP，UDP不管顺序、丢包，不会出现HTTP/1.1和HTTP/2的队头阻塞和丢包的问题，UDP是不可靠传输，但是google基于UDP开发了QUIC协议，可以实现TCP的可靠传输，QUIC是UDP上一个伪TCP+TLS+HTTP/2的多路复用的协议。
 
 
 
