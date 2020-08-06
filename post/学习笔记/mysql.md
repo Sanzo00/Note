@@ -45,7 +45,7 @@ select ifnull(commission_pct, 0) as 奖金率 from employees;
 
 2. 逻辑表达式
 
-   `&&`、 `||`、 `!、` `and、` `or` `not`
+   `&&`、 `||`、 `!`、 `and`、 `or`、 `not`
 
 3. 模糊查询
 
@@ -81,13 +81,13 @@ select last_name,salary,commission_pct from employees
 select * from employees where last_name like '%a%'
 
 # 姓名第3个字符为a，第5个字符为l的员工信息
-select * from employees where last_name like '__n_l%';
+select * from employees where last_name like '__a_l%';
 
 # 姓名第2个字符为_的员工信息
 select * from employees where last_name like '_\_%';
 select * from employees where last_name like '_$_%' escape '$';
 
-# 查询工种是'AD_PRES', 'AD_VP'其中的一个的员工名
+# 查询工种是'AD_PRES'、'AD_VP'的员工名
 select last_name from employees where job_id='AD_PRES' or job_id='AD_VP';
 select last_name from employees where job_id in ('AD_PRES', 'AD_VP');
 
@@ -251,7 +251,7 @@ select * from employees order by salary asc,employee_id desc;
 
    ```sql
    # if函数
-   select if (10<5, '大', '小') as out_put;
+   select if (1>2, '大', '小') as out_put;
    
    # case分支
    /*
@@ -269,48 +269,42 @@ select * from employees order by salary asc,employee_id desc;
    when 30 then salary*1.1 
    when 40 then salary*1.2 
    when 50 then salary*1.3 
-   else salary end as new_salary from employees;
+   else salary 
+   end as new_salary from employees;
    
-   /*
-   case
-   when 常量1 then 值或表达式;
-   when 常量1 then 值或表达式;
-   ...
-   else 值或表达式;
-   end
-   */
    select salary, department_id, 
    case
    when salary > 20000 then 'A'
    when salary > 15000 then 'B'
    when salary > 10000 then 'C'
-   else 'D' end as level from employees;
+   else 'D' 
+   end as level from employees;
    ```
-
    
-
+   
+   
 6. 多行函数
 
    ```sql
-   # sum求和，忽略mul
+   # sum求和，忽略null
    select sum(salary) from employees;
    select sum(distinct salary), sum(salary) from employees;
    
-   # avg平均值，忽略mul
+   # avg平均值，忽略null
    select avg(salary) from employees;
    
-   # max最大值，忽略mul
+   # max最大值，忽略null
    select max(salary) from employees;
    
-   # min最小值，忽略mul
+   # min最小值，忽略null
    select min(salary) from employees;
    
-   # count个数，忽略mul
+   # count个数，忽略null
    select count(salary) from employees;
    select count(*) from employees; # 统计行数
    select count(1) from employees; # 统计行数
-   myisam存储，count(*)效率搞
-   innodb存储，效率搞差不多，比查字段块
+   myisam存储，count(*)效率高
+   innodb存储，效率差不多，比查字段快
    
    # 部门编号为90的员工个数
    select count(*) from employees  where department_id = 90;
@@ -342,16 +336,18 @@ select count(department_id), location_id from departments group by location_id;
 select avg(salary),department_id from employees where email like '%a%' group by department_id;
 
 # 哪些部门员工大于2
-select count(*), department_id from employees group by department_id having count(*) > 2;
+select count(*), department_id from employees 
+	group by department_id having count(*) > 2;
 
-# 每个工种有奖金的员工最高工资 》 12000的工种编号和最高工资 
+# 每个工种有奖金的员工最高工资 > 12000的工种编号和最高工资 
 select max(salary), job_id from employees where commission_pct is not null group by job_id having max(salary) > 12000;
 
-# 按照员工分组，查询每组的个数，筛选个数>5的分组
+# 按照员工姓名长度分组，查询每组的个数，筛选个数>5的分组
 select length(last_name) as len, count(*) as cnt from employees group by len having cnt > 5;
 
-# 每个部分，每个工种的员工的平均工资，降序排列
-select avg(salary), department_id, job_id from employees group by department_id, job_id order by avg(salary) desc;
+# 每个部门，每个工种的员工的平均工资，降序排列
+select avg(salary), department_id, job_id from employees 0
+	group by department_id, job_id order by avg(salary) desc;
 
 
 ```
@@ -360,7 +356,7 @@ select avg(salary), department_id, job_id from employees group by department_id,
 
 ### 连接查询
 
-![](C:/Users/na/Desktop/sanzona.github.io/post/学习笔记/img/连接查询.png)
+![](img/mysql/连接查询.jpg)
 
 当查询的字段涉及到多个表时，需要用到连接查询。
 
@@ -412,8 +408,6 @@ from 表1 别名 连接类型 join 表2 别名 on 连接条件
      group by city having count(*) > 3;
      ```
 
-   
-
    - 非等值连接
 
      ```sql
@@ -425,8 +419,6 @@ from 表1 别名 连接类型 join 表2 别名 on 连接条件
      from employees e inner join job_grades g
      on e.salary between g.lowest_sal and g.highest_sal;	
      ```
-
-     
 
    - 自连接
 
@@ -449,25 +441,21 @@ from 表1 别名 连接类型 join 表2 别名 on 连接条件
    - 左外连接（left outer）
 
      ```sql
-     # 没有那么朋友的女生
+     # 没有男朋友的女生
      select b.name, bo.boyname 
      from beauty b left outer join boys bo on b.boyfriend_id = bo.id 
      where bo.id is null;
      
      ```
 
-     
-
    - 右外连接（right outer）
 
      ```sql
-     # 没有那么朋友的女生
+     # 没有男朋友的女生
      select b.name, bo.boyname 
      from boys bo right outer join beauty b on b.boyfriend_id = bo.id 
      where bo.id is null;
      ```
-
-     
 
    - 全外连接（full outer）
 
@@ -481,8 +469,6 @@ from 表1 别名 连接类型 join 表2 别名 on 连接条件
    ```
 
    
-
-
 
 ### 子查询
 
@@ -658,8 +644,12 @@ DELETE be, bo FROM beauty be INNER JOIN boys bo
 on be.`boyfriend_id`=bo.`id`
 WHERE bo.`boyName`='黄晓明';
 
-#删除整个boys表
+#删除boys表所有数据
 truncate table boys;
+delete from boys;
+
+# 同时删除表和数据
+drop table boys;
 ```
 
 
@@ -756,7 +746,7 @@ DROP DATABASE IF EXISTS books;
 - check，检查约束
 - foreign key，外键
 
-可以直接再字段名和类型名之后追加对应的约束条件，但是不支持check和外键。
+可以直接在字段名和类型名之后追加对应的约束条件，但是不支持check和外键。
 
 也可以使用constraint来为每个约束起别名进行创建，但是不支持非空和默认，constraint和约束名可以省略。
 
@@ -967,6 +957,8 @@ set session transaction isolation level read uncommitted;
 
 ## 10. 视图
 
+视图是指计算机数据库中的视图，是一个虚拟表，其内容由查询定义。同真实的表一样，视图包含一系列带有名称的列和行数据。**视图并不在数据库中以存储的数据值集形式存在**。行和列数据来自由定义视图的查询所引用的表，并且在引用视图时动态生成。
+
 - 创建
 
   ```sql
@@ -1045,7 +1037,7 @@ set session transaction isolation level read uncommitted;
 
 - 全局变量
 
-  ```
+  ```sql
   # 查看所有的全局变量
   SHOW GLOBAL VARIABLES;
   
@@ -1127,6 +1119,8 @@ set session transaction isolation level read uncommitted;
 
 
 
+## 12. 索引
+
 
 索引是一种数据结构，是一个**排好序的快速查找数据结构**，平常说的索引，大都指B树（多路搜索树）结构组织的索引，其中聚集索引、复合索引、前缀索引、唯一索引默认都是B+树，除了B+树之外还有哈希索引等。
 
@@ -1136,7 +1130,7 @@ set session transaction isolation level read uncommitted;
 
 索引本身也很大，不可能全部存在内存中，因此索引往往以索引文件的形式存储在磁盘中。
 
-虽然索引大大提高了查询速度，同时也降低了更新表的速度，如对表进行insert、update、delete。因为更新表的时候，mysql不仅要保存数据，还要保存下索引文件每次更新添加了索引列的字段，都会调整因为更新所带来的建制变化后的索引信息。
+虽然索引大大提高了查询速度，同时也降低了更新表的速度，如对表进行insert、update、delete。因为更新表的时候，mysql不仅要保存数据，还要调整因为更新而变化的索引信息。
 
 **什么情况下需要创建索引？**
 
@@ -1156,11 +1150,11 @@ set session transaction isolation level read uncommitted;
 
 
 
-## 12. explain
+## 13. explain
 
-explain关键字可以模拟优化器执行sql查询语句，从而知道mysql是如何处理你的sql语句的。
+explain关键字可以模拟优化器执行sql查询语句，从而知道mysql是如何处理sql语句的。
 
-![](C:/Users/na/Desktop/sanzona.github.io/post/学习笔记/img/mysql/explain.jpg)
+![](img/mysql/explain.jpg)
 
 **possible_keys**，显示可能应用的索引，一个或多个，查询中涉及到的字段如果存在索引，则该索引被列出，实际不一定使用。
 
@@ -1176,13 +1170,13 @@ explain关键字可以模拟优化器执行sql查询语句，从而知道mysql�
 
 id相同，执行顺寻由上到下。
 
-![](C:/Users/na/Desktop/sanzona.github.io/post/学习笔记/img/mysql/simple.jpg)
+![](img/mysql/simple.jpg)
 
 
 
 子查询，id的序号递增，id值越大优先级越高，越先被执行。
 
-![](C:/Users/na/Desktop/sanzona.github.io/post/学习笔记/img/mysql/subquery.jpg)
+![](img/mysql/subquery.jpg)
 
 
 
@@ -1247,13 +1241,13 @@ extra，包含不适合在其他列显示，但是非常重要的额外信息。
 
 
 
-## 13. 覆盖索引
+## 14. 覆盖索引
 
-select的数据列只用从索引中就可以获得到，不必读取数据行，mysql可以利用索引返回select列表中的字段，而不必更具索引再次读取数据文件，查询列要被所建的索引覆盖。
+select的数据列只用从索引中就可以获得到，不必读取数据行，mysql可以利用索引返回select列表中的字段，而不必根据索引再次读取数据文件，查询列要被所建的索引覆盖。
 
 
 
-## 14. 索引优化
+## 15. 索引优化
 
 ```sql
 # 查看表的索引
@@ -1333,7 +1327,7 @@ create index idx_phone on phone(card);
 
 2. **最佳左前缀法则**
 
-   ”带头他个不能死，中间兄弟不能断“
+   ”带头大哥不能死，中间兄弟不能断“
 
    如果索引了多列，要遵循最左前缀法则，查询从索引的最左前列开始并且不跳过索引的列。
 
@@ -1415,7 +1409,7 @@ create index idx_phone on phone(card);
 
 
 
-## 15. 查询截取分析
+## 16. 查询截取分析
 
 1.  观察发现运行慢的sql情况
 2. 设置慢查询日志，设置阈值，日语超过5s为慢sql，并抓取出来
@@ -1427,13 +1421,12 @@ create index idx_phone on phone(card);
 
 1. 小表驱动大表
 
-   ```
+   ```sql
    # 当B表数据小于A表，用in优于exists
    select * from A where id in (select id from B);
    
    for select id from B
    for select * from A where A.id = B.id
-   
    
    # 当A表数据小于B表，用exists优于in
    # exists相当于将主查询的数据放到子查询中做条件验证，根据结果true、false来决定主查询的结果是否保留
@@ -1443,9 +1436,11 @@ create index idx_phone on phone(card);
    for select * from B where B.id = A.id
    ```
 
+   
+
 2. 如果不在索引列上，filesort有两种算法：双路排序和单路排序。
 
-   **双路排序**：mysql4.1之前使用双路排序，就是进行两次扫描硬盘，读取行指针和order列对它们排序，然后扫描已经排好序的列表，按照列表中值重新从列表中读取对应的数据。
+   **双路排序**：mysql4.1之前使用双路排序，就是进行两次硬盘扫描，读取行指针和order列对它们排序，然后扫描已经排好序的列表，按照列表中值重新从列表中读取对应的数据。
 
    **单路排序**：从磁盘读取查询所需要的所有列，按照order列在buffer中进行排序，然后扫描排序后的结果输出，避免了二次读取数据，把随机io变为顺序io，但是会使用更多的空间，因为把每一行都保存到了内存中，另外buffer要设置的大一些，否则单路会变为多路的多次io。
 
@@ -1674,7 +1669,7 @@ select * from mysql.general_log;
 
 
 
-## 16. 锁机制
+## 17. 锁机制
 
 ```sql
 # 查看使用的锁
@@ -1733,9 +1728,11 @@ unlock tables;
 show status like 'innodb_row_lock%';
 ```
 
-偏向InnoDB存储引擎，开销大、加锁慢、会死锁、锁粒度小、发生锁冲突的概率最低、并发性最高。
+InnoDB存储引擎，开销大、加锁慢、会死锁、锁粒度小、发生锁冲突的概率最低、并发性最高。
 
 InnoDB与MyISAM最大不同，支持事务（transaction），采用了行锁。
+
+
 
 ```sql
 # 可以取消自动提交，进行实验
@@ -1748,12 +1745,21 @@ commit;
 
 
 
+注意事项：
+
+1. InnoDB行锁是通过给索引上的索引项加锁来实现的，这一点MySQL与Oracle不同，后者是通过在数据块中对相应数据行加锁来实现的。InnoDB这种行锁实现特点意味着：**只有通过索引条件检索数据，InnoDB才使用行级锁，否则，InnoDB将使用表锁！**
+
+2. 由于MySQL的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用相同的索引键，是会出现锁冲突的。说白了就是，where id=1 for update 会锁定所有id=1的数据行，如果是where id=1 and name='liuwenhe' for update,这样会把所有 id=1以及所有name='liuwenhe'的行都上排它锁；
+3. 即便在条件中使用了索引字段，但是否使用索引来检索数据是由MySQL优化器通过判断不同执行计划的代价来决定的，如果**MySQL认为全表扫描效率更高**，比如对一些很小的表，它就不会使用索引，或者隐式转换，或者like百分号在前等等，这种情况下**InnoDB将使用表锁**，而不是行锁。
+
+
+
 ### 行锁变表锁（索引不当）
 
 ```sql
 set autocommit = 0;
 
-update test_innodb_lock set b='4005' where a=4; # 加行锁
+update test_innodb_lock set b=4005 where a=4; # 加行锁，b类型转换导致索引失效
 
 # commit;
 ```
@@ -1761,20 +1767,41 @@ update test_innodb_lock set b='4005' where a=4; # 加行锁
 ```sql
 set autocommit = 0;
 
-# 在上一个没有commit之前，阻塞等待
+# 在上一个没有commit之前，阻塞等待，上边行锁变表锁
 update test_innodb_lock set b='5005' where a=5; # 加行锁
+```
+
+
+
+### 死锁
+
+**MyISAM表锁是deadlock free的**，这是因为MyISAM总是一次获得所需的全部锁，要么全部满足，要么等待，因此不会出现死锁。
+
+InnoDB中，除单个SQL组成的事务外，**锁是逐步获得的【一个包含多条sql的事务】**，这就决定了在InnoDB中发生死锁是可能的。
+
+发生死锁后，InnoDB一般都能**自动检测**到，并使一个事务**释放锁并回退**，另一个事务获得锁，继续完成事务。但在涉及外部锁，或涉及表锁的情况下，InnoDB并不能完全自动检测到死锁，这需要通过**设置锁等待超时参数** **innodb_lock_wait_timeout**来解决。这个参数并不是只用来解决死锁问题，在并发访问比较高的情况下，如果大量事务因无法立即获得所需的锁而挂起，会占用大量计算机资源，造成严重性能问题，甚至拖跨数据库。我们通过设置合适的**锁等待超时阈值**，可以避免这种情况发生。
+
+**避免死锁的常用方法：**
+
+1. 在应用中，如果不同的程序会并发存取多个表，应尽量约定**以相同的顺序来访问表**，这样可以大大降低产生死锁的机会。
+
+2. 在程序以批量方式处理数据的时候，如果**事先对数据排序**，保证每个线程按固定的顺序来处理记录，也可以大大降低出现死锁的可能。
+
+3. 在事务中，**如果要更新记录，应该先申请排他锁，再申请共享锁**，因为当用户申请排他锁时，其他事务可能又已经获得了相同记录的共享锁，从而造成锁冲突，甚至死锁。
+
+```sql
+# 命令来确定最后一个死锁产生的原因
+show engine innodb status\G
 ```
 
 
 
 ### 间隙锁
 
-### 
-
 ```sql
 set autocommit = 0;
 
-update test_innodb_lock set b='4005' where a>1 and a < 5; 
+update test_innodb_lock set b='4005' where a > 1 and a < 5; 
 
 # commit;
 ```
@@ -1786,7 +1813,7 @@ set autocommit = 0;
 insert into test_innodb_lock values(2, '2000');
 ```
 
-当使用范围检索数据使，并请求共享或排它锁时，innoDB会给复合条件的已有数据记录的索引项加锁，对于建值在条件范围之内当并不存在的记录，叫做间隙（GAP）
+当使用范围检索数据时，并请求共享或排它锁时，innoDB会给符合条件的已有数据记录的索引项加锁，对于键值在条件范围之内但并不存在的记录，叫做间隙（GAP）
 
 
 
@@ -1801,4 +1828,127 @@ select * from test_innodb_lock where a = 8 for update; // 手动加锁
 
 commit; // 提交解锁
 ```
+
+
+
+### 乐观锁（Optimistic）
+
+乐观锁是相对悲观锁而言的，乐观锁假设数据一般情况下不会造成冲突，所以在数据进行提交更新的时候，才会正式对数据的冲突与否进行检测，如果发现冲突了，则返回给用户错误的信息，让用户决定如何去做。
+
+乐观锁是相对悲观锁而言，也是为了避免数据库幻读、业务处理时间过长等原因引起数据处理错误的一种机制，但乐观锁不会刻意使用数据库本身的锁机制，而是依据数据本身来保证数据的正确性。
+
+相对于悲观锁，在对数据库进行处理的时候，乐观锁并不会使用数据库提供的锁机制。一般的实现乐观锁的方式就是记录数据版本。
+
+主要就是两个步骤：**冲突检测**和**数据更新**。其实现方式有一种比较典型的就是CAS(Compare and Swap)。
+
+**CAS**是乐观锁技术，当多个线程尝试使用CAS同时更新同一个变量时，只有其中一个线程能更新变量的值，而其它线程都失败，失败的线程并不会被挂起，而是被告知这次竞争中失败，并可以再次尝试。
+
+乐观锁并未真正加锁，效率高。一旦锁的粒度掌握不好，更新失败的概率就会比较高，容易发生业务失败。
+
+
+
+### 悲观锁（Pessimistic）
+
+当要对数据库中的一条数据进行修改的时候，为了避免同时被其他人修改，最好的办法就是直接对该数据进行加锁以防止并发。这种借助数据库锁机制，在修改数据之前先锁定，再修改的方式被称之为悲观并发控制。
+
+之所以叫做悲观锁，是因为这是一种对数据的修改抱有悲观态度的并发控制方式。我们一般认为数据被并发修改的概率比较大，所以需要在修改之前先加锁。
+
+常见的就是读锁和写锁。
+
+悲观锁依赖数据库锁，效率低。更新失败的概率比较低
+
+
+
+
+
+## 18. 存储引擎
+
+
+
+### MyISAM
+
+创建一个myisam存储引擎的表的时候回出现三个文件：
+
+- tb_demo.frm，存储表定义
+- tb_demo.MYD，存储数据
+- tb_demo.MYI，存储索引。
+
+MyISAM表无法处理事务。
+
+MyISAM存储引擎特别适合在以下几种情况下使用：
+
+1. 选择密集型的表
+
+   MyISAM存储引擎在筛选大量数据时非常迅速，这是它最突出的优点。
+
+2. 插入密集型的表
+
+   MyISAM的并发插入特性允许同时选择和插入数据。例如：MyISAM存储引擎很适合管理邮件或Web服务器日志数据。
+
+ 
+
+### InnoDB
+
+InnoDB是一个健壮的事务型存储引擎MySQL 5.6.版本以后InnoDB就是作为默认的存储引擎。
+
+InnoDB还引入了**行锁**和**外键约束**，支持**事务**。
+
+在以下场合下，使用InnoDB是最理想的选择：
+
+1. 更新密集的表。InnoDB存储引擎特别适合处理多重并发的更新请求。
+2. 事务。InnoDB存储引擎是支持事务的标准MySQL存储引擎。
+
+3. 自动灾难恢复。与其它存储引擎不同，InnoDB表能够自动从灾难中恢复。
+4. 外键约束。MySQL支持外键的存储引擎只有InnoDB。
+
+5. 支持自动增加列AUTO_INCREMENT属性。
+
+ 
+
+### MEMORY
+
+使用MySQL  Memory存储引擎的出发点是速度。为得到最快的响应时间，采用的逻辑**存储介质是系统内存**。虽然在内存中存储表数据确实会提供很高的性能，但当mysqld守护进程崩溃时，所有的Memory**数据都会丢失**。它要求存储在Memory数据表里的数据使用的是**长度不变的格式**，这意味着不能使用BLOB和TEXT这样的长度可变的数据类型，VARCHAR是一种长度可变的类型，但因为它在MySQL内部当做长度固定不变的CHAR类型，所以可以使用。
+
+一般在以下几种情况下使用Memory存储引擎：
+
+1. 目标数据较小，而且被非常频繁地访问。
+
+   在内存中存放数据，所以会造成内存的使用，可以通过参数max_heap_table_size控制Memory表的大小，设置此参数，就可以限制Memory表的最大大小。
+
+2. 如果数据是临时的，而且要求必须立即可用，那么就可以存放在内存表中。
+
+3. 存储在Memory表中的数据如果突然丢失，不会对应用服务产生实质的负面影响。Memory同时支持散列索引和B树索引。B树索引的优于散列索引的是，可以使用部分查询和通配查询，也可以使用<、>和>=等操作符方便数据挖掘。散列索引进行“相等比较”非常快，但是对“范围比较”的速度就慢多了，因此散列索引值适合使用在=和<>的操作符中，不适合在<或>操作符中，也同样不适合用在order by子句中
+
+ 
+
+### MERGE
+
+MERGE存储引擎是一组**MyISAM表的组合**，这些MyISAM表结构必须完全相同，尽管其使用不如其它引擎突出，但是在某些情况下非常有用。Merge表就是几个相同**MyISAM表的聚合器**；**Merge表中并没有数据，对Merge类型的表可以进行查询、更新、删除操作，这些操作实际上是对内部的MyISAM表进行操作**。
+
+Merge存储引擎的使用场景。对于服务器日志这种信息，一般常用的存储策略是将数据分成很多表，每个名称与特定的时间端相关。例如：可以用12个相同的表来存储服务器日志数据，每个表用对应各个月份的名字来命名。当有必要基于所有12个日志表的数据来生成报表，这意味着需要编写并更新多表查询，以反映这些表中的信息。与其编写这些可能出现错误的查询，不如将这些表合并起来使用一条查询，之后再删除Merge表，而不影响原来的数据，删除Merge表只是删除Merge表的定义，对内部的表没有任何影响。
+
+ 
+
+### ARCHIVE
+
+Archive是归档的意思，在归档之后很多的高级功能就不再支持了，**仅支持最基本的插入和查询**两种功能。在MySQL  5.5版以前，Archive是不支持索引，但是在MySQL  5.5以后的版本中就开始支持索引了。Archive拥有很好的压缩机制，它使用zlib压缩库，在记录被请求时会实时压缩，所以它经常被用来当做仓库使用。
+
+
+
+### MyISAM和InnoBD
+
+|                                         | **MyISAM**                                                   | **InnoDB**                                                   |
+| --------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **构成上的区别：**                      | 每个MyISAM在磁盘上存储成三个文件。tb_demo.frm，存储表定义           tb_demo.MYD，存储数据            tb_demo.MYI，存储索引。 | InnoDB表数据文件和日志文件存在磁盘上，InnoDB 表的大小只受限于操作系统文件的大小，一般为 2GB |
+| **事务处理上方面:**                     | MyISAM类型的表强调的是性能，其执行数度比InnoDB类型更快，不提供事务支持 | InnoDB提供事务支持事务，外键约束（foreign key）、行锁        |
+| **SELECT  UPDATE,  INSERT，Delete操作** | 如果执行大量的SELECT，MyISAM是更好的选择                     | 1.如果你的数据执行大量的INSERT 或 UPDATE，出于性能方面的考虑，应该使用InnoDB                 2.DELETE  FROM table时，InnoDB不会重新建立表，而是一行一行的删除。                 3.LOAD  TABLE FROM MASTER操作对InnoDB是不起作用的，解决方法是首先把InnoDB表改成MyISAM表，导入数据后再改成InnoDB表，但是对于使用的额外的InnoDB特性（例如外键）的表不适用 |
+| **对AUTO_INCREMENT  的操作**            | 每表一个AUTO_INCREMEN列的内部处理。    MyISAM 为 INSERT 和 UPDATE 操作自动更新这一列。这使得AUTO_INCREMENT列更快（至少10%）。在序列顶的值被删除之后就不能再利用。(当AUTO_INCREMENT列被定义为多列索引的最后一列，可以出现重使用从序列顶部删除的值的情况）。                                对于AUTO_INCREMENT类型的字段，InnoDB中必须包含只有该字段的索引，但是在MyISAM表中，可以和其他字段一起建立联合索引，更好和更快的auto_increment处理 | 如果你为一个表指定AUTO_INCREMENT列，在数据词典里的InnoDB表句柄包含一个名为自动增长计数器的计数器，它被用在为该列赋新值。    自动增长计数器仅被存储在主内存中，而不是存在磁盘上 |
+| **表的具体行数**                        | count(\*)读出保存好的行数，当count(*)语句包含 where条件时，两种表的操作是一样的 | InnoDB 中不保存表的具体行数，也就是说，执行select count(*) from table时，InnoDB要扫描一遍整个表来计算有多少行 |
+| **锁**                                  | 表锁                                                         | 提供行锁(locking on row level)，另外，InnoDB表的行锁也不是绝对的，如果在执行一个SQL语句时MySQL不能确定要扫描的范围(索引失效)，InnoDB表同样会锁全表， 例如update table set num=1 where name like “%a%” |
+
+
+
+
+
+
 
