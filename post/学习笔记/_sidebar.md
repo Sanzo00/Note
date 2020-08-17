@@ -7,7 +7,6 @@
 * [mysql](post/学习笔记/mysql)
 * [HTTP](post/学习笔记/HTTP)
 * [DNS](post/学习笔记/DNS)
-* [其他](post/学习笔记/其他)
 * [项目相关](post/学习笔记/项目相关)
 * [git 笔记](post/学习笔记/git笔记)
 * [python 笔记](post/学习笔记/python笔记)

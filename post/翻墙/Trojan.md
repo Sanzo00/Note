@@ -3,7 +3,10 @@
 ## 一键安装脚本
 
 ```shell
-bash <(curl -s -L https://github.com/V2RaySSR/Trojan/raw/master/Trojan.sh)
+wget https://github.com/V2RaySSR/Trojan/raw/master/Trojan.sh
+
+
+wget https://raw.githubusercontent.com/atrandys/trojan/master/trojan_mult.sh && chmod +x trojan_mult.sh
 ```
 
 ## Windwos端

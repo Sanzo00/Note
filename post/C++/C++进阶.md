@@ -124,6 +124,78 @@ char *a[10];
 
   可复制shared_ptr，但构造或释放对资源不产生影响
 
+```c
+// shared_ptr的封装
+#include <iostream>
+using namespace std;
+
+template<class T>
+class SharedPtr{
+public:
+    SharedPtr() : ptr((T*) 0), count(0) {
+        cout << "defalut construct";
+    }
+    SharedPtr(T* t) : ptr(t), count(new int(1)) {
+        cout << "create " << *ptr << " " << *count << endl;
+    }
+    SharedPtr(const SharedPtr &t) : ptr(t.ptr), count(&(++(*t.count))) {
+        cout << "copy construct " << *ptr << " " << *count << endl;
+    }
+    SharedPtr& operator = (const SharedPtr &t) {
+        if (this == &t) return *this;
+        ++(*t.count);
+        if ((*count)-- == 0) {
+            delete ptr;
+            delete count;
+        }
+        ptr = t.ptr;
+        count = t.count;
+        cout << "operator = " << *ptr << " " << *count << endl;
+        return *this;
+    }
+    ~SharedPtr() {
+        if (ptr && --(*count) == 0) {
+            cout << *ptr << " default destructor" << endl;
+            delete ptr;
+            delete count;
+        }
+    }
+
+    T& operator*() {
+        if (count == 0) return (T*)0;
+        return *ptr;
+    }
+
+    T* operator->() {
+        if (count == 0) return 0;
+        return ptr;
+    }
+
+private:
+    T *ptr;
+    int *count;
+};
+
+
+int main() {
+
+    SharedPtr<string> p1(new string("abc"));
+    SharedPtr<string> p2(p1);
+    SharedPtr<string> p3(new string("fff"));
+    p3 = p2;
+
+    return 0;
+}
+
+/*
+    create abc 1
+    copy construct abc 2
+    create fff 1
+    operator = abc 3
+    abc default destructor
+*/
+```
+
 
 
 ### 移动构造

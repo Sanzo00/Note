@@ -1,10 +1,16 @@
 # vim设置
 
 ```bash
-set nu
-set ts=4
-set sw=4
+"set paste
+"set nopaste
+set expandtab
+set softtabstop=4
 set autoindent
-set viminfo='1000,<500
+set tabstop=4
+set shiftwidth=4
+set nu
+syntax on
 set mouse=a
+
+"set viminfo='1000,<500
 ```

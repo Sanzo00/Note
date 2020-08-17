@@ -1,8 +1,4 @@
-## git笔记
-
-
-
-### 版本回退
+## 版本回退
 
 1. 修改文件后提交修改到版本库
 
@@ -36,7 +32,7 @@
 
 
 
-### 工作区和暂存区
+## 工作区和暂存区
 
 1. 工作区: 存放项目的目录
 
@@ -51,7 +47,7 @@
 
    
 
-### 撤销修改
+## 撤销修改
 
 ```bash
 # 本地修改没有git add到暂存区, 回退到上一个git add或git commit
@@ -64,7 +60,7 @@ git checkout -- <file>
 
 
 
-### 删除文件
+## 删除文件
 
 1. 准备工作
 
@@ -98,7 +94,7 @@ git checkout -- <file>
 
 
 
-### 远程仓库
+## 远程仓库
 
 1. 添加远程库
 
@@ -122,9 +118,9 @@ git checkout -- <file>
 
    
 
-### 分支管理
 
-#### 创建与合并分支
+
+## 创建与合并分支
 
 1. 创建新分支
 
@@ -150,7 +146,9 @@ git checkout -- <file>
    git branch -d dev
    ```
 
-#### 解决冲突
+
+
+## 解决冲突
 
 当master和dev同时修改文件, 在git merge时会出现冲突, 需要手动解决冲突, 重新提交.
 
@@ -177,7 +175,9 @@ git log --graph
 
 
 
-#### 分支管理
+
+
+## 分支管理
 
 ```git merge```, 在处理合并时如果可以, ```git```会使用```Fast forward```模式, 删除分支后会丢掉分支信息
 
@@ -192,7 +192,7 @@ git log --graph --pretty=oneline --abbrev-commit
 
 
 
-#### Bug分支
+## Bug分支
 
 当dev分支的工作未完成, 你需要紧急修复buf, 这时可以把当前分支暂时储存起来. 完成其他工作之后, 可以恢复现场继续工作.
 
@@ -233,7 +233,9 @@ git cherry-pick commit_id
 
 
 
-#### Feature分支
+
+
+## Feature分支
 
 当需要添加新功能时, 可以创建feature分支, 测试完成之后, 再合并到当前分支.
 
@@ -245,7 +247,11 @@ git checkout -b feature
 git branch -D feature
 ```
 
-#### 多人协作
+
+
+
+
+## 多人协作
 
 ```bash
 # 查看远程仓库
@@ -268,7 +274,7 @@ git checkout -b dev origin/dev
 
 
 
-#### Rebase
+## Rebase
 
 多次本地提交或从远端pull下来之后, 本地的版本库会同时有多个commit, 通过--graph查看会觉得混乱, 可以使用rebase, 将多个commit合并成一个, 使得分支变得顺滑~.
 
@@ -283,7 +289,7 @@ git rebase --continue
 
 
 
-### 其他
+## 其他
 
 ```bash
 # 忽略特殊文件
