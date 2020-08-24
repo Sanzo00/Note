@@ -5,6 +5,7 @@
 * [设计模型](post/学习笔记/设计模型)
 * [数据库](post/学习笔记/数据库)
 * [mysql](post/学习笔记/mysql)
+* [Redis](post/学习笔记/Redis)
 * [HTTP](post/学习笔记/HTTP)
 * [DNS](post/学习笔记/DNS)
 * [项目相关](post/学习笔记/项目相关)
