@@ -2,7 +2,7 @@
 
 # Sanzo
 
-- 文章管理
+- 学习笔记
 
 [GitHub](<https://github.com/Sanzona>)
 [开始阅读](README.md)

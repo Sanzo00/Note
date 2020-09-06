@@ -5,11 +5,13 @@ window.$docsify = {
   loadNavbar: false, // 导航栏
   loadSidebar: true, // 侧边栏
   subMaxLevel: 5, // 目录级别
+  // themeColor: '#3F51B5',
+  // homepage: 'README.md',
   // auto2top: true, //  切换页面自动顶部
 
   alias: { // 嵌套的侧边栏
-    './post/_sidebar.md': './_sidebar.md',
-    '.*/_navbar.md': './_navbar.md'
+    './.*/_sidebar.md': './_sidebar.md',
+    // '.*/_navbar.md': './_navbar.md'
   },
 
   // 完整配置参数
@@ -45,6 +47,6 @@ window.$docsify = {
     position: "top",
     float: "left",
     isExpected: true, // 时间
-  },
+},
 
 };
