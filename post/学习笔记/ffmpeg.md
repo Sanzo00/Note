@@ -131,8 +131,6 @@ ffmpeg -ss 01:00 -i a.mp3 -to 01:10 -c copy -copyts out.mp3
   -vframes: 指定帧数
   ```
 
-
-
 - 水印
 
   ```bash
@@ -142,12 +140,17 @@ ffmpeg -ss 01:00 -i a.mp3 -to 01:10 -c copy -copyts out.mp3
   overlay=10:30: 左上角，距离左边10，距离右边30
   ```
 
-
-
 - 动图
 
   ```bash
   ffmpeg -i test.mp4 -ss 5 -to 12 -s 360x360 -r 15 out.gif
+  ```
+
+- 将照片合成视频或动图
+
+  ```bash
+  cat ./*.jpg | ffmpeg -framerate 1 -f image2pipe -i - out.gif
+  cat ./*.jpg | ffmpeg -framerate 1 -f image2pipe -i - out.avi
   ```
 
   
