@@ -1,4 +1,4 @@
-# vim设置
+# vim配置
 
 ```bash
 "set paste

@@ -1,3 +1,5 @@
+[b站视频](https://www.bilibili.com/video/BV1Ex411L7oT)
+
 [numpy.ipynb](https://github.com/Sanzona/files/blob/master/ipynb/numpy%E7%AC%94%E8%AE%B0.ipynb)
 
 ## numpy属性

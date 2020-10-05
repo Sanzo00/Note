@@ -1,3 +1,5 @@
+[b站视频](https://www.bilibili.com/video/BV1Jx411L7LU)
+
 [Matplotlib.ipynb](https://github.com/Sanzona/files/blob/master/ipynb/Matplotlib%E7%AC%94%E8%AE%B0.ipynb)
 
 ## 基本使用
