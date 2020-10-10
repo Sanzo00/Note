@@ -58,22 +58,22 @@ $ \begin{Bmatrix}
 
 ## 符号
 
-| 语法                                  | 形式                                |
-| ------------------------------------- | ----------------------------------- |
-| $\neq $                               | \neq                                |
-| $\approx$                             | \approx                             |
-| $\sim$                                | \sim                                |
-| $\infty$                              | \infty                              |
-| $\rightarrow$                         | \rightarrow                         |
-| $\lim\limits_{n \rightarrow +\infty}$ | \lim\limits_{n \rightarrow +\infty} |
-| $\vec {m}$                            | \vec {m}                            |
-| $\hat {y}$                            | \hat {y}                            |
-| $\overset{\frown} {AB}$               | \overset{\frown} {AB}               |
-| $\begin{cases} \end{cases}$           | \begin{cases} \end{cases}           |
-| $\because$                            | \because                            |
-| $\therefore$                          | \therefore                          |
-|                                       |                                     |
-|                                       |                                     |
+| 语法                                               | 形式                                               |
+| -------------------------------------------------- | -------------------------------------------------- |
+| $\neq $                                            | \neq                                               |
+| $\approx$                                          | \approx                                            |
+| $\sim$                                             | \sim                                               |
+| $\infty$                                           | \infty                                             |
+| $\rightarrow$                                      | \rightarrow                                        |
+| $\lim\limits_{n \rightarrow +\infty}$              | \lim\limits_{n \rightarrow +\infty}                |
+| $\vec {m}$                                         | \vec {m}                                           |
+| $\hat {y}$                                         | \hat {y}                                           |
+| $\overset{\frown} {AB}$                            | \overset{\frown} {AB}                              |
+| $\begin{cases} \end{cases}$                        | \begin{cases} \end{cases}                          |
+| $\because$                                         | \because                                           |
+| $\therefore$                                       | \therefore                                         |
+| $\left.\begin{matrix} 1\\2 \end{matrix} \right\}$  | $\left.\begin{matrix} 1\\2 \end{matrix} \right\}$  |
+| $\left\{ \begin{matrix} 1\\2 \end{matrix} \right.$ | $\left\{ \begin{matrix} 1\\2 \end{matrix} \right.$ |
 
 
 

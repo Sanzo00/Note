@@ -1,4 +1,229 @@
+## 基础语法
+
+### print
+
+```python
+# 打印到屏幕
+print('hello Tom')
+print('hello', 'Bob')
+
+# 打印到文件
+fp = open('test.txt', 'a')
+print('hello!', file=fp)
+fp.close()
+
+# 换行
+print('hello\nworld')
+"""
+hello
+world
+"""
+
+# 制表符
+print('hello\tworld') # hello   world
+
+# 回车
+print('hello\rworld') # world
+
+# 退格
+print('hello\bworld') # hellworld
+
+# \
+print('http:\\\\') # http:\\
+
+# 原字符，最后不能是\
+print(r'hello\nworld') # hello\nworld
+
+# 保留字
+import keyword
+print(keyword.kwlist)
+"""
+['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield']
+"""
+```
+
+
+
+### 变量
+
+```python
+name = 'Bob'
+print('标识:', id(name))
+print('类型:', type(name))
+print('值:', name)
+print(id('Bob'))
+
+"""
+标识: 2851856361840
+类型: <class 'str'>
+值: Bob
+2851856361840
+"""
+```
+
+变量中的值存放在一个内存单元中，内存单元的地址对应一个id，变量实际保存这个id。
+
+
+
+### 数据类型
+
+```python
+# 整型
+print('10进制:', 110)       # 10进制: 110
+print('2进制:', 0b110)      # 2进制: 6
+print('8进制:', 0o170)      # 8进制: 120
+print('16进制:', 0x1EAF)    # 16进制: 7855
+
+# 浮点型
+print(1.1+2.2)  # 3.3000000000000003
+from decimal import Decimal
+print(Decimal('1.1') + Decimal('2.2')) # 3.3
+
+# 布尔类型
+T = True
+F = False
+print(T, F)
+
+# 字符串类型
+str1 = 'hello world!'
+str2 = "hello world!"
+str3 = '''hello
+        world!'''
+str4 = """hello
+        world!"""
+print(str1)
+print(str2)
+print(str3)
+print(str4)
+
+# 其他数据类型 -> 字符串
+print("hello" +str(123)) # hello123
+
+# 浮点、字符串整数、布尔类型 -> 整数
+print(int(1.63))    # 1
+print(int('123'))   # 123
+print(int(False))   # 0
+# print(int('1.23')) not allow
+
+# 整型、字符串数字、布尔类型 -> 浮点型
+print(float(2))         # 2.0
+print(float('2'))       # 2.0
+print(float('1.23'))    # 1.23
+print(float(True))      # 1.0
+```
+
+
+
+### 输入
+
+```
+a = int(input("输入a:"))
+b = int(input("输入b:"))
+print('a + b = ', a+b)
+```
+
+
+
+### 算术运算
+
+```python
+# 算术运算
+print(1+1)  # 2
+print(1-1)  # 0
+print(1*2)  # 2
+print(1/2)  # 0.5
+
+# 整除，向下取整
+print(9//4)  # 2
+print(-9//4) # -3
+print(9//-4) # -3
+
+# 取模，被除数-除数*商
+print(9%4)  # 1
+print(9%-4) # -3
+print(-9%4) # 3
+```
+
+
+
+### 赋值运算
+
+```python
+# 链式赋值，浅拷贝
+a = b = c = 10
+print(a, id(a))
+print(b, id(a))
+print(c, id(a))
+'''
+10 140710539465392
+10 140710539465392
+10 140710539465392
+'''
+
+# 参数赋值
+a = 10
+a += 10     # 20
+a -= 10     # 10
+a *= 2      # 20
+a /= 3      # 6.666666666666667
+a //= 2     # 3.0
+a %= 2      # 1.0
+
+# 解包赋值
+a, b= 1, 2
+print(a, b) # 1 2
+
+a, b = b, a
+print(a, b) # 2 1
+```
+
+
+
+### 比较运算符
+
+```python
+a, b = 10, 20
+print('a > b?', a>b)      # False
+print('a < b?', a<b)      # True
+print('a >= b?', a>=b)    # False
+print('a <= b?', a<=b)    # True
+
+l1 = [1, 2, 3]
+l2 = [1, 2, 3]
+print('l1 == l2?', l1==l2)      # True，数值比较
+print('l1 is l2?', l1 is l2)    # False，id比较
+print(l1 is not l2)             # True
+print(id(l1), id(l2))           # 1615788849928 1615816075272
+```
+
+
+
+### 布尔运算符
+
+```python
+a, b = 5, 15
+
+print(a < 10 and b < 10)    # False
+print(a < 10 or b < 10)     # True
+
+print(not False)            # True
+print(not True)             # False
+
+s = 'hello'
+print('w' in s)             # False
+print('w' not in s)         # True
+```
+
+
+
+
+
+
+
+
+
 #### 复数
+
 - 复数=实数+虚数
 - 虚数部分必须有j
 - 可以没有虚部，可以没有实部
