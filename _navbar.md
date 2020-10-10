@@ -1,4 +1,3 @@
-* 介绍
-	* [简介](README.md)
 
-* 文章
+* [主页](README.md)
+* [打赏](post/其他/donate.md)

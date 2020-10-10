@@ -7,3 +7,4 @@
 * [开机启动(rc.local)](post/其他/ubuntu开机启动(rc.local))
 * [ubuntu软件](post/其他/ubuntu软件)
 * [vim配置](post/其他/vim配置)
+* [打赏](post/其他/donate)

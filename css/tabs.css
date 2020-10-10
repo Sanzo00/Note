@@ -1,0 +1,11 @@
+.docsify-tabs__tab--active[data-tab="active state"] {
+    box-shadow: none;
+    background: #13547a;
+    color: white;
+}
+.docsify-tabs__content[data-tab-content="active state"] {
+  background-image: linear-gradient(0deg, #80d0c7 0%, #13547a 100%);
+}
+.docsify-tabs__content[data-tab-content="active state"] p strong {
+  color: white;
+}
