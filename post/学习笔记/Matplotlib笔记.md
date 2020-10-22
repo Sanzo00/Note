@@ -1,3 +1,9 @@
+---
+
+typora-copy-images-to: img\matplotlib
+
+---
+
 [b站视频](https://www.bilibili.com/video/BV1Jx411L7LU)
 
 [Matplotlib.ipynb](https://github.com/Sanzona/files/blob/master/ipynb/Matplotlib%E7%AC%94%E8%AE%B0.ipynb)
@@ -394,8 +400,39 @@ ax.set_zlim(-2, 2)
 plt.show()
 ```
 
-
 ![png](img/matplotlib/output_22_0.png)
+
+
+
+调和平均数（倒数平均数）：$2\frac{XY}{X+Y}$
+
+```python
+# 调和平均数
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+
+fig = plt.figure()
+ax = Axes3D(fig)
+
+x = np.linspace(0, 1, 20)
+y = np.linspace(0, 1, 20)
+x, y = np.meshgrid(x, y)
+z = 2 * (x*y)/(x+y)
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.plot_surface(x, y, z, rstride=1, cstride=1, cmap=plt.get_cmap('rainbow'))
+
+plt.show()
+```
+
+![image-20201018235440320](img/matplotlib/image-20201018235440320.png)
+
+
+
+
 
 
 ## subplot

@@ -4,7 +4,6 @@
 * [Numpy笔记](post/学习笔记/Numpy笔记)
 * [Pandas笔记](post/学习笔记/Pandas笔记)
 * [Matplotlib笔记](post/学习笔记/Matplotlib笔记)
-* [markdown语法](post/学习笔记/markdown语法)
 * [线性代数](post/学习笔记/线性代数)
 * [微积分](post/学习笔记/微积分)
 * [计算机网络](post/学习笔记/计算机网络)
@@ -21,4 +20,3 @@
 * [muduo笔记](post/学习笔记/muduo学习笔记)
 * [Linux命令](post/学习笔记/Linux命令)
 * [shell笔记](post/学习笔记/shell笔记)
-* [ffmpeg](post/学习笔记/ffmpeg)
