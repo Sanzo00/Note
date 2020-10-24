@@ -83,7 +83,7 @@ $ \begin{Bmatrix}
 | $\xi$                                              | \xi                                              |
 | $\phi$                                             | \phi                                             |
 | $\omega$                                           | \omega                                           |
-|                                                    |                                                  |
+| $\partial$                                         | \partial                                         |
 
 
 

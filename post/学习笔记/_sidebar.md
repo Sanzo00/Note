@@ -1,5 +1,5 @@
 * [返回](README.md)
-* [机器学习](post/学习笔记/机器学习笔记)
+* [机器学习](post/学习笔记/机器学习)
 * [python笔记](post/学习笔记/python笔记)
 * [Numpy笔记](post/学习笔记/Numpy笔记)
 * [Pandas笔记](post/学习笔记/Pandas笔记)

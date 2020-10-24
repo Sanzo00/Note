@@ -385,8 +385,9 @@ ax = Axes3D(fig)
 X = np.arange(-4, 4, 0.25)
 Y = np.arange(-4, 4, 0.25)
 X, Y = np.meshgrid(X, Y)
-R = np.sqrt(X ** 2 + Y ** 2)
+
 # height value
+R = np.sqrt(X ** 2 + Y ** 2)
 Z = np.sin(R)
 
 # 3D图像
@@ -396,6 +397,9 @@ ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=plt.get_cmap('rainbow'))
 # zdir表示投影的平面，offset位置
 ax.contourf(X, Y, Z, zdir='z', offset=-2, cmap=plt.get_cmap('rainbow'))
 ax.set_zlim(-2, 2)
+
+# 手动设置角度
+# ax.view_init(elev=10, azim=80)
 
 plt.show()
 ```
@@ -432,7 +436,29 @@ plt.show()
 
 
 
+3维散点图
 
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+ 
+data = np.random.randint(0, 10, 24).reshape((8, 3))
+x = data[:, 0]
+y = data[:, 1]
+z = data[:, 2] 
+ 
+fig = plt.figure()
+ax = Axes3D(fig)
+ax.scatter(x, y, z)
+ 
+ax.set_zlabel('Z')
+ax.set_ylabel('Y')
+ax.set_xlabel('X')
+plt.show()
+```
+
+![image-20201024000921585](img/matplotlib/image-20201024000921585.png)
 
 
 ## subplot
