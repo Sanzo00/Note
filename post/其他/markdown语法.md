@@ -39,6 +39,23 @@ $ \begin{bmatrix}
 
 
 ```
+$
+\begin{pmatrix}
+1 & 2 \\ 
+3 & 4 \\ 
+\end{pmatrix}
+$
+```
+
+$
+\begin{pmatrix}
+1 & 2 \\ 3 & 4\\ 
+\end{pmatrix}
+$
+
+
+
+```
 $$
  \begin{Bmatrix}
    1 & 2 & 3 \\
@@ -53,6 +70,58 @@ $ \begin{Bmatrix}
    4 & 5 & 6 \\
    7 & 8 & 9
   \end{Bmatrix} $
+
+```
+$
+\begin{vmatrix}
+1 & 2 \\ 
+3 & 4 \\ 
+\end{vmatrix}
+$
+```
+
+$
+\begin{vmatrix}
+1 & 2 \\ 
+3 & 4 \\ 
+\end{vmatrix}
+$
+
+
+
+```
+$
+\begin{Vmatrix}
+1 & 2 \\ 
+3 & 4 \\ 
+\end{Vmatrix}
+$
+```
+
+$
+\begin{Vmatrix}
+1 & 2 \\ 
+3 & 4 \\ 
+\end{Vmatrix}
+$
+
+
+
+## 等号对齐
+
+```
+\begin{aligned}
+y &= f(x) \\
+&= (x+2)^2 \\
+&= x^2+4x+4
+\end{aligned}
+```
+
+$\begin{aligned}
+y &= f(x) \\
+&= (x+2)^2 \\
+&= x^2+4x+4
+\end{aligned}$
 
 
 
@@ -84,21 +153,18 @@ $ \begin{Bmatrix}
 | $\phi$                                             | \phi                                             |
 | $\omega$                                           | \omega                                           |
 | $\partial$                                         | \partial                                         |
+| $\cdot$                                            | \cdot                                            |
+| $\cdots$                                           | \cdots                                           |
+| $\vdots$                                           | \vdots                                           |
+| $\ddots$                                           | \ddots                                           |
+| $\bar{x}$                                          | \bar{x}                                          |
+| $\hat{x}$                                          | \hat{x}                                          |
+| $\check{x}$                                        | \check{x}                                        |
+| $\tilde{x}$                                        | \tilde{x}                                        |
+| $\vec{x}$                                          | \vec{x}                                          |
+| $\dot{x}$                                          | \dot{x}                                          |
 
 
 
-## 等号对齐
 
-```
-\begin{aligned}
-y &= f(x) \\
-&= (x+2)^2 \\
-&= x^2+4x+4
-\end{aligned}
-```
 
-$\begin{aligned}
-y &= f(x) \\
-&= (x+2)^2 \\
-&= x^2+4x+4
-\end{aligned}$
