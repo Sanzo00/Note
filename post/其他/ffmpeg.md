@@ -178,6 +178,16 @@ ffmpeg -ss 01:00 -i a.mp3 -to 01:10 -c copy -copyts out.mp3
   
   ```
 
+- 照片和音频合成视频
+
+  ```
+  ffmpeg -r 60 -f image2 -loop 1 -i b0001.png -i B0001.mp3 -s 1920x1080 -pix_fmt yuvj420p -t 53 -vcodec libx264 B0001.mp4
+  ```
+
+  -r: 帧数，-f：图片格式，-loop：循环，-i：输入，-s：分辨率，-pix_fmt：图片输入格式，-t：时长，-vcodes：编码。
+
+
+
 
 
 ## 录屏、直播
