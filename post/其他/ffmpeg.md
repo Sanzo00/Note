@@ -121,6 +121,14 @@ ffmpeg -ss 01:00 -i a.mp3 -to 01:10 -c copy -copyts out.mp3
 
 
 
+## 合并音频
+
+```bash
+ffmpeg -i "concat:1.mp3|2.mp3" -acodec copy output.mp3
+```
+
+
+
 ## 截图、水印、动图
 
 - 截图

@@ -1,5 +1,6 @@
 * [返回](README.md)
 * [docsify快速上手](post/其他/docsify)
+* [EnglishPod](post/其他/English)
 * [markdown语法](post/其他/markdown语法)
 * [桌面任务栏透明化](post/其他/桌面任务栏透明化)
 * [Atom配置](post/其他/Atom配置)
