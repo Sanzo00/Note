@@ -1,5 +1,3 @@
-# Linux命令
-
 ## date
 
   ```bash
@@ -55,3 +53,16 @@ kill %n
 # 从当前shell移除
 disown -h %1
   ```
+
+
+
+## 端口信息
+
+```bash
+# 查看占用端口的PID
+lsof -i:port
+netstat -tunpl | grep port
+
+
+```
+

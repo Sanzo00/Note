@@ -1,5 +1,3 @@
-# V2ray
-
 ## 服务端配置
 
 
@@ -14,9 +12,7 @@
 
 ## 客户端设置
 
-
-
-- 安卓和windows下有对应的客户端, [github](https://github.com/v2ray/v2ray-core/releases)
+- windows、linux、macos对应的客户端安装包地址: [github](https://github.com/v2ray/v2ray-core/releases)
 
 - IOS可以用Shadowrocket软件导入配置URL
 
@@ -25,14 +21,42 @@
   ```bash
   mkdir v2ray
   cd v2ray
-  # 下载go.sh
-  wget https://install.direct/go.sh
-  chmod +x go.sh
-  # github下载v2ray-linux-64.zip
-  # 安装v2ray
-  sudo bash go.sh --local ./v2ray-linux-64.zip
-  # 将服务端的配置json导出, 保存到linux本地的/etc/v2ray/config.json
-  # 启动服务
-  service v2ray restart
+  
+  wget https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh
+  
+  sudo bash install-release.sh
+  
+  # installed: /usr/local/bin/v2ray
+  # installed: /usr/local/bin/v2ctl
+  # installed: /usr/local/share/v2ray/geoip.dat
+  # installed: /usr/local/share/v2ray/geosite.dat
+  # installed: /usr/local/etc/v2ray/config.json
+  # installed: /var/log/v2ray/
+  # installed: /var/log/v2ray/access.log
+  # installed: /var/log/v2ray/error.log
+  # installed: /etc/systemd/system/v2ray.service
+  # installed: /etc/systemd/system/v2ray@.service
+  
+  # 将客户端配置文件拷贝到 /usr/local/etc/v2ray/config.json
   ```
+
+  ```bash
+  # 可以自己指定安装包, v2ray-linux-64.zip
+  sudo bash install-release.sh --local ./v2ray-linux-64.zip
+  ```
+
+- proxychains
+
+  ```bash
+  # 下载proxychains，支持终端代理。
+  sudo apt install proxychains
+  
+  # 修改配置文件
+  sudo vim /etc/proxychains.conf 
+  最后一行改为对应自己的端口
+  # socks5    127.0.0.1 9050
+  socks5    127.0.0.1 10800
+  ```
+
+  
 

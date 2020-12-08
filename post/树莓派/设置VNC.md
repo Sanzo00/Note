@@ -1,42 +1,58 @@
-## 树莓派设置VNC
+---
 
-VNC可以远程显示桌面方便管理,下面以linux为例安装配置VNC Viewer.
+typora-copy-images-to: img
 
-1. 首先在树莓派开启VNC服务
+---
 
-   ```bash
-   sudo raspi-config
-   ```
 
-   ![](img/Screenshot from 2019-09-30 09-20-08.png)
-   
-   ![](img/Screenshot from 2019-09-30 09-20-29.png)
-   
-   ![](img/Screenshot from 2019-09-30 09-20-40.png)
-   
-   ![](img/Screenshot from 2019-09-30 09-21-02.png)
-   
-2. 下载VNC Viewer
 
-   [下载链接](https://www.realvnc.com/en/connect/download/viewer/linux/)
-   
-3. 连接树莓派
-   ![](img/Screenshot from 2019-09-30 09-26-44.png)
-   
-   ![](img/Screenshot from 2019-09-30 09-34-11.png)
-4. 常见错误
-   ```Cannot currently show the Desktop```
-   通过设置树莓派的分辨率解决
-   ```bash
-   sudo raspi-config
-   ```
+## 开启VNC服务
 
-   ![](img/Screenshot from 2019-09-30 12-25-58.png)
-   
-   ![](img/Screenshot from 2019-09-30 12-29-47.png)
-   
-   ![](img/Screenshot from 2019-09-30 12-30-37.png)
-   
-   
-   
+```bash
+sudo raspi-config
+```
 
+![image-20201208185920659](img/image-20201208185920659.png)
+
+
+
+![image-20201208185930041](img/image-20201208185930041.png)
+
+
+
+## 客户端下载
+
+[realVNC](https://www.realvnc.com/en/connect/download/viewer/windows/)
+
+![image-20201208185519930](img/image-20201208185519930.png)
+
+
+
+
+
+![image-20201208185650408](img/image-20201208185650408.png)
+
+
+
+
+
+
+
+
+
+## 常见错误
+
+![Snipaste_2020-12-07_21-56-04](img/Snipaste_2020-12-07_21-56-04.png)
+可以通过通过设置树莓派的分辨率解决。
+
+```bash
+sudo raspi-config
+```
+
+![image-20201208185240101](img/image-20201208185240101.png)
+
+![image-20201208185256301](img/image-20201208185256301.png)
+
+选择适合自己的分辨率，尽量先别选Default...
+
+![image-20201208185311746](img/image-20201208185311746.png)
