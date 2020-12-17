@@ -312,18 +312,6 @@ noisy、rude、to disturb、to interrupt、to whisper。
 
 
 
-ffmpeg -i englishpod_B0002pr.mp3 -ss 0:47 -to 1:26 -acodec copy 1.mp3
-
-ffmpeg -i "concat:1.mp3|2.mp3" -acodec copy output.mp3
-
-ffmpeg -r 60 -f image2 -loop 1 -i output.png -i output.mp3 -s 1920x1080 -pix_fmt yuvj420p -t 53 -vcodec libx264 B0007.mp4
-
-
-
-
-
-
-
 ## C0010 - Driving Sales
 
 A：All right, people. We're holding this meeting today because we've got to do something about our seles, 
@@ -344,7 +332,7 @@ D：Do we have any ideas yet?
 
 C：Yes Mr. Swan, we were kind of considering a two-for-one offer to get more competitive.
 
-D：A two-for-one promotion? Hmm. I kind of like the sound of that. It Sounds like something we should consider.
+D：A two-for-one promotion? Hmm. I kind of like the sound of that. It sounds like something we should consider.
 
 A：Yeah, exactly. Just what I was thinking! In fact, that's a **brilliant** idea! I'm glad we thought of that. Very creative.
 
@@ -354,6 +342,96 @@ competitive、win sales、sales strategy、sales cycle、to outsell、customer l
 
 
 
+
+
+## C0011 - New Guy in Town
+
+A：Oh, **I don't know if you heard**, but someone moved into that old house down th road.
+
+B：Yeah, I know. I met the owner of the house yesterday as he was moving in. His name is Armand.
+
+A：Really? What's he like? You have to **fill me in**.
+
+B：Actually, he's a bit strange. I don't know... I've got **a bad feeling** about him.
+
+A：Really? Why?
+
+B：Well, yesterday I brought over a housewarming gift, but Armand started acting really **weird**, 
+
+​	  and then he practically **kicked me out**! I tried to, sort of, peek into his house, 
+
+​      but everything was so dark inside that I couldn't really get a good look. 
+
+ 	 The whole thing really **creeped me out**.
+
+A：Well, **you'll never guess** what I saw this morning. A delivery truck pulled into his driveway, 
+
+​	  and it dropped off a long, rectangular box. It almost looked like a coffin!
+
+B：You see! Why would he...
+
+C：Hello ladies...
+
+B：Ah, Armand! You **scared the heck out of me**! This is my friend Doris.
+
+C：A pleasure to meet you... If you are not doing anything tonight, 
+
+​      I would like to have you both for dinner. I mean... I woule like to have you both over for dinner.
+
+
+
+bizarre、creepy、vampire、have you heard、guess what。
+
+
+
+
+
+
+
+## C0012 - Cleaning the House
+
+A：Honey, the house is **such a mess**! I need you to help me **tidy up** a bit. 
+
+​	  My boss and her husband are coming over for dinner and the house needs to be **spotless**!
+
+B：I'm **in the middle of something** right now. I'll be there in a second.
+
+A：This can't wait! I need your help now!
+
+B：Alright, alright. I'm coming.
+
+A：Ok, here's a list of **chores** we need to get done. I'll do the dishes and get all the **groceries** for tonight.
+
+​	   You can sweep and mop the floors. Oh, and the furniture needs to be dusted.
+
+B：You know what, I have to pick something up at the mall, 
+
+​	  so why don't you clean the floors and I'll go to the supermarket and get all the groceries.
+
+A：Sure that's fine. Here is the list of all the things you need to get. 
+
+​	  Don't forget anything! And can you pick up a bottle of wine on your way home?
+
+B：Hey, honey I'm back. Wow, the house looks really good!
+
+A：Great! Can you set the table?
+
+B：Just a sec I'm just gonna vacuum this rug real fast.
+
+A：Wait! Don't turn it on...
+
+
+
+immaculate: 完美的、无暇的；do the laundry: 洗衣服；vacuum: 真空的、真空吸尘器；rug: 小地毯、假发。
+
+
+
+
+
+
+
+
+
 ## B000 - 
 
 A：
@@ -384,61 +462,13 @@ B：
 
 
 
-## B000 - 
+ffmpeg -i englishpod_B0002pr.mp3 -ss 0:47 -to 1:26 -acodec copy 1.mp3
 
-A：
+ffmpeg -i "concat:1.mp3|2.mp3" -acodec copy output.mp3
 
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
+ffmpeg -r 60 -f image2 -loop 1 -i output.png -i output.mp3 -s 1920x1080 -pix_fmt yuvj420p -t 53 -vcodec libx264 B0007.mp4
 
 
-
-
-
-## B000 - 
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
 
 
 

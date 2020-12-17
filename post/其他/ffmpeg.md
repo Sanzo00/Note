@@ -78,22 +78,69 @@ libx264: h264的软件编码器
 
 
 
-## 提取、合并音视频
+## 视频处理
 
 ```bash
+# copy表示按照原视频音频的编码格式
+
 # 只提取视频
 ffmpeg -i input.mp4 -vcodec copy -an v.mp4
+
 # 只提取音频
 ffmpeg -i input.mp4 -acodec copy -vn a.m4a
+
 # 合并音频和视频
 ffmpeg -i a.m4a -i v.mp4 -c copy out.mp4
 
-copy表示按照原视频音频的编码格式
+# 截取视频
+ffmpeg -ss 00:00:00 -t 00:00:30 -i input.mp4 -vcodec copy -acodec copy output.mp4
 ```
 
+视频拼接
+
+- 使用mpeg文件进行拼接（文件大、速度慢）
+
+  先讲mp4转为mpg格式，然后合并转换为mp4格式。
+
+  ```bash
+  ffmpeg -i 1.mp4 -qscale 4 1.mpg
+  ffmpeg -i 2.mp4 -qscale 4 2.mpg
+  cat 1.mpg 2.mpg | ffmpeg -f mpeg -i - -qscale 6 -vcodec mpeg4 output.mp4
+  ```
+
+- 使用ts拼接（文件小、速度快）
+
+  先讲mp4转为ts格式，然后合并转换为mp4格式。
+
+  ```bash
+  ffmpeg -i 1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 1.ts
+  ffmpeg -i 2.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 2.ts
+  ffmpeg -i "concat:1.ts|2.ts" -acodec copy -vcodec copy -absf aac_adtstoasc output.mp4
+  
+  ```
+
+- 照片和音频合成视频
+
+  ```
+  ffmpeg -r 60 -f image2 -loop 1 -i b0001.png -i B0001.mp3 -s 1920x1080 -pix_fmt yuvj420p -t 53 -vcodec libx264 B0001.mp4
+  ```
+
+  -r: 帧数，-f：图片格式，-loop：循环，-i：输入，-s：分辨率，-pix_fmt：图片输入格式，-t：时长，-vcodes：编码。
+
+- 通过文件拼接
+
+  ```bash
+  ffmpeg -f concat -i list.txt -c copy concat.mp4
+  
+  file 1.mp4
+  file 2.mp4
+  ```
+
+  
 
 
-## 截取音频
+
+## 音频处理
 
 ```bash
 # 截取[1分钟，1分钟10秒]
@@ -104,6 +151,9 @@ ffmpeg -i a.mp3 -ss 60 -t 10 -acodec copy out.mp3
 
 # 截取后10s音频
 ffmpeg -sseof -00:10  -i a.mp3   -acodec copy out.mp3
+
+# 合并音频
+ffmpeg -i "concat:1.mp3|2.mp3" -acodec copy output.mp3
 
 -ss: 开始时间
 -to: 结束时间
@@ -121,15 +171,9 @@ ffmpeg -ss 01:00 -i a.mp3 -to 01:10 -c copy -copyts out.mp3
 
 
 
-## 合并音频
-
-```bash
-ffmpeg -i "concat:1.mp3|2.mp3" -acodec copy output.mp3
-```
 
 
-
-## 截图、水印、动图
+## 图片处理
 
 - 截图
 
@@ -163,60 +207,27 @@ ffmpeg -i "concat:1.mp3|2.mp3" -acodec copy output.mp3
 
   
 
-## 合并视频
-
-- 使用mpeg文件进行拼接（文件大、速度慢）
-
-  先讲mp4转为mpg格式，然后合并转换为mp4格式。
-
-  ```bash
-  ffmpeg -i 1.mp4 -qscale 4 1.mpg
-  ffmpeg -i 2.mp4 -qscale 4 2.mpg
-  cat 1.mpg 2.mpg | ffmpeg -f mpeg -i - -qscale 6 -vcodec mpeg4 output.mp4
-  ```
-
-- 使用ts拼接（文件小、速度快）
-
-  先讲mp4转为ts格式，然后合并转换为mp4格式。
-
-  ```bash
-  ffmpeg -i 1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 1.ts
-  ffmpeg -i 2.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 2.ts
-  ffmpeg -i "concat:1.ts|2.ts" -acodec copy -vcodec copy -absf aac_adtstoasc output.mp4
-  
-  ```
-
-- 照片和音频合成视频
-
-  ```
-  ffmpeg -r 60 -f image2 -loop 1 -i b0001.png -i B0001.mp3 -s 1920x1080 -pix_fmt yuvj420p -t 53 -vcodec libx264 B0001.mp4
-  ```
-
-  -r: 帧数，-f：图片格式，-loop：循环，-i：输入，-s：分辨率，-pix_fmt：图片输入格式，-t：时长，-vcodes：编码。
 
 
 
 
+## 录屏
 
-## 录屏、直播
+只能录制屏幕不包含音频。
 
-- 录屏
+```bash
+ffmpeg -f gdigrab -i desktop rec.mp4
 
-  只能录制屏幕不包含音频。
+-f: 格式化
+gdigrab: 用来捕获视频设备
+```
 
-  ```bash
-  ffmpeg -f gdigrab -i desktop rec.mp4
-  
-  -f: 格式化
-  gdigrab: 用来捕获视频设备
-  ```
 
-- 直播
 
-  ```bash
-  ffmpeg -re -i rec.mp4 网站视频的编码 -f flv "rtmp地址/推流码"
-  ```
+## 直播
 
-  
+```bash
+ffmpeg -re -i rec.mp4 网站视频的编码 -f flv "rtmp地址/推流码"
+```
 
-  
+

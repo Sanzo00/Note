@@ -4,6 +4,7 @@
 * [ssh隧道](post/树莓派/ssh隧道)
 * [搭建WordPress](post/树莓派/搭建WordPress)
 * [配置WordPress](post/树莓派/配置WordPress)
+* [避免分区损坏](post/树莓派/避免分区损坏)
 * [修复分区](post/树莓派/修复分区)
 * [配置WIFI](post/树莓派/配置WIFI)
 * [共享打印机](post/树莓派/共享打印机)
