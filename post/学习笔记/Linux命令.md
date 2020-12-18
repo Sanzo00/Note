@@ -66,3 +66,50 @@ netstat -tunpl | grep port
 
 ```
 
+
+
+
+
+## head/tail
+
+```bash
+# 前1000行
+head -n 1000 input.txt > output.txt
+
+# 后1000行
+tail -n 1000 input.txt > output.txt
+```
+
+
+
+## wc
+
+```bash
+# 查看文件有多少行
+wc -l data.txt
+```
+
+
+
+
+
+## gzip
+
+```bash
+gzip xxx.gz -d DIR
+```
+
+
+
+## tar
+
+```bash
+tar -xzvf xx.tar.gz -C DIR
+```
+
+
+
+
+
+
+

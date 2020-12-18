@@ -432,6 +432,38 @@ immaculate: 完美的、无暇的；do the laundry: 洗衣服；vacuum: 真空�
 
 
 
+## C0013 - Out Of Control Spending 
+
+A：Ok, so now the last point on our agenda. Jill, let's **go over** the profit and loss statement.
+
+B：Great. Well, the main issue here, as you can see, is that our expenses are **through the roof**.
+
+A：Let's see... These numbers are off the charts! What's going on here!
+
+B：Well, um, sir, the company **expenditures** on entertainment and travel are **out of control**. 
+
+​	  Look at these bills for example. Just this month we've paid over twenty thousand dollars for hotel charges!
+
+A：Ok, thank you. I'll **look into** it.
+
+B：The list **goes on and on**. Here, this is a bill for five thousand dollars for spa treatments!
+
+A：Thank you; that will be all. I'll **take care of** it.
+
+B：Look at this one sir, eight thousand dollars were spent in one night at a place called "Wild Things"?!
+
+A：Ok, I get it!! Thank you for your very thorough analysis!
+
+
+
+revenue：财政收入；cash flow：资金流动；the bottom line：底线、净利润；
+
+agenda：日程表；expenditures：开支；charts：排行榜、图标；finances、assets：资产；
+
+
+
+
+
 ## B000 - 
 
 A：
@@ -470,37 +502,7 @@ ffmpeg -r 60 -f image2 -loop 1 -i output.png -i output.mp3 -s 1920x1080 -pix_fmt
 
 
 
-
-
-
-
-## B000 - 
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-
+## 
 
 
 
