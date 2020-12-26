@@ -464,6 +464,124 @@ agenda：日程表；expenditures：开支；charts：排行榜、图标；finan
 
 
 
+## B0014 - I'm in Debt 
+
+A：Hello, I'm here to see Mr. Corleone.
+
+B：Right this way, sir.
+
+C：Charlie! What can I do for you?
+
+B：Mr. Corlone, I'm really sorry to trouble you, but I need your help.
+
+C：Anything for you, Charlie! Your father was like a brother to me.
+
+B：Well, sir, you see, this **recession** has **hit me pretty hard**; I lost my job and I'm in a lot of **debt**.
+
+C：I see ...
+
+B：Yeah, you know, I've got credit card bills, car payments, I've got to pay my mortgage; 
+
+​	  and **on top of all that**, I have to pay my son's college tuition.
+
+C：So you're asking for a loan.
+
+B：Well, I just thought maybe you could help me out.
+
+C：What? At a time like this? I'm broke too, you know! 
+
+​	  You're not the only one who has been hit by the recession! 
+
+​	  I lost my money in the stock market crash! Go on! Get outa here!
+
+
+
+tuition: 学费；mortgage: 抵押；recession: 衰退、不景气；unemployed: 失业；downturn: 衰退、低迷时期；
+
+
+
+
+
+
+
+## C0015 - I'm sorry, I love you
+
+A：Whoa, whoa, what's going on? Watch out!
+
+B：Hey, watch where you're going!
+
+A：Oh, no! I'm so sorry! Are you all right?
+
+B：Oh... I don't know.
+
+A：I **feel terrible**, I really didn't mean to **knock you over**. My tire, just exploded, 
+
+​	  and I lost control of my bike. Really, it was an accident. Please accept my apologies.
+
+B：Just let me try to stand up.
+
+SONG: Why do birds suddenly appear, every time you are near?
+
+B：Oh, wait a second, you seem really **familiar**, I think I know you from somewhere.
+
+A：Yeah, That's right! I think we have met somewhere before. We met at Aaron's place last weekend! 
+
+​	  What a **coincidence**! But anyway, I'm glad to see that you're not too badly hurt, 
+
+​	  and I should probably get going. I have a nine o'clock meeting.
+
+B：Ouch! My ankle! I think it's broken! You can't just leave me like this! Are you calling an ambulance?
+
+A：Nope, I'm canceling my appointment so that I can stay here with you.
+
+SONG: Do you remember when we met? That's the day I knew you were my pet. 
+
+​		     I wanna tell you how much I love you.
+
+
+
+
+
+
+
+## B0016 - Turn left here!
+
+A：**Hurry up**, get in.
+
+B：I'm in, let's go!
+
+A：OK, **make a left** here... no wait, I meant make a right. Come on, **speed up**!
+
+B：Geez! What's the rush?
+
+A：Don't worry about it, just drive. Oh, no, the light is about to change... **step on it**!
+
+B：Are you nuts! I'm not going to run a red light!
+
+A：Whatever. Just turn right here... The freeway will be packed at this hour... 
+
+​	  let's take a side street. Go on! Get out of our way! Move, move!
+
+B：What's your problem! Geez. **Having a fit** is not going to help!
+
+A：Here, I know a short cut... just go down here, and we'll **cut through** Ashburn Heights. 
+
+​	  Let's go, let's go! Watch out for that lady!
+
+B：I'm going as fast as I can!
+
+A：Yes! We made it. 5:58, just before the library closes.
+
+B：You're such a geek!
+
+
+
+road rage：公路暴力；back street：小街；u-turn：掉头；
+
+
+
+
+
 ## B000 - 
 
 A：
@@ -494,101 +612,17 @@ B：
 
 
 
-ffmpeg -i englishpod_B0002pr.mp3 -ss 0:47 -to 1:26 -acodec copy 1.mp3
+
+
+
+
+
+
+ffmpeg -i englishpod_.mp3 -ss 0:47 -to 1:26 -acodec copy 1.mp3
 
 ffmpeg -i "concat:1.mp3|2.mp3" -acodec copy output.mp3
 
-ffmpeg -r 60 -f image2 -loop 1 -i output.png -i output.mp3 -s 1920x1080 -pix_fmt yuvj420p -t 53 -vcodec libx264 B0007.mp4
-
-
-
-## 
-
-
-
-## B000 - 
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-
-
-
-
-## B000 - 
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-
-
-## B000 - 
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
-
-A：
-
-B：
+ffmpeg -r 60 -f image2 -loop 1 -i output.png -i output.mp3 -s 1920x1080 -pix_fmt yuvj420p -t 2:10 -vcodec libx264 output.mp4
 
 
 

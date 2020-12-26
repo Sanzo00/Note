@@ -30,8 +30,6 @@
 
 ## 联系我
 
-**QQ**: 1352628136
-
 **Email**: arrangeman@163.com
 
 **CSDN**: [blog.csdn.net/henuyh](https://blog.csdn.net/henuyh)

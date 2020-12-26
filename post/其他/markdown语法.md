@@ -135,6 +135,7 @@ y &= f(x) \\
 | $\infty$                                           | \infty                                           |
 | $\rightarrow$                                      | \rightarrow                                      |
 | $\lim\limits_{n \rightarrow +\infty}$              | \lim\limits_{n \rightarrow +\infty}              |
+| $\int$                                             | \int                                             |
 | $\vec {m}$                                         | \vec {m}                                         |
 | $\hat {y}$                                         | \hat {y}                                         |
 | $\overset{\frown} {AB}$                            | \overset{\frown} {AB}                            |
@@ -163,6 +164,9 @@ y &= f(x) \\
 | $\tilde{x}$                                        | \tilde{x}                                        |
 | $\vec{x}$                                          | \vec{x}                                          |
 | $\dot{x}$                                          | \dot{x}                                          |
+| $\oplus$                                           | \oplus                                           |
+
+
 
 
 

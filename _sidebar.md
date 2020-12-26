@@ -1,6 +1,7 @@
 <!-- * [简介](README.md) -->
 * [C++](post/C++/)
 * [python](post/python/)
+* [Paper](post/Paper/)
 * [学习笔记](post/学习笔记/)
 * [算法与数据结构](post/算法与数据结构/)
 * [Linux 系统编程](post/Linux系统编程/)
