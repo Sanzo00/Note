@@ -28,13 +28,3 @@
 
 
 
-## 联系我
-
-**Email**: arrangeman@163.com
-
-**CSDN**: [blog.csdn.net/henuyh](https://blog.csdn.net/henuyh)
-
-**Github**: [github.com/Sanzona](https://github.com/Sanzona)
-
-**B站**: [Sanzona](https://space.bilibili.com/297299131)
-
