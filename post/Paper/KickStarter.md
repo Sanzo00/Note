@@ -8,5 +8,3 @@ typora-copy-images-to: img\kickstarter
 https://www.cs.ucr.edu/~gupta/research/Publications/Comp/asplos17-kickstarter.pdf
 ```
 
-
-

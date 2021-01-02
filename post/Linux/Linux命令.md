@@ -62,8 +62,6 @@ disown -h %1
 # 查看占用端口的PID
 lsof -i:port
 netstat -tunpl | grep port
-
-
 ```
 
 

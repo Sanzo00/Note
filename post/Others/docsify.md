@@ -247,16 +247,16 @@ path-to-the-pdf-file
 ​```
 ```
 
-```pdf
-https://wugenqiang.gitee.io/file-storage/pdf.js/web/viewer.html?file=../../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%91%A8%E5%BF%97%E5%8D%8E-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0_.pdf
+
+
+```
+post/Others/pdf/docsify.pdf
 ```
 
-```pdf
-https://raw.githubusercontent.com/mynane/PDF/master/Go%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B.pdf
-```
+
 
 ```pdf
-https://www.usenix.org/system/files/cset20-paper-berkovich.pdf
+post/Others/pdf/docsify.pdf
 ```
 
 
@@ -278,6 +278,10 @@ https://www.usenix.org/system/files/cset20-paper-berkovich.pdf
 ```
 
 
+
+```
+[bilibili](//player.bilibili.com/player.html?aid=582621141&bvid=BV1x64y1u7t9&cid=172456678&page=1 ':include :type=vedio')
+```
 
 [bilibili](//player.bilibili.com/player.html?aid=582621141&bvid=BV1x64y1u7t9&cid=172456678&page=1 ':include :type=vedio')
 

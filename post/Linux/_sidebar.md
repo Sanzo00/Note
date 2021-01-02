@@ -12,5 +12,6 @@
 * [线程相关](post/Linux/线程相关)
 * [同步](post/Linux/同步)
 * [网络编程](post/Linux/网络编程)
-* [shell编程](post/Linux/shell编程)
+* [shell笔记](post/Linux/shell)
+* [Linux命令](post/Linux/Linux命令)
 * [静态库链接问题](post/Linux/静态库链接问题)

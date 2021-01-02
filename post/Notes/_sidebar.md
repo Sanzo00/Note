@@ -14,5 +14,5 @@
 * [项目相关](post/Notes/项目相关)
 * [git笔记](post/Notes/git笔记)
 * [muduo笔记](post/Notes/muduo笔记)
-* [Linux命令](post/Notes/Linux命令)
-* [shell笔记](post/Notes/shell笔记)
+
+  
