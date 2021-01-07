@@ -18,11 +18,11 @@
 
 * [KickStarter](post/Paper/KickStarter)
 
+* [NeuGraph](post/Paper/NeuGraph)
+
 * [AGL](post/Paper/AGL)
 
 * [Roc](post/Paper/Roc)
-
-* [NeuGraph](post/Paper/NeuGraph)
 
 * [Hogwild](post/Paper/Hogwild)
 
