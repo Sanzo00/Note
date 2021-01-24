@@ -1414,3 +1414,20 @@ with open('test.txt', 'rb') as src_file:
 ![image-20201015140552420](img/python/image-20201015140552420.png)
 
  
+
+## 其他
+
+> axis
+
+二维数组的shape是一个元组：（x，y）
+
+axis = 0表示行，axis = 1表示列。
+
+
+
+一维数组的shape为：（y,）
+
+axis = 0表示列。
+
+
+

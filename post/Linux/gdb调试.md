@@ -22,6 +22,9 @@
 | backtrace      | bt   | 产看函数调用信息(堆栈)                                       |
 | frame          | f    | 查看栈帧                                                     |
 | quit           | q    | 退出GDB环境                                                  |
+| set args       |      | 指定运行时参数（如：set args 10 20 30 40 50）                |
+
+
 
 ## 生成调试程序
 

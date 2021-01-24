@@ -1,3 +1,26 @@
+
+
+## 配置git
+
+- 配置用户信息
+
+  ```bash
+  git config --global user.name "Sanzona"
+  git config --global user.email "arrangeman@163.com
+  ```
+
+
+
+- 生成ssh-key
+
+  ```bash
+  ssh-keygen -t rsa -C "arrangeman@163.com"
+  ```
+
+  将生成的公钥文件`~/.ssh/id_rsa.pub`添加到Github上。
+
+
+
 ## 版本回退
 
 1. 修改文件后提交修改到版本库

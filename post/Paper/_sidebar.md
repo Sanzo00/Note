@@ -26,6 +26,8 @@
 
 * [Hogwild](post/Paper/Hogwild)
 
+* [Gemini](post/Paper/Gemini)
+
   
 
   

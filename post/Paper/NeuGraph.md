@@ -50,9 +50,9 @@ P的大小决定每个Chunk中顶点的数量，P越小访问IO的频率就会�
 
 ![image-20210106193904487](img/neugraph/image-20210106193904487.png)
 
-为了节省GPU内存相关的Vertex Chunk和Edge Chunk在前向传播中交换到主机内存中，并在反向传播的时候交换回来。
+为了节省GPU内存，Vertex Chunk和Edge Chunk在前向传播中交换到主机内存中，并在反向传播的时候交换回来。
 
-Edge Chunk面向列处理适用于前向传播，面向行处理适用于方向传播，这样可以复用顶点的Accum，减少数据的移动。
+Edge Chunk面向列处理适用于前向传播，面向行处理适用于反向传播，这样可以复用顶点的Accum，减少数据的移动。
 
 
 
@@ -116,7 +116,7 @@ NeuGraph可以同时将多个chunks加载到GPU设备中，chunks的容量越小
 
 GPU的两部操作：
 
-1. 从主机内存获取edge chunk和，从主机内存或从链上的前一个GPU获取data chunk。
+1. 从主机内存获取edge chunk，从主机内存或从链上的前一个GPU获取data chunk。
 2. 在GPU内进行计算。
 
 
@@ -165,7 +165,7 @@ NeuGraph在blog的表现更好，因为blog的平均顶点度导致了更大的�
 
 ### q1
 
-EdgeNN不是应用于边的更新吗？
+**EdgeNN不是应用于边的更新吗，为什么是更新Layer2上的点？**
 
 ![image-20210106214549952](img/neugraph/image-20210106214549952.png)
 
@@ -173,9 +173,9 @@ EdgeNN不是应用于边的更新吗？
 
 ### q2
 
-流水线调度是如何根据统计执行时间来进行优化后续的迭代？
+**流水线调度是如何根据统计执行时间来进行优化后续的迭代？**
 
-将vertex chunk分成k个sub-chunk，这能减少IO次数吗？
+**将vertex chunk分成k个sub-chunk，这能减少IO次数吗？**
 
 ![image-20210106200052730](img/neugraph/image-20210106200052730.png)
 
@@ -185,7 +185,7 @@ EdgeNN不是应用于边的更新吗？
 
 ### q3
 
-多GPU执行过程不太理解？
+**多GPU执行过程不太理解？**
 
 ![image-20210106215621961](img/neugraph/image-20210106215621961.png)
 

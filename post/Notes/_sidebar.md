@@ -12,7 +12,7 @@
 * [HTTP](post/Notes/HTTP)
 * [DNS](post/Notes/DNS)
 * [项目相关](post/Notes/项目相关)
-* [git笔记](post/Notes/git笔记)
+* [git笔记](post/Notes/git)
 * [muduo笔记](post/Notes/muduo笔记)
 
   

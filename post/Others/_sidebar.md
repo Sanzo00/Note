@@ -10,4 +10,5 @@
 * [ubuntu软件](post/Others/ubuntu软件)
 * [vim配置](post/Others/vim配置)
 * [ffmpeg](post/Others/ffmpeg)
+* [ukulele](post/Others/ukulele)
 * [打赏](post/Others/donate)
