@@ -1,2 +1,4 @@
-* [返回](README.md)
-* [机器学习](post/AI/MachineLearning)
+- [Back](README.md)
+- [gcn代码笔记](post/AI/gcn代码笔记)
+- [gcn问题](post/AI/gcn问题)
+- [MachineLearning](post/AI/MachineLearning)
