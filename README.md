@@ -5,7 +5,7 @@
 [![](https://img.shields.io/github/last-commit/sanzona/note)](https://github.com/sanzona/note/commits/master)
 
 
-本站使用docsify搭建，详细请见[docsify快速上手](http://sanzo.top/#/post/其他/docsify)。
+本站使用docsify搭建，详细请见[docsify快速上手](https://note.sanzo.top/#/post/Others/docsify)。
 
 本仓库预览地址为：[note.sanzo.top](https://note.sanzo.top)，欢迎start！
 
