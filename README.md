@@ -1,10 +1,12 @@
-> 记录下自己的学习笔记
-
-笔记主要包括：C++、python、Linux、树莓派、算法和数据结构、机器学习...
-
 
 
 本站使用docsify搭建，详细请见[docsify快速上手](http://sanzo.top/#/post/其他/docsify)。
+
+本仓库预览地址为：[note.sanzo.top](https://note.sanzo.top)
+
+目前博客迁移至：[sanzo.top](https://sanzo.top)，此仓库主要用于备份。
+
+
 
 
 
@@ -19,12 +21,4 @@
 **Github**: [github.com/Sanzona](https://github.com/Sanzona)
 
 
-
-## Friend Links
-
-[Tony5t4rk](http://tony5t4rk.cn/)
-
-[Mug-9](http://orzff.cn/)
-
-[kirito](http://www.yesiare.cn/)
 
