@@ -165,6 +165,16 @@ y &= f(x) \\
 | $\vec{x}$                                          | \vec{x}                                          |
 | $\dot{x}$                                          | \dot{x}                                          |
 | $\oplus$                                           | \oplus                                           |
+| $\tilde{D}$                                        | \tilde{D}                                        |
+| $\widetilde{D}$                                    | \widetilde{D}                                    |
+| $\pm$                                              | \pm                                              |
+|                                                    |                                                  |
+|                                                    |                                                  |
+|                                                    |                                                  |
+|                                                    |                                                  |
+|                                                    |                                                  |
+
+
 
 
 

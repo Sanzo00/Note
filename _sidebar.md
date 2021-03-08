@@ -7,4 +7,7 @@
 * [Linux系统编程](post/Linux/)
 * [树莓派](post/RaspberryPi/)
 * [翻墙](post/Freedom/)
+* [AI](post/AI/)
+* [Computer](post/Computer/)
+* [Math](post/Math/)
 * [其他](post/Others/)

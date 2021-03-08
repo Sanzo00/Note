@@ -1,3 +1,23 @@
+
+
+## 用户管理
+
+```bash
+# 为test创建home目录，并指定shell
+sudo useradd -m test -s /bin/bash test
+
+# 设置密码
+sudo passwd test
+
+# 删除用户
+sudo userdel -r test
+
+# 设置sudo权限
+
+```
+
+
+
 ## date
 
   ```bash

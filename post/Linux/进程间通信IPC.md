@@ -397,11 +397,11 @@ Linux内核的进程控制块PCB是一个结构体，task_struct, 除了包含�
    - Stop：停止（暂停）进程
    - Cont：继续运行进程
 
-![](img/kill.jpg)
+![](img/linux/kill.jpg)
 
 不存在编号为0的信号。其中1-31号信号称之为常规信号（也叫普通信号或标准信号），34-64称之为实时信号，驱动编程与硬件相关。名字上区别不大。而前32个名字各不相同。
 
-![](img/signal.jpg)
+![](img/linux/signal.jpg)
 
 
 
@@ -686,7 +686,7 @@ struct sigaction {
 
 信号捕捉期间阻塞的信号产生多次只记录一次.
 
-![](img/kernel_signal.jpg)
+![](img/linux/kernel_signal.jpg)
 
 内核捕捉信号的过程:
 

@@ -14,7 +14,7 @@ https://www.piwheels.org/simple/opencv-contrib-python/
 sudo pip3 install opencv_contrib_python-4.4.0.46-cp37-cp37m-linux_armv7l.whl 
 ```
 
-![image-20201208214701556](img/image-20201208214701556.png)
+![image-20201208214701556](img/pi/image-20201208214701556.png)
 
 
 

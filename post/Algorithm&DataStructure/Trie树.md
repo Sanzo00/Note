@@ -15,7 +15,7 @@ Trie (发音为 "try") 或前缀树是一种树数据结构，用于检索字符
 
 [题目链接](https://leetcode-cn.com/problems/word-search-ii/)
 
-![](img/算法题/word-search-ii.jpg)
+![](img/question/word-search-ii.jpg)
 
 将单词放到Trie上，然后DFS。
 

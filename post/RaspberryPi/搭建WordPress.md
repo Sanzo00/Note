@@ -20,7 +20,7 @@
    <?php phpinfo(); ?>
    ```
    刷新浏览器
-   ![](./img/wordpress-2.png)
+   ![](img/pi/wordpress-2.png)
 
    ```bash
    sudo mv /var/www/html/index.php /var/www/html/index.php.bak
@@ -36,7 +36,7 @@
 
       安装之后浏览器测试是否成功
 
-      ![](./img/wordpress-1.png)
+      ![](img/pi/wordpress-1.png)
 
       安装$Nginx$
 
@@ -49,7 +49,7 @@
 
       登录服务器$ip$查看$nginx$是否正常运行
 
-      ![](img/wordpress-3.png)
+      ![](img/pi/wordpress-3.png)
 
       ``` bash
       /var/www/html/ # 显示的html文件的目录

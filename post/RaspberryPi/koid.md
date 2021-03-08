@@ -18,8 +18,6 @@ raspi-config => Performance Options => GPU Memory => =>160
 
 
 
-
-
 ## 自启动
 
 `sudo vim /lib/systemd/system/kodi.service`
@@ -57,8 +55,6 @@ sudo systemctl disable kodi
 ```
 
 我在试的时候有个问题，开启kodi然后stop服务之后，无法回到树莓派的桌面，我这里暂时是不设置开机自启然后重启解决。
-
-
 
 
 
