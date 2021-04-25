@@ -6,6 +6,5 @@
 - [Linux](post/Linux/)
 - [Math](post/Math/)
 - [Others](post/Others/)
-- [Paper](post/Paper/)
 - [Python](post/Python/)
 - [RaspberryPi](post/RaspberryPi/)

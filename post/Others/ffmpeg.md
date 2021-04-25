@@ -88,6 +88,7 @@ ffmpeg -i input.mp4 -vcodec copy -an v.mp4
 
 # 只提取音频
 ffmpeg -i input.mp4 -acodec copy -vn a.m4a
+ffmpeg -i input.mp4 -f mp3 -vn output.mp3
 
 # 合并音频和视频
 ffmpeg -i a.m4a -i v.mp4 -c copy out.mp4
@@ -231,3 +232,10 @@ ffmpeg -re -i rec.mp4 网站视频的编码 -f flv "rtmp地址/推流码"
 ```
 
 
+
+## 添加字幕
+
+```bash
+# mkv格式的软字幕 
+ffmpeg -i input.mp4 -i input.srt -c copy output.mkv
+```

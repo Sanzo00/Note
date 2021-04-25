@@ -86,6 +86,13 @@ netstat -tunpl | grep port
 
 
 
+## 端口映射
+
+```bash
+# 将远端服务器10.1.1.1的8888端口映射到本地的8888端口
+ssh -L8888:localhost:8888 root@10.1.1.1
+```
+
 
 
 ## head/tail

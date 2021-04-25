@@ -168,8 +168,8 @@ y &= f(x) \\
 | $\tilde{D}$                                        | \tilde{D}                                        |
 | $\widetilde{D}$                                    | \widetilde{D}                                    |
 | $\pm$                                              | \pm                                              |
-|                                                    |                                                  |
-|                                                    |                                                  |
+| $\sum_{i=1}^{n}$                                   | \sum_{i=1}^{n}                                   |
+| $\sum\limits_{i=1}^{n}$                            | \sum\limits_{i=1}^{n}                            |
 |                                                    |                                                  |
 |                                                    |                                                  |
 |                                                    |                                                  |

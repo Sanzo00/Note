@@ -2,7 +2,7 @@
 typora-copy-images-to: img\git
 ---
 
-
+[git-简明指南](http://rogerdudler.github.io/git-guide/index.zh.html)
 
 ## 配置git
 
@@ -118,6 +118,14 @@ git checkout -- <file>
    ```bash
    git checkout -- <file>
    ```
+   
+4. 只删除记录中的文件，本地不删除
+
+   ```bash
+   git rm --cached <file>
+   ```
+
+   
 
 
 
@@ -137,7 +145,15 @@ git checkout -- <file>
    git push origin master
    ```
 
-2. 克隆远程库
+2. 修改远程目录
+
+   ```bash
+   git remote set-url origin git@github.com:your_name/repo_name.git
+   ```
+
+   
+
+3. 克隆远程库
 
    ```bash
    git clone git@github.com:your_name/repo_name.git

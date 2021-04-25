@@ -1,6 +1,5 @@
 - [Back](README.md)
 - [Atom配置](post/Others/Atom配置)
-- [BTC交易记录](post/Others/BTC交易记录)
 - [docsify](post/Others/docsify)
 - [donate](post/Others/donate)
 - [English](post/Others/English)

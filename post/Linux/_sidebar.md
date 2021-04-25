@@ -5,6 +5,7 @@
 - [makefile](post/Linux/makefile)
 - [man使用技巧](post/Linux/man使用技巧)
 - [shell](post/Linux/shell)
+- [swap分区](post/Linux/swap分区)
 - [同步](post/Linux/同步)
 - [基本概念](post/Linux/基本概念)
 - [文件目录操作](post/Linux/文件目录操作)
