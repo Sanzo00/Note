@@ -12,7 +12,7 @@
 
 ## 客户端设置
 
-- windows、linux、macos对应的客户端安装包地址: [github](https://github.com/v2ray/v2ray-core/releases)
+- windows、linux、macos对应的客户端安装包地址: [github](https://github.com/v2fly/v2ray-core/releases)
 
 - IOS可以用Shadowrocket软件导入配置URL
 
